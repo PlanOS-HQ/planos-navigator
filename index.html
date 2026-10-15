@@ -3,26 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PlanOS 實時戰情儀表板 · 第三方監督監測站</title>
+  <title>PlanOS 實時戰情儀表板 · 第三方監督台</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
+    /* CSS Variables: Dark Theme (Default) */
     :root {
       --bg: #07090e;
       --bg-card: rgba(16, 21, 33, 0.72);
-      --bg-card-hover: rgba(22, 29, 46, 0.88);
+      --bg-card-hover: rgba(24, 32, 50, 0.88);
+      --bg-inset: rgba(255, 255, 255, 0.04);
       --border: rgba(255, 255, 255, 0.09);
       --border-highlight: rgba(56, 189, 248, 0.35);
       --text: #f1f5f9;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
       --accent: #38bdf8;
-      --success: #34d399;
-      --warning: #fbbf24;
-      --danger: #f87171;
-      --purple: #c084fc;
+      --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
       --glass-blur: 16px;
+      --track-bg: rgba(255, 255, 255, 0.08);
+      --pill-bg: rgba(255, 255, 255, 0.08);
+      --tag-bg: rgba(56, 189, 248, 0.12);
+    }
+
+    /* CSS Variables: Light Theme */
+    body.light-theme {
+      --bg: #f8fafc;
+      --bg-card: rgba(255, 255, 255, 0.92);
+      --bg-card-hover: #ffffff;
+      --bg-inset: rgba(241, 245, 249, 0.85);
+      --border: rgba(15, 23, 42, 0.09);
+      --border-highlight: rgba(14, 165, 233, 0.45);
+      --text: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --accent: #0284c7;
+      --card-shadow: 0 6px 24px -4px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
+      --glass-blur: 12px;
+      --track-bg: #e2e8f0;
+      --pill-bg: #e2e8f0;
+      --tag-bg: rgba(2, 132, 199, 0.1);
     }
 
     * {
@@ -38,32 +59,33 @@
       font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
       line-height: 1.5;
-      padding: 24px 16px 80px;
-      overflow-x: hidden;
+      padding: 20px 14px 60px;
+      transition: background 0.3s ease, color 0.3s ease;
       background-image: 
-        radial-gradient(circle at 15% 10%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 85% 25%, rgba(192, 132, 252, 0.06) 0%, transparent 45%),
-        radial-gradient(circle at 50% 80%, rgba(52, 211, 153, 0.05) 0%, transparent 50%);
+        radial-gradient(circle at 15% 10%, rgba(56, 189, 248, 0.07) 0%, transparent 40%),
+        radial-gradient(circle at 85% 25%, rgba(192, 132, 252, 0.05) 0%, transparent 45%);
       background-attachment: fixed;
     }
 
+    body.light-theme {
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(14, 165, 233, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 85% 25%, rgba(245, 158, 11, 0.04) 0%, transparent 45%);
+    }
+
     .container {
-      max-width: 1080px;
+      max-width: 980px;
       margin: 0 auto;
     }
 
-    /* Header & Mission Control Badge */
-    header {
-      margin-bottom: 28px;
-    }
-
-    .top-meta {
+    /* Top Meta & Controls */
+    .top-bar {
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
       padding-bottom: 12px;
       border-bottom: 1px solid var(--border);
     }
@@ -72,15 +94,14 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      background: var(--tag-bg);
+      border: 1px solid var(--border-highlight);
       padding: 4px 12px;
       border-radius: 9999px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       font-weight: 700;
       color: var(--accent);
-      letter-spacing: 0.5px;
     }
 
     .pulse-dot {
@@ -98,929 +119,2115 @@
       100% { transform: scale(0.95); opacity: 0.8; }
     }
 
-    .live-clock {
-      font-family: 'JetBrains Mono', monospace;
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--border-highlight);
+      transform: translateY(-1px);
+    }
+
+    /* Title Block */
+    .hero-title {
+      margin-bottom: 20px;
+    }
+
+    .hero-title h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      margin-bottom: 4px;
+    }
+
+    .hero-title p {
       font-size: 13px;
       color: var(--text-muted);
     }
 
-    .title-row h1 {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 6px;
-    }
-
-    .title-row p {
-      font-size: 13.5px;
-      color: var(--text-muted);
-    }
-
-    /* Stats Banner */
-    .stats-banner {
+    /* Compact Stats Bar */
+    .stats-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 14px;
-      margin-bottom: 32px;
-    }
-
-    .stat-card {
-      background: var(--bg-card);
-      backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--border-highlight);
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: var(--text-dim);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
-    }
-
-    .stat-value {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--text);
-    }
-
-    .stat-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    /* Section Headers */
-    .section-title {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-      margin: 36px 0 16px;
-      display: flex;
-      align-items: center;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 10px;
-    }
-
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-      margin-left: 10px;
-    }
-
-    /* Exam Countdown Radar */
-    .radar-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 14px;
       margin-bottom: 24px;
     }
 
-    .radar-card {
+    .stat-box {
+      background: var(--bg-card);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .stat-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* Smart Collapsible Sections (Details & Summary) */
+    details.accordion-section {
       background: var(--bg-card);
       backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 14px 16px;
-      position: relative;
+      margin-bottom: 16px;
       overflow: hidden;
+      box-shadow: var(--card-shadow);
+      transition: border-color 0.2s ease;
+    }
+
+    details.accordion-section[open] {
+      border-color: var(--border-highlight);
+    }
+
+    summary.section-summary {
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      background: var(--bg-inset);
+      transition: background 0.2s ease;
+    }
+
+    summary.section-summary:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    body.light-theme summary.section-summary:hover {
+      background: #f1f5f9;
+    }
+
+    .summary-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .summary-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 9999px;
+      background: var(--pill-bg);
+      color: var(--text-muted);
+    }
+
+    .chevron {
+      font-size: 12px;
+      color: var(--text-dim);
+      transition: transform 0.25s ease;
+    }
+
+    details[open] summary .chevron {
+      transform: rotate(180deg);
+    }
+
+    .accordion-content {
+      padding: 16px 18px;
+    }
+
+    /* Radar Cards Grid */
+    .radar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 12px;
+    }
+
+    .radar-card {
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 13px;
     }
 
     .radar-card.urgent {
-      border-color: rgba(248, 113, 113, 0.4);
-      background: linear-gradient(135deg, rgba(248, 113, 113, 0.08) 0%, rgba(16, 21, 33, 0.75) 100%);
+      border-color: rgba(248, 113, 113, 0.45);
+      background: rgba(248, 113, 113, 0.06);
     }
 
-    .radar-header {
+    .radar-card-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .radar-tag {
-      font-size: 12px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .countdown-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: rgba(248, 113, 113, 0.18);
-      color: #f87171;
-    }
-
-    .radar-card.urgent .countdown-badge {
-      background: #f87171;
-      color: #000;
-      animation: pulse 1.5s infinite;
-    }
-
-    .radar-title {
-      font-size: 14.5px;
-      font-weight: 700;
-      color: var(--text);
       margin-bottom: 6px;
     }
 
-    .radar-deadlines {
-      font-size: 11.5px;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-
-    /* Today's Dispatched Focus (Today Focus) */
-    .today-box {
-      background: var(--bg-card);
-      backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      border-radius: 16px;
-      padding: 18px 20px;
-      margin-bottom: 36px;
-      box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.1);
-    }
-
-    .today-task-row {
+    .radar-tag {
+      font-weight: 700;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      gap: 4px;
     }
 
-    .today-task-row:last-child {
+    .cd-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: rgba(248, 113, 113, 0.15);
+      color: #f87171;
+    }
+
+    .radar-card.urgent .cd-badge {
+      background: #f87171;
+      color: #000;
+    }
+
+    .radar-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+
+    /* Today's Tasks */
+    .task-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .task-row:last-child {
       border-bottom: none;
     }
 
-    .task-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex: 1;
-      min-width: 260px;
-    }
-
-    .slot-pill {
-      font-size: 12px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--accent);
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .task-name {
-      font-size: 14px;
+    .task-desc-main {
+      font-size: 13.5px;
       font-weight: 600;
     }
 
-    .task-dod {
+    .task-desc-sub {
       font-size: 12px;
       color: var(--text-muted);
-      margin-top: 2px;
     }
 
-    .status-badge {
-      font-size: 11.5px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 9999px;
+    .badge-status {
       font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 9999px;
     }
 
-    .status-in_progress {
+    .badge-in_progress {
       background: rgba(251, 191, 36, 0.15);
       color: #fbbf24;
       border: 1px solid rgba(251, 191, 36, 0.3);
     }
 
-    .status-done {
+    .badge-done {
       background: rgba(52, 211, 153, 0.15);
       color: #34d399;
       border: 1px solid rgba(52, 211, 153, 0.3);
     }
 
-    .status-planned {
-      background: rgba(148, 163, 184, 0.12);
-      color: #94a3b8;
+    .badge-planned {
+      background: var(--pill-bg);
+      color: var(--text-dim);
     }
 
-    /* 10 Subjects Grid */
-    .subjects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 16px;
+    /* 10 Subject Cards (Compact Accordions) */
+    .subjects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    .subject-card {
+    details.subject-item {
       background: var(--bg-card);
       backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      transition: all 0.2s ease;
     }
 
-    .subject-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(255, 255, 255, 0.25);
-      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.6);
+    details.subject-item[open] {
+      border-color: rgba(255, 255, 255, 0.22);
     }
 
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 12px;
+    body.light-theme details.subject-item[open] {
+      border-color: var(--border-highlight);
     }
 
-    .subj-header {
+    summary.subject-summary {
+      padding: 14px 18px;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: 180px 100px 1fr auto;
+      align-items: center;
+      gap: 14px;
+      user-select: none;
+      transition: background 0.15s ease;
+    }
+
+    summary.subject-summary:hover {
+      background: var(--bg-inset);
+    }
+
+    @media (max-width: 680px) {
+      summary.subject-summary {
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+      }
+      .subj-bar-col {
+        grid-column: 1 / -1;
+        order: 3;
+      }
+    }
+
+    .subj-info-col {
       display: flex;
       align-items: center;
-      gap: 10px;
-    }
-
-    .subj-icon {
-      font-size: 22px;
-    }
-
-    .subj-title {
-      font-size: 16px;
+      gap: 8px;
       font-weight: 700;
-      color: #fff;
+      font-size: 15px;
     }
 
-    .milver-pill {
+    .milver-tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
-      padding: 3px 8px;
+      padding: 2px 7px;
       border-radius: 6px;
-      background: rgba(56, 189, 248, 0.15);
-      color: var(--accent);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-    }
-
-    /* Glowing Progress Bar */
-    .progress-section {
-      margin: 14px 0;
-    }
-
-    .progress-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      margin-bottom: 6px;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .progress-pct {
-      font-weight: 700;
-      color: var(--text);
+      background: var(--pill-bg);
+      text-align: center;
     }
 
     .progress-track {
-      height: 8px;
-      background: rgba(255, 255, 255, 0.08);
+      height: 7px;
+      background: var(--track-bg);
       border-radius: 9999px;
       overflow: hidden;
-      position: relative;
+      margin-bottom: 4px;
     }
 
     .progress-fill {
       height: 100%;
       border-radius: 9999px;
-      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 0 12px currentColor;
+      box-shadow: 0 0 8px currentColor;
     }
 
-    .target-focus {
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 12.5px;
-      margin-top: 12px;
-    }
-
-    .target-focus-title {
+    .bar-subtext {
+      display: flex;
+      justify-content: space-between;
       font-size: 11px;
-      font-weight: 700;
       color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 4px;
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .target-desc {
-      color: var(--text);
-      font-weight: 500;
+    .details-body {
+      padding: 14px 18px 18px;
+      background: var(--bg-inset);
+      border-top: 1px solid var(--border);
+      font-size: 13px;
     }
 
-    .target-dl {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 4px;
+    .ticket-block {
+      margin-bottom: 14px;
     }
 
-    /* Footer */
+    .ticket-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .ticket-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .subtask-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .subtask-table th {
+      text-align: left;
+      color: var(--text-dim);
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+
+    .subtask-table td {
+      padding: 7px 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .subtask-table tr:last-child td {
+      border-bottom: none;
+    }
+
     footer {
-      margin-top: 60px;
+      margin-top: 40px;
       text-align: center;
       font-size: 12px;
       color: var(--text-dim);
-      line-height: 1.6;
-    }
-
-    footer strong {
-      color: var(--text-muted);
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <header>
-      <div class="top-meta">
-        <div class="sys-badge">
-          <span class="pulse-dot"></span>
-          <span>PLANOS 115-1 戰情發布列車 · W42</span>
-        </div>
-        <div class="live-clock">🕒 檢測節點：2026-10-15 16:06 · 🟢 正常推進中</div>
+    
+    <!-- Top Bar with Mode Switcher -->
+    <div class="top-bar">
+      <div class="sys-badge">
+        <span class="pulse-dot"></span>
+        <span>PLANOS 115-1 戰情發布列車 · W42</span>
       </div>
-      <div class="title-row">
-        <h1>火箭指揮中心 · 第三方即時監督戰情台</h1>
-        <p>實體動筆盲推 ✕ 抽象 MilVer 版本號 ✕ 具體多巴胺發光進度條 ✕ 剛性防自欺雙軌死線</p>
-      </div>
-    </header>
-
-    <!-- Stats Banner -->
-    <div class="stats-banner">
-      <div class="stat-card">
-        <div class="stat-label">全學科總體進度</div>
-        <div class="stat-value" style="color: #38bdf8;">3%</div>
-        <div class="stat-desc">3 / 92 個原子驗收工步已通關</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">期中首波決戰</div>
-        <div class="stat-value" style="color: #f87171;">D-4</div>
-        <div class="stat-desc">10/19 電工隨堂考 ＋ 桌球測驗</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">工數期中考哨兵</div>
-        <div class="stat-value" style="color: #fbbf24;">D-5</div>
-        <div class="stat-desc">🚨 明天 10/16 吹響 D-4 盲推哨兵</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">今日排定攻堅</div>
-        <div class="stat-value" style="color: #34d399;">3 班列車</div>
-        <div class="stat-desc">嚴格遵守 5.0h 單件流防爆上限</div>
+      <div class="controls-group">
+        <span style="font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">🕒 2026-10-15 18:15</span>
+        <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()">☀️ 亮色模式</button>
       </div>
     </div>
 
-    <!-- Section 1: Exam Horizon Radar -->
-    <div class="section-title">🚨 期中決戰戰略雷達 (Exam Horizon Radar · 未來兩週決戰排程)</div>
-    <div class="radar-grid">
-      <div class="radar-card urgent">
-        <div class="radar-header">
-          <div class="radar-tag" style="color: #38bdf8;">
-            <span>⚡</span>
-            <span>電工學與實習</span>
-          </div>
-          <div class="countdown-badge">D-4</div>
-        </div>
-        <div class="radar-title">Ch5 交流電路隨堂小考 (絕對死線)</div>
-        <div class="radar-deadlines">
-          <div>🔴 物理死線：2026-10-19 (週一 10:20-12:10 · 電工教室)</div>
-          <div>🏁 戰術封卷：2026-10-17 (週六 · D-2 提前封卷)</div>
-        </div>
+    <!-- Title Row -->
+    <div class="hero-title">
+      <h1>火箭指揮中心 · 第三方即時監督戰情台</h1>
+      <p>點開感興趣科目深入檢驗 ✕ 抽象 MilVer 版本號 ✕ 具體發光進度條 ✕ 雙軌大考雷達</p>
+    </div>
+
+    <!-- Compact Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-box">
+        <div class="stat-num" style="color: #38bdf8;">3%</div>
+        <div class="stat-lbl">全學科總進度</div>
       </div>
-      <div class="radar-card urgent">
-        <div class="radar-header">
-          <div class="radar-tag" style="color: #4ade80;">
-            <span>🏓</span>
-            <span>桌球初級</span>
-          </div>
-          <div class="countdown-badge">D-4</div>
-        </div>
-        <div class="radar-title">隨堂技術小考 1 (Quiz 1 · 正反手平擊球)</div>
-        <div class="radar-deadlines">
-          <div>🔴 物理死線：2026-10-19 (週一 15:30-17:20 · 綜合體育館)</div>
-          <div>🏁 戰術封卷：2026-10-19 (週一 · 隨堂應試)</div>
-        </div>
+      <div class="stat-box">
+        <div class="stat-num" style="color: #f87171;">D-4</div>
+        <div class="stat-lbl">10/19 電工+桌球</div>
       </div>
-      <div class="radar-card urgent">
-        <div class="radar-header">
-          <div class="radar-tag" style="color: #fbbf24;">
-            <span>📐</span>
-            <span>工程數學一</span>
-          </div>
-          <div class="countdown-badge">D-5</div>
-        </div>
-        <div class="radar-title">第一次期中大考 (佔 20% · 絕對死線)</div>
-        <div class="radar-deadlines">
-          <div>🔴 物理死線：2026-10-20 (週二 09:10-12:10 · 工數教室)</div>
-          <div>🏁 戰術封卷：2026-10-16 (週五 · D-4 盲推哨兵)</div>
-        </div>
+      <div class="stat-box">
+        <div class="stat-num" style="color: #fbbf24;">D-5</div>
+        <div class="stat-lbl">10/20 工數期中</div>
       </div>
-      <div class="radar-card ">
-        <div class="radar-header">
-          <div class="radar-tag" style="color: #34d399;">
-            <span>♨️</span>
-            <span>熱力學一</span>
-          </div>
-          <div class="countdown-badge">D-6</div>
-        </div>
-        <div class="radar-title">第一次期中大考 (佔 35%)</div>
-        <div class="radar-deadlines">
-          <div>🔴 物理死線：2026-10-21 (週三 14:20-16:20 · 生機101)</div>
-          <div>🏁 戰術封卷：2026-10-18 (週日 · D-3 全卷通關)</div>
-        </div>
-      </div>
-      <div class="radar-card ">
-        <div class="radar-header">
-          <div class="radar-tag" style="color: #f87171;">
-            <span>🔴</span>
-            <span>應用力學下</span>
-          </div>
-          <div class="countdown-badge">D-8</div>
-        </div>
-        <div class="radar-title">第一次大考 (Midterm 1 · 質點動力學 · 佔 35%)</div>
-        <div class="radar-deadlines">
-          <div>🔴 物理死線：2026-10-23 (週五 10:20-12:10 · 生機101)</div>
-          <div>🏁 戰術封卷：2026-10-19 (週一 · D-4 盲推哨兵)</div>
-        </div>
-      </div>
-      <div class="radar-card ">
-        <div class="radar-header">
-          <div class="radar-tag" style="color: #38bdf8;">
-            <span>⚡</span>
-            <span>電工學與實習</span>
-          </div>
-          <div class="countdown-badge">D-13</div>
-        </div>
-        <div class="radar-title">第一次期中大考 (Ch5~Ch6 交流與三相)</div>
-        <div class="radar-deadlines">
-          <div>🔴 物理死線：2026-10-28 (週三 10:20-12:10)</div>
-          <div>🏁 戰術封卷：2026-10-26 (週一 · D-2 提前封卷)</div>
-        </div>
-      </div>
-      <div class="radar-card ">
-        <div class="radar-header">
-          <div class="radar-tag" style="color: #c084fc;">
-            <span>🟣</span>
-            <span>機率與統計</span>
-          </div>
-          <div class="countdown-badge">D-14</div>
-        </div>
-        <div class="radar-title">第一次期中大考 (佔 25%)</div>
-        <div class="radar-deadlines">
-          <div>🔴 物理死線：2026-10-29 (週四 13:20-15:10 · 生機101)</div>
-          <div>🏁 戰術封卷：2026-10-25 (週日 · D-4 盲推哨兵)</div>
-        </div>
-      </div>
-      <div class="radar-card ">
-        <div class="radar-header">
-          <div class="radar-tag" style="color: #fb923c;">
-            <span>📚</span>
-            <span>普通心理學</span>
-          </div>
-          <div class="countdown-badge">D-15</div>
-        </div>
-        <div class="radar-title">期中大考 (Midterm · 生物與認知 · 佔 35%)</div>
-        <div class="radar-deadlines">
-          <div>🔴 物理死線：2026-10-30 (週五 14:20-16:20 · 普101)</div>
-          <div>🏁 戰術封卷：2026-10-26 (週一 · D-4 盲推哨兵)</div>
-        </div>
-      </div>
-      <div class="radar-card ">
-        <div class="radar-header">
-          <div class="radar-tag" style="color: #a78bfa;">
-            <span>🧠</span>
-            <span>邏輯</span>
-          </div>
-          <div class="countdown-badge">D-18</div>
-        </div>
-        <div class="radar-title">期中大考 (Midterm · 語句邏輯 · 佔 35%)</div>
-        <div class="radar-deadlines">
-          <div>🔴 物理死線：2026-11-02 (週一 13:20-15:10 · 博雅)</div>
-          <div>🏁 戰術封卷：2026-10-29 (週四 · D-4 盲推哨兵)</div>
-        </div>
-      </div>
-      <div class="radar-card ">
-        <div class="radar-header">
-          <div class="radar-tag" style="color: #4ade80;">
-            <span>🏓</span>
-            <span>桌球初級</span>
-          </div>
-          <div class="countdown-badge">D-18</div>
-        </div>
-        <div class="radar-title">期中術科評量 (Midterm · 發球與步法考核)</div>
-        <div class="radar-deadlines">
-          <div>🔴 物理死線：2026-11-02 (週一 15:30-17:20 · 綜合體育館)</div>
-          <div>🏁 戰術封卷：2026-10-31 (週六 · 動作定型)</div>
-        </div>
-      </div>
-      <div class="radar-card ">
-        <div class="radar-header">
-          <div class="radar-tag" style="color: #60a5fa;">
-            <span>🔵</span>
-            <span>會計學甲一上</span>
-          </div>
-          <div class="countdown-badge">D-20</div>
-        </div>
-        <div class="radar-title">隨堂小考 4 (Quiz 4 · 存貨會計與評價)</div>
-        <div class="radar-deadlines">
-          <div>🔴 物理死線：2026-11-04 (週三 12:20-14:10 · 共同205)</div>
-          <div>🏁 戰術封卷：2026-11-02 (週一 · D-2 提前封卷)</div>
-        </div>
+      <div class="stat-box">
+        <div class="stat-num" style="color: #34d399;">3 班車</div>
+        <div class="stat-lbl">今日作戰焦點</div>
       </div>
     </div>
 
-    <!-- Section 2: Today Focus -->
-    <div class="section-title">🔥 今日前線作戰火車 (Today: 10/15 Focus · 早中晚班車)</div>
-    <div class="today-box">
-      <div class="today-task-row">
-        <div class="task-left">
-          <span class="slot-pill">10/15 晨</span>
-          <span style="color: #38bdf8; font-weight: 700;">⚡ EE</span>
+    <!-- Section 1: Exam Horizon Radar (Collapsible) -->
+    <details class="accordion-section" open>
+      <summary class="section-summary">
+        <div class="summary-left">
+          <span>🚨 期中決戰戰略雷達</span>
+          <span class="summary-badge">11 場考期排定</span>
+        </div>
+        <span class="chevron">▾</span>
+      </summary>
+      <div class="accordion-content">
+        <div class="radar-grid">
+          <div class="radar-card urgent">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #38bdf8;">⚡ 電工學與實習</span>
+              <span class="cd-badge">D-4</span>
+            </div>
+            <div style="font-weight: 700;">Ch5 交流電路隨堂小考 (絕對死線)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-10-19 (週一 10:20-12:10 · 電工教室)</div>
+              <div>🏁 戰術封卷：2026-10-17 (週六 · D-2 提前封卷)</div>
+            </div>
+          </div>
+          <div class="radar-card urgent">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #4ade80;">🏓 桌球初級</span>
+              <span class="cd-badge">D-4</span>
+            </div>
+            <div style="font-weight: 700;">隨堂技術小考 1 (Quiz 1 · 正反手平擊球)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-10-19 (週一 15:30-17:20 · 綜合體育館)</div>
+              <div>🏁 戰術封卷：2026-10-19 (週一 · 隨堂應試)</div>
+            </div>
+          </div>
+          <div class="radar-card urgent">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #fbbf24;">📐 工程數學一</span>
+              <span class="cd-badge">D-5</span>
+            </div>
+            <div style="font-weight: 700;">第一次期中大考 (佔 20% · 絕對死線)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-10-20 (週二 09:10-12:10 · 工數教室)</div>
+              <div>🏁 戰術封卷：2026-10-16 (週五 · D-4 盲推哨兵)</div>
+            </div>
+          </div>
+          <div class="radar-card ">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #34d399;">♨️ 熱力學一</span>
+              <span class="cd-badge">D-6</span>
+            </div>
+            <div style="font-weight: 700;">第一次期中大考 (佔 35%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-10-21 (週三 14:20-16:20 · 生機101)</div>
+              <div>🏁 戰術封卷：2026-10-18 (週日 · D-3 全卷通關)</div>
+            </div>
+          </div>
+          <div class="radar-card ">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #f87171;">🔴 應用力學下</span>
+              <span class="cd-badge">D-8</span>
+            </div>
+            <div style="font-weight: 700;">第一次大考 (Midterm 1 · 質點動力學 · 佔 35%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-10-23 (週五 10:20-12:10 · 生機101)</div>
+              <div>🏁 戰術封卷：2026-10-19 (週一 · D-4 盲推哨兵)</div>
+            </div>
+          </div>
+          <div class="radar-card ">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #38bdf8;">⚡ 電工學與實習</span>
+              <span class="cd-badge">D-13</span>
+            </div>
+            <div style="font-weight: 700;">第一次期中大考 (Ch5~Ch6 交流與三相)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-10-28 (週三 10:20-12:10)</div>
+              <div>🏁 戰術封卷：2026-10-26 (週一 · D-2 提前封卷)</div>
+            </div>
+          </div>
+          <div class="radar-card ">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #c084fc;">🟣 機率與統計</span>
+              <span class="cd-badge">D-14</span>
+            </div>
+            <div style="font-weight: 700;">第一次期中大考 (佔 25%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-10-29 (週四 13:20-15:10 · 生機101)</div>
+              <div>🏁 戰術封卷：2026-10-25 (週日 · D-4 盲推哨兵)</div>
+            </div>
+          </div>
+          <div class="radar-card ">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #fb923c;">📚 普通心理學</span>
+              <span class="cd-badge">D-15</span>
+            </div>
+            <div style="font-weight: 700;">期中大考 (Midterm · 生物與認知 · 佔 35%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-10-30 (週五 14:20-16:20 · 普101)</div>
+              <div>🏁 戰術封卷：2026-10-26 (週一 · D-4 盲推哨兵)</div>
+            </div>
+          </div>
+          <div class="radar-card ">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #a78bfa;">🧠 邏輯</span>
+              <span class="cd-badge">D-18</span>
+            </div>
+            <div style="font-weight: 700;">期中大考 (Midterm · 語句邏輯 · 佔 35%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-11-02 (週一 13:20-15:10 · 博雅)</div>
+              <div>🏁 戰術封卷：2026-10-29 (週四 · D-4 盲推哨兵)</div>
+            </div>
+          </div>
+          <div class="radar-card ">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #4ade80;">🏓 桌球初級</span>
+              <span class="cd-badge">D-18</span>
+            </div>
+            <div style="font-weight: 700;">期中術科評量 (Midterm · 發球與步法考核)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-11-02 (週一 15:30-17:20 · 綜合體育館)</div>
+              <div>🏁 戰術封卷：2026-10-31 (週六 · 動作定型)</div>
+            </div>
+          </div>
+          <div class="radar-card ">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #60a5fa;">🔵 會計學甲一上</span>
+              <span class="cd-badge">D-20</span>
+            </div>
+            <div style="font-weight: 700;">隨堂小考 4 (Quiz 4 · 存貨會計與評價)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-11-04 (週三 12:20-14:10 · 共同205)</div>
+              <div>🏁 戰術封卷：2026-11-02 (週一 · D-2 提前封卷)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Section 2: Today Focus (Collapsible) -->
+    <details class="accordion-section" open>
+      <summary class="section-summary">
+        <div class="summary-left">
+          <span>🔥 今日前線作戰火車 (10/15 Focus)</span>
+          <span class="summary-badge">3 班施工任務</span>
+        </div>
+        <span class="chevron">▾</span>
+      </summary>
+      <div class="accordion-content">
+        <div class="task-row">
           <div>
-            <div class="task-name">M0.2：5.4 節點電壓法母題演練</div>
-            <div class="task-dod">📦 驗收 DoD：P5.9, P5.11★ 演算紙卷 (施工中) (1.5h)</div>
+            <div class="task-desc-main">
+              <span style="color: #38bdf8; font-weight: 700;">⚡ EE</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-left: 4px;">[10/15 晨]</span>
+              <span>M0.2：5.4 節點電壓法母題演練</span>
+            </div>
+            <div class="task-desc-sub">📦 驗收 DoD：P5.9, P5.11★ 演算紙卷 (施工中) (1.5h)</div>
           </div>
-        </div>
-        <div>
-          <span class="status-badge status-in_progress">🔥 施工中</span>
-        </div>
-      </div>
-      <div class="today-task-row">
-        <div class="task-left">
-          <span class="slot-pill">10/15 晚</span>
-          <span style="color: #38bdf8; font-weight: 700;">⚡ EE</span>
           <div>
-            <div class="task-name">M0.3：5.5 戴維寧與諾頓等效電路</div>
-            <div class="task-dod">📦 驗收 DoD：P5.21★, P5.26 盲解零失誤 (細部設計完成) (1.5h)</div>
+            <span class="badge-status badge-in_progress">🔥 施工中</span>
           </div>
         </div>
-        <div>
-          <span class="status-badge status-planned">⏳ 已就緒</span>
-        </div>
-      </div>
-      <div class="today-task-row">
-        <div class="task-left">
-          <span class="slot-pill">10/15 晚</span>
-          <span style="color: #34d399; font-weight: 700;">♨️ TH</span>
+        <div class="task-row">
           <div>
-            <div class="task-name">M0.2：第一定律開放系統穩定流動能量方程 (SFEE)</div>
-            <div class="task-dod">📦 驗收 DoD：渦輪機/壓縮機/噴嘴 3 題盲推紙卷 (施工中) (2.0h)</div>
+            <div class="task-desc-main">
+              <span style="color: #38bdf8; font-weight: 700;">⚡ EE</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-left: 4px;">[10/15 晚]</span>
+              <span>M0.3：5.5 戴維寧與諾頓等效電路</span>
+            </div>
+            <div class="task-desc-sub">📦 驗收 DoD：P5.21★, P5.26 盲解零失誤 (細部設計完成) (1.5h)</div>
+          </div>
+          <div>
+            <span class="badge-status badge-planned">⏳ 已就緒</span>
           </div>
         </div>
-        <div>
-          <span class="status-badge status-in_progress">🔥 施工中</span>
+        <div class="task-row">
+          <div>
+            <div class="task-desc-main">
+              <span style="color: #34d399; font-weight: 700;">♨️ TH</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-left: 4px;">[10/15 晚]</span>
+              <span>M0.2：第一定律開放系統穩定流動能量方程 (SFEE)</span>
+            </div>
+            <div class="task-desc-sub">📦 驗收 DoD：渦輪機/壓縮機/噴嘴 3 題盲推紙卷 (施工中) (2.0h)</div>
+          </div>
+          <div>
+            <span class="badge-status badge-in_progress">🔥 施工中</span>
+          </div>
         </div>
       </div>
-    </div>
+    </details>
 
-    <!-- Section 3: 10 Subjects Grid -->
-    <div class="section-title">📊 10 大學科發光進度矩陣 (MilVer Engine · 抽象版本號 ✕ 具體進度條)</div>
-    <div class="subjects-grid">
-      <div class="subject-card">
-        <div>
-          <div class="card-top">
-            <div class="subj-header">
-              <span class="subj-icon">🔵</span>
-              <div>
-                <div class="subj-title">會計學甲一上</div>
-                <div style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">CODE: ACC</div>
+    <!-- Section 3: 10 Subjects Compact Accordions -->
+    <details class="accordion-section" open>
+      <summary class="section-summary">
+        <div class="summary-left">
+          <span>📊 10 大學科發光進度矩陣 (點擊任一科目展開明細)</span>
+          <span class="summary-badge">10 科全齊</span>
+        </div>
+        <span class="chevron">▾</span>
+      </summary>
+      <div class="accordion-content" style="padding: 12px;">
+        <div class="subjects-list">
+          <details class="subject-item">
+            <summary class="subject-summary">
+              <div class="subj-info-col">
+                <span style="font-size: 20px;">🔵</span>
+                <span>會計學甲一上</span>
+              </div>
+              <div class="milver-tag" style="color: #60a5fa;">M0.1.0</div>
+              <div class="subj-bar-col">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 0%; background: #60a5fa; color: #60a5fa;"></div>
+                </div>
+                <div class="bar-subtext">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;">🎯 M0.3: Quiz 4 歷年考題演練與易錯分錄速查</span>
+                  <span style="font-weight: 700; color: #60a5fa;">0%</span>
+                </div>
+              </div>
+              <span class="chevron">▾</span>
+            </summary>
+            
+            <div class="details-body">
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【ACC-05】隨堂小考 4 (Quiz 4 · 存貨會計與評價) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-11-04 (週三 12:20-14:10 · 共同205) ｜ 🏁 戰術封卷：2026-11-02 (週一 · D-2 提前封卷)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>Ch5 買賣業存貨制度 (定期盤存 vs 永續盤存分錄比較)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/01 晨</td>
+                      <td style="color: var(--text-muted);">兩大盤存制買賣交易分錄對照演算紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>存貨成本流動假設 (FIFO、加權平均法與淨變現價值 LCM)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/01 晚</td>
+                      <td style="color: var(--text-muted);">期末存貨評價與銷貨成本計算典型 3 題</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>Quiz 4 歷年考題演練與易錯分錄速查</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/02 晚</td>
+                      <td style="color: var(--text-muted);">限時手算盲測得分 >= 85 (D-2 提前封卷)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【ACC-06】第二次期中大考 (Midterm 2 · 佔 25%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-11-16 (週一 18:30-21:30 · 管二102) ｜ 🏁 戰術封卷：2026-11-12 (週四 · D-4 盲推哨兵)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>Ch5~Ch6 內部控制原則、零用金制度與銀行存款調節表</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/08 晨</td>
+                      <td style="color: var(--text-muted);">銀行對帳單調節表盲推紙卷 (未達帳項零失誤)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>Ch7 應收帳款評價 (備抵損失提列、帳齡分析法、票據貼現)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/10 晚</td>
+                      <td style="color: var(--text-muted);">壞帳費用估計與應收票據貼現分錄求解</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>歷年 Midterm 2 考古題 120m 閉卷全真盲推測試</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/12 晨</td>
+                      <td style="color: var(--text-muted);">限時 120m 閉卷盲模得分 >= 85 (D-4 哨兵)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.4</td>
+                      <td>考前關鍵分錄速查卡與試算表錯題總清運</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/15 晚</td>
+                      <td style="color: var(--text-muted);">A4 手抄核心分錄口袋卡 (考前定錨)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【ACC-07】期末大考 (Final · 全卷決戰 · 佔 30%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-12-21 (週一 18:30-21:30 · 管二102) ｜ 🏁 戰術封卷：2026-12-17 (週四 · D-4 盲推哨兵)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>Ch8~Ch9 不動產廠房設備折舊法與資產處分/交換</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/10 晨</td>
+                      <td style="color: var(--text-muted);">直線法/倍數餘額/年數合計折舊比較表與分錄</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>Ch10 流動負債與應付公司債折溢價攤銷 (有效利率法)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/13 晚</td>
+                      <td style="color: var(--text-muted);">公司債發行、付息與溢折價攤銷表手工推導</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>期末全真全卷 120m 閉卷大模考與錯題覆盤</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/17 晨</td>
+                      <td style="color: var(--text-muted);">限時閉卷全模得分 >= 85 (D-4 哨兵)</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <div class="milver-pill" style="color: #60a5fa; border-color: #60a5fa44;">M0.1.0</div>
-          </div>
-
-          <div class="progress-section">
-            <div class="progress-meta">
-              <span style="color: var(--text-muted); font-size: 11px;">攻堅完成率</span>
-              <span class="progress-pct" style="color: #60a5fa;">0%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width: 0%; background: #60a5fa; color: #60a5fa;"></div>
-            </div>
-          </div>
-
-          <div class="target-focus">
-            <div class="target-focus-title">當前攻堅焦點 (M0.3)</div>
-            <div class="target-desc">🎯 Quiz 4 歷年考題演練與易錯分錄速查 (1.0h)</div>
-            <div class="target-dl">🔴 考期：2026-11-04 (週三 12:20-14:10 · 共同205) ｜ 🏁 哨兵：2026-11-02 (週一 · D-2 提前封卷)</div>
-          </div>
-        </div>
-      </div>
-      <div class="subject-card">
-        <div>
-          <div class="card-top">
-            <div class="subj-header">
-              <span class="subj-icon">🔴</span>
-              <div>
-                <div class="subj-title">應用力學下</div>
-                <div style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">CODE: DYN</div>
+          </details>
+          <details class="subject-item">
+            <summary class="subject-summary">
+              <div class="subj-info-col">
+                <span style="font-size: 20px;">🔴</span>
+                <span>應用力學下</span>
+              </div>
+              <div class="milver-tag" style="color: #f87171;">M0.1.0</div>
+              <div class="subj-bar-col">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 0%; background: #f87171; color: #f87171;"></div>
+                </div>
+                <div class="bar-subtext">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;">🎯 M0.1: Ch12 質點曲線運動 (直角、自然 n-t、極座標 r-θ 加速度分解)</span>
+                  <span style="font-weight: 700; color: #f87171;">0%</span>
+                </div>
+              </div>
+              <span class="chevron">▾</span>
+            </summary>
+            
+            <div class="details-body">
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【DYN-01】第一次大考 (Midterm 1 · 質點動力學 · 佔 35%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">就緒待發車 (`PLANNED ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-10-23 (週五 10:20-12:10 · 生機101) ｜ 🏁 戰術封卷：2026-10-19 (週一 · D-4 盲推哨兵)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>Ch12 質點曲線運動 (直角、自然 n-t、極座標 r-θ 加速度分解)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/16 晨</td>
+                      <td style="color: var(--text-muted);">三大座標系速度與曲率半徑加速度盲推紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>Ch13 牛頓第二定律方程式 (自由體圖 FBD 與力平衡求解)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/17 晨</td>
+                      <td style="color: var(--text-muted);">典型斜面摩擦與圓周運動動態平衡 3 題</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>Ch14 功與能、功能定理與動量/角動量守恆定律</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/18 晨</td>
+                      <td style="color: var(--text-muted);">彈簧位能與碰撞恢復係數 e 綜合題手算紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.4</td>
+                      <td>歷年 Midterm 1 考古題 90m 閉卷全真模擬測驗</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/19 晨</td>
+                      <td style="color: var(--text-muted);">限時 90m 閉卷盲模得分 >= 85 (D-4 哨兵)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.5</td>
+                      <td>考前動力學向量公式與常犯正負號易錯速查卡</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/22 晚</td>
+                      <td style="color: var(--text-muted);">A4 手抄考前重點卡一張 (考前定錨)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【DYN-02】第二次大考 (Midterm 2 · 剛體運動學 · 佔 30%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-11-20 (週五 10:20-12:10 · 生機101) ｜ 🏁 戰術封卷：2026-11-16 (週一 · D-4 盲推哨兵)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>Ch15 剛體平面運動速度分析 (瞬心法 IC 與相對速度向量方程)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/11 晨</td>
+                      <td style="color: var(--text-muted);">連桿機構瞬心作圖與各點速度解析紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>Ch16 剛體平面運動相對加速度分析 (科氏加速度 Coriolis)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/13 晨</td>
+                      <td style="color: var(--text-muted);">滾動不滑動與滑塊轉動導桿加速度求解</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>期中二全真 90m 閉卷模考與題型盲推驗收</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/16 晨</td>
+                      <td style="color: var(--text-muted);">限時 90m 閉卷全模得分 >= 85 (D-4 哨兵)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【DYN-03】期末大考 (Final · 剛體動力學 · 佔 35%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-12-18 (週五 10:20-12:10 · 生機101) ｜ 🏁 戰術封卷：2026-12-14 (週一 · D-4 盲推哨兵)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>Ch17 剛體質量慣性矩與平面運動方程式 (ΣF=ma, ΣM=Iα)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/07 晨</td>
+                      <td style="color: var(--text-muted);">轉動慣量平行軸定理推導與複合剛體動力平衡</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>Ch18~Ch19 剛體功與能、衝量動量與角動量守恆</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/10 晨</td>
+                      <td style="color: var(--text-muted);">剛體轉動動能與偏心碰撞角動量計算卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>期末大考全真模擬與全章盲測衝刺</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/14 晨</td>
+                      <td style="color: var(--text-muted);">限時閉卷全模得分 >= 85 (D-4 哨兵)</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <div class="milver-pill" style="color: #f87171; border-color: #f8717144;">M0.1.0</div>
-          </div>
-
-          <div class="progress-section">
-            <div class="progress-meta">
-              <span style="color: var(--text-muted); font-size: 11px;">攻堅完成率</span>
-              <span class="progress-pct" style="color: #f87171;">0%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width: 0%; background: #f87171; color: #f87171;"></div>
-            </div>
-          </div>
-
-          <div class="target-focus">
-            <div class="target-focus-title">當前攻堅焦點 (M0.1)</div>
-            <div class="target-desc">🎯 Ch12 質點曲線運動 (直角、自然 n-t、極座標 r-θ 加速度分解) (2.0h)</div>
-            <div class="target-dl">🔴 考期：2026-10-23 (週五 10:20-12:10 · 生機101) ｜ 🏁 哨兵：2026-10-19 (週一 · D-4 盲推哨兵)</div>
-          </div>
-        </div>
-      </div>
-      <div class="subject-card">
-        <div>
-          <div class="card-top">
-            <div class="subj-header">
-              <span class="subj-icon">⚡</span>
-              <div>
-                <div class="subj-title">電工學與實習</div>
-                <div style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">CODE: EE</div>
+          </details>
+          <details class="subject-item">
+            <summary class="subject-summary">
+              <div class="subj-info-col">
+                <span style="font-size: 20px;">⚡</span>
+                <span>電工學與實習</span>
+              </div>
+              <div class="milver-tag" style="color: #38bdf8;">M0.2.0</div>
+              <div class="subj-bar-col">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 14%; background: #38bdf8; color: #38bdf8;"></div>
+                </div>
+                <div class="bar-subtext">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;">🎯 M0.2: 5.4 節點電壓法母題演練</span>
+                  <span style="font-weight: 700; color: #38bdf8;">14%</span>
+                </div>
+              </div>
+              <span class="chevron">▾</span>
+            </summary>
+            
+            <div class="details-body">
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【EE-01】Ch5 交流電路隨堂小考 (絕對死線) (14%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">主體施工中 (`M0.2 ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-10-19 (週一 10:20-12:10 · 電工教室) ｜ 🏁 戰術封卷：2026-10-17 (週六 · D-2 提前封卷)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>5.1~5.3 前三節正弦穩態基礎</td>
+                      <td><span class="badge-status badge-done">完工</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/14 晚</td>
+                      <td style="color: var(--text-muted);">相量運算演練紙卷 (完工)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>5.4 節點電壓法母題演練</td>
+                      <td><span class="badge-status badge-in_progress">施工中</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/15 晨</td>
+                      <td style="color: var(--text-muted);">P5.9, P5.11★ 演算紙卷 (施工中)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>5.5 戴維寧與諾頓等效電路</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/15 晚</td>
+                      <td style="color: var(--text-muted);">P5.21★, P5.26 盲解零失誤 (細部設計完成)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.4</td>
+                      <td>5.6 交流功率與最大功率傳輸</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/16 晚</td>
+                      <td style="color: var(--text-muted);">典型例題 2 題演算通關 (細部設計完成)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.5</td>
+                      <td>5.7~5.8 交流諧振與頻率響應</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/16 睡</td>
+                      <td style="color: var(--text-muted);">公式對照與特性曲線筆記 (細部設計完成)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.6</td>
+                      <td>Ch5 考古題盲推與模擬測驗</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/17 晨</td>
+                      <td style="color: var(--text-muted);">全卷閉卷盲測得分 >= 85 (D-2 提前封卷)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.7</td>
+                      <td>考前公式記憶卡與錯題速查</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/18 晚</td>
+                      <td style="color: var(--text-muted);">A4 錯題口袋卡一張 (考前定錨)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【EE-02】第一次期中大考 (Ch5~Ch6 交流與三相) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-10-28 (週三 10:20-12:10) ｜ 🏁 戰術封卷：2026-10-26 (週一 · D-2 提前封卷)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>Ch6 三相平衡 Y-Δ 電路線電壓/相電壓換算</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/24 晨</td>
+                      <td style="color: var(--text-muted);">典型三相電路 3 題盲推紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>三相電路功率量測 (二瓦特計法)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/25 晚</td>
+                      <td style="color: var(--text-muted);">瓦特計讀值推導演算卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>期中大考全真模擬與 Ch5~Ch6 總複習</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/26 晨</td>
+                      <td style="color: var(--text-muted);">閉卷全模得分 >= 85 (D-2 封卷)</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <div class="milver-pill" style="color: #38bdf8; border-color: #38bdf844;">M0.2.0</div>
-          </div>
-
-          <div class="progress-section">
-            <div class="progress-meta">
-              <span style="color: var(--text-muted); font-size: 11px;">攻堅完成率</span>
-              <span class="progress-pct" style="color: #38bdf8;">14%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width: 14%; background: #38bdf8; color: #38bdf8;"></div>
-            </div>
-          </div>
-
-          <div class="target-focus">
-            <div class="target-focus-title">當前攻堅焦點 (M0.2)</div>
-            <div class="target-desc">🎯 5.4 節點電壓法母題演練 (1.5h)</div>
-            <div class="target-dl">🔴 考期：2026-10-19 (週一 10:20-12:10 · 電工教室) ｜ 🏁 哨兵：2026-10-17 (週六 · D-2 提前封卷)</div>
-          </div>
-        </div>
-      </div>
-      <div class="subject-card">
-        <div>
-          <div class="card-top">
-            <div class="subj-header">
-              <span class="subj-icon">🧠</span>
-              <div>
-                <div class="subj-title">邏輯</div>
-                <div style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">CODE: LOGIC</div>
+          </details>
+          <details class="subject-item">
+            <summary class="subject-summary">
+              <div class="subj-info-col">
+                <span style="font-size: 20px;">🧠</span>
+                <span>邏輯</span>
+              </div>
+              <div class="milver-tag" style="color: #a78bfa;">M0.1.0</div>
+              <div class="subj-bar-col">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 0%; background: #a78bfa; color: #a78bfa;"></div>
+                </div>
+                <div class="bar-subtext">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;">🎯 M0.1: 命題符號化、聯結詞語意與真值表檢驗有效性</span>
+                  <span style="font-weight: 700; color: #a78bfa;">0%</span>
+                </div>
+              </div>
+              <span class="chevron">▾</span>
+            </summary>
+            
+            <div class="details-body">
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【LOGIC-01】期中大考 (Midterm · 語句邏輯 · 佔 35%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">就緒待發車 (`PLANNED ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-11-02 (週一 13:20-15:10 · 博雅) ｜ 🏁 戰術封卷：2026-10-29 (週四 · D-4 盲推哨兵)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>命題符號化、聯結詞語意與真值表檢驗有效性</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/26 晚</td>
+                      <td style="color: var(--text-muted);">命題形式化與重言式判定練習紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>自然演繹法 18 條推論規則 (MP, MT, HS, DS, 附加)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/27 晚</td>
+                      <td style="color: var(--text-muted);">推論規則 5 題手寫證明步驟零失誤</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>條件證明法 (CP) 與間接證明法 (IP 反證法)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/28 晚</td>
+                      <td style="color: var(--text-muted);">複雜推論構造與反證邏輯演練</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.4</td>
+                      <td>歷年期中考題 80m 閉卷全真盲測自評</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/29 晚</td>
+                      <td style="color: var(--text-muted);">限時 80m 閉卷盲測得分 >= 90 (D-4 哨兵)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【LOGIC-02】期末大考 (Final · 述詞邏輯 · 佔 40%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-12-21 (週一 13:20-15:10 · 博雅) ｜ 🏁 戰術封卷：2026-12-17 (週四 · D-4 盲推哨兵)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>一階述詞邏輯形式化 (全稱量詞 ∀ 與存在量詞 ∃)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/12 晨</td>
+                      <td style="color: var(--text-muted);">日常語言述詞符號化 6 題紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>量詞自然演繹規則 (UI, UG, EI, EG 四大限制條件)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/14 晚</td>
+                      <td style="color: var(--text-muted);">述詞邏輯證明題手寫推導通關</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>期末全真模擬測驗與非形式謬誤剖析</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/17 晚</td>
+                      <td style="color: var(--text-muted);">閉卷全真模考得分 >= 90 (D-4 哨兵)</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <div class="milver-pill" style="color: #a78bfa; border-color: #a78bfa44;">M0.1.0</div>
-          </div>
-
-          <div class="progress-section">
-            <div class="progress-meta">
-              <span style="color: var(--text-muted); font-size: 11px;">攻堅完成率</span>
-              <span class="progress-pct" style="color: #a78bfa;">0%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width: 0%; background: #a78bfa; color: #a78bfa;"></div>
-            </div>
-          </div>
-
-          <div class="target-focus">
-            <div class="target-focus-title">當前攻堅焦點 (M0.1)</div>
-            <div class="target-desc">🎯 命題符號化、聯結詞語意與真值表檢驗有效性 (1.5h)</div>
-            <div class="target-dl">🔴 考期：2026-11-02 (週一 13:20-15:10 · 博雅) ｜ 🏁 哨兵：2026-10-29 (週四 · D-4 盲推哨兵)</div>
-          </div>
-        </div>
-      </div>
-      <div class="subject-card">
-        <div>
-          <div class="card-top">
-            <div class="subj-header">
-              <span class="subj-icon">📐</span>
-              <div>
-                <div class="subj-title">工程數學一</div>
-                <div style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">CODE: MATH</div>
+          </details>
+          <details class="subject-item">
+            <summary class="subject-summary">
+              <div class="subj-info-col">
+                <span style="font-size: 20px;">📐</span>
+                <span>工程數學一</span>
+              </div>
+              <div class="milver-tag" style="color: #fbbf24;">M0.2.0</div>
+              <div class="subj-bar-col">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 16%; background: #fbbf24; color: #fbbf24;"></div>
+                </div>
+                <div class="bar-subtext">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;">🎯 M0.2: 一階線性 ODE 與 Bernoulli 方程盲推演練</span>
+                  <span style="font-weight: 700; color: #fbbf24;">16%</span>
+                </div>
+              </div>
+              <span class="chevron">▾</span>
+            </summary>
+            
+            <div class="details-body">
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【MATH-01】第一次期中大考 (佔 20% · 絕對死線) (16%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">主體施工中 (`M0.2 ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-10-20 (週二 09:10-12:10 · 工數教室) ｜ 🏁 戰術封卷：2026-10-16 (週五 · D-4 盲推哨兵)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>一階常微分方程 (ODE) 分離變數與正合方程</td>
+                      <td><span class="badge-status badge-done">完工</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/14 晚</td>
+                      <td style="color: var(--text-muted);">正合與積分因子典型題演算卷 (完工)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>一階線性 ODE 與 Bernoulli 方程盲推演練</td>
+                      <td><span class="badge-status badge-in_progress">施工中</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/16 晚</td>
+                      <td style="color: var(--text-muted);">典型 Bernoulli 與積分因子盲推零失誤 (D-4 哨兵)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>二階常係數齊次 ODE 特徵方程式三種根</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/17 晚</td>
+                      <td style="color: var(--text-muted);">相異實根/重根/共軛複根典型 3 題 (細部設計完成)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.4</td>
+                      <td>二階非齊次 ODE 待定係數法與參數變異法</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/18 午</td>
+                      <td style="color: var(--text-muted);">Wronskian 與特解推導零失誤 (細部設計完成)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.5</td>
+                      <td>歷年期中考古題全真 90m 閉卷盲模測試</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/19 晚</td>
+                      <td style="color: var(--text-muted);">限時 90m 閉卷盲測得分 >= 85 (考前全真模考)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.6</td>
+                      <td>考前核心通解公式表與特殊積分型態口袋卡</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/19 睡</td>
+                      <td style="color: var(--text-muted);">A4 手抄考前重點精華一張 (考前定錨)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【MATH-02】第二次期中大考 (拉普拉斯轉換與矩陣) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-11-24 (週二 09:10-12:10) ｜ 🏁 戰術封卷：2026-11-20 (週五 · D-4 盲推哨兵)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>拉普拉斯轉換定義與常見基本函數轉換</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/14 晨</td>
+                      <td style="color: var(--text-muted);">轉換表盲推紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>第一移位定理與單位階梯函數 (Heaviside)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/15 晚</td>
+                      <td style="color: var(--text-muted);">典型移位轉換題演練</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>狄拉克 Delta 函數與迴旋積分 (Convolution)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/20 晨</td>
+                      <td style="color: var(--text-muted);">積分方程式求解演練 (D-4 哨兵)</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <div class="milver-pill" style="color: #fbbf24; border-color: #fbbf2444;">M0.2.0</div>
-          </div>
-
-          <div class="progress-section">
-            <div class="progress-meta">
-              <span style="color: var(--text-muted); font-size: 11px;">攻堅完成率</span>
-              <span class="progress-pct" style="color: #fbbf24;">16%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width: 16%; background: #fbbf24; color: #fbbf24;"></div>
-            </div>
-          </div>
-
-          <div class="target-focus">
-            <div class="target-focus-title">當前攻堅焦點 (M0.2)</div>
-            <div class="target-desc">🎯 一階線性 ODE 與 Bernoulli 方程盲推演練 (1.5h)</div>
-            <div class="target-dl">🔴 考期：2026-10-20 (週二 09:10-12:10 · 工數教室) ｜ 🏁 哨兵：2026-10-16 (週五 · D-4 盲推哨兵)</div>
-          </div>
-        </div>
-      </div>
-      <div class="subject-card">
-        <div>
-          <div class="card-top">
-            <div class="subj-header">
-              <span class="subj-icon">🏓</span>
-              <div>
-                <div class="subj-title">桌球初級</div>
-                <div style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">CODE: PE</div>
+          </details>
+          <details class="subject-item">
+            <summary class="subject-summary">
+              <div class="subj-info-col">
+                <span style="font-size: 20px;">🏓</span>
+                <span>桌球初級</span>
+              </div>
+              <div class="milver-tag" style="color: #4ade80;">M0.1.0</div>
+              <div class="subj-bar-col">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 0%; background: #4ade80; color: #4ade80;"></div>
+                </div>
+                <div class="bar-subtext">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;">🎯 M0.1: 正反手平擊球動作要領複習 (站位角度與重心轉移意象)</span>
+                  <span style="font-weight: 700; color: #4ade80;">0%</span>
+                </div>
+              </div>
+              <span class="chevron">▾</span>
+            </summary>
+            
+            <div class="details-body">
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【PE-01】隨堂技術小考 1 (Quiz 1 · 正反手平擊球) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">就緒待發車 (`PLANNED ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-10-19 (週一 15:30-17:20 · 綜合體育館) ｜ 🏁 戰術封卷：2026-10-19 (週一 · 隨堂應試)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>正反手平擊球動作要領複習 (站位角度與重心轉移意象)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/18 睡</td>
+                      <td style="color: var(--text-muted);">動作要領思維導圖與發球規則速查</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>課堂實體正反手平擊連續對打測驗</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/19 午</td>
+                      <td style="color: var(--text-muted);">連續平擊對打達標 >= 15 板無失誤</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【PE-02】期中術科評量 (Midterm · 發球與步法考核) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-11-02 (週一 15:30-17:20 · 綜合體育館) ｜ 🏁 戰術封卷：2026-10-31 (週六 · 動作定型)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>下旋發球與正手發球落點穩定度控制演練</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/28 睡</td>
+                      <td style="color: var(--text-muted);">發球拋球高度與磨擦軌跡技術筆記</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>左右並步移位與正手拉攻協調性空揮練習</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/31 晨</td>
+                      <td style="color: var(--text-muted);">腳步定型與擊球點前移協調性達標</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>現場發球落點 10 球測驗與兩角換位實測</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/02 午</td>
+                      <td style="color: var(--text-muted);">發球有效進檯率 >= 80% (現場評量)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【PE-03】期末單打循環對抗賽 (Final · 佔 40%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-12-21 (週一 15:30-17:20 · 綜合體育館) ｜ 🏁 戰術封卷：2026-12-19 (週六 · 戰術定錨)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>戰術打法擬定 (發球搶攻與接發球線路防守策略)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/19 晚</td>
+                      <td style="color: var(--text-muted);">個人戰術相持思維卡</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>現場期末單打分組循環排名賽</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/21 午</td>
+                      <td style="color: var(--text-muted);">完賽並爭取小組前兩名取得優異成績</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <div class="milver-pill" style="color: #4ade80; border-color: #4ade8044;">M0.1.0</div>
-          </div>
-
-          <div class="progress-section">
-            <div class="progress-meta">
-              <span style="color: var(--text-muted); font-size: 11px;">攻堅完成率</span>
-              <span class="progress-pct" style="color: #4ade80;">0%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width: 0%; background: #4ade80; color: #4ade80;"></div>
-            </div>
-          </div>
-
-          <div class="target-focus">
-            <div class="target-focus-title">當前攻堅焦點 (M0.1)</div>
-            <div class="target-desc">🎯 正反手平擊球動作要領複習 (站位角度與重心轉移意象) (0.5h)</div>
-            <div class="target-dl">🔴 考期：2026-10-19 (週一 15:30-17:20 · 綜合體育館) ｜ 🏁 哨兵：2026-10-19 (週一 · 隨堂應試)</div>
-          </div>
-        </div>
-      </div>
-      <div class="subject-card">
-        <div>
-          <div class="card-top">
-            <div class="subj-header">
-              <span class="subj-icon">🟣</span>
-              <div>
-                <div class="subj-title">機率與統計</div>
-                <div style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">CODE: PROB</div>
+          </details>
+          <details class="subject-item">
+            <summary class="subject-summary">
+              <div class="subj-info-col">
+                <span style="font-size: 20px;">🟣</span>
+                <span>機率與統計</span>
+              </div>
+              <div class="milver-tag" style="color: #c084fc;">M0.1.0</div>
+              <div class="subj-bar-col">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 0%; background: #c084fc; color: #c084fc;"></div>
+                </div>
+                <div class="bar-subtext">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;">🎯 M0.1: Ch1~Ch2 樣本空間、條件機率與貝氏定理 (Bayes)</span>
+                  <span style="font-weight: 700; color: #c084fc;">0%</span>
+                </div>
+              </div>
+              <span class="chevron">▾</span>
+            </summary>
+            
+            <div class="details-body">
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【PROB-01】第一次期中大考 (佔 25%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">就緒待發車 (`PLANNED ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-10-29 (週四 13:20-15:10 · 生機101) ｜ 🏁 戰術封卷：2026-10-25 (週日 · D-4 盲推哨兵)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>Ch1~Ch2 樣本空間、條件機率與貝氏定理 (Bayes)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/21 晨</td>
+                      <td style="color: var(--text-muted);">全機率定理與逆機率 3 題手算演算紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>Ch3 離散隨機變數 (二項、幾何、卜瓦松分佈 PMF/CDF)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/23 晚</td>
+                      <td style="color: var(--text-muted);">期望值 E(X) 與變異數 Var(X) 推導無失誤</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>Ch4 連續隨機變數 (常態分佈、指數分佈 PDF 與 Z 查表)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/24 晨</td>
+                      <td style="color: var(--text-muted);">連續機率密度積分求解與標準常態查表練習</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.4</td>
+                      <td>歷年 Midterm 1 考古題 90m 閉卷盲模測試</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/25 晨</td>
+                      <td style="color: var(--text-muted);">限時 90m 閉卷盲測得分 >= 85 (D-4 哨兵)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.5</td>
+                      <td>核心分佈期望值/變異數/動差生成函數 MGF 口袋卡</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/28 晚</td>
+                      <td style="color: var(--text-muted);">A4 手抄考前速查卡一張 (考前定錨)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【PROB-02】隨堂小考 2 (Quiz 2 · 聯合機率分佈) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-11-26 (週四 13:20-14:20 · 生機101) ｜ 🏁 戰術封卷：2026-11-24 (週二 · D-2 提前封卷)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>Ch5 二維隨機變數聯合分佈 (邊際機率與條件機率密度)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/21 晨</td>
+                      <td style="color: var(--text-muted);">雙重積分求解 Cov(X,Y) 與相關係數 ρ 紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>Quiz 2 考前全真模擬題型限時速刷</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/24 晚</td>
+                      <td style="color: var(--text-muted);">隨堂考限時手算通關 (D-2 提前封卷)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【PROB-03】期末大考 (Final · 抽樣檢定 · 佔 35%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-12-24 (週四 13:20-16:20 · 生機101) ｜ 🏁 戰術封卷：2026-12-20 (週日 · D-4 盲推哨兵)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>Ch6 中央極限定理 (CLT) 與抽樣分佈 (t, F, 卡方分佈)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/15 晨</td>
+                      <td style="color: var(--text-muted);">抽樣平均數與比例信賴區間估計紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>Ch7~Ch8 假設檢定 (單/雙尾檢定、p-value、型 I/II 錯誤)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/17 晨</td>
+                      <td style="color: var(--text-muted);">典型單母體與雙母體檢定 4 題手算解析</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>期末全真全卷 120m 閉卷大模考與錯題覆盤</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/20 晨</td>
+                      <td style="color: var(--text-muted);">限時閉卷盲模得分 >= 85 (D-4 哨兵)</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <div class="milver-pill" style="color: #c084fc; border-color: #c084fc44;">M0.1.0</div>
-          </div>
-
-          <div class="progress-section">
-            <div class="progress-meta">
-              <span style="color: var(--text-muted); font-size: 11px;">攻堅完成率</span>
-              <span class="progress-pct" style="color: #c084fc;">0%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width: 0%; background: #c084fc; color: #c084fc;"></div>
-            </div>
-          </div>
-
-          <div class="target-focus">
-            <div class="target-focus-title">當前攻堅焦點 (M0.1)</div>
-            <div class="target-desc">🎯 Ch1~Ch2 樣本空間、條件機率與貝氏定理 (Bayes) (2.0h)</div>
-            <div class="target-dl">🔴 考期：2026-10-29 (週四 13:20-15:10 · 生機101) ｜ 🏁 哨兵：2026-10-25 (週日 · D-4 盲推哨兵)</div>
-          </div>
-        </div>
-      </div>
-      <div class="subject-card">
-        <div>
-          <div class="card-top">
-            <div class="subj-header">
-              <span class="subj-icon">📚</span>
-              <div>
-                <div class="subj-title">普通心理學</div>
-                <div style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">CODE: PSY</div>
+          </details>
+          <details class="subject-item">
+            <summary class="subject-summary">
+              <div class="subj-info-col">
+                <span style="font-size: 20px;">📚</span>
+                <span>普通心理學</span>
+              </div>
+              <div class="milver-tag" style="color: #fb923c;">M0.1.0</div>
+              <div class="subj-bar-col">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 0%; background: #fb923c; color: #fb923c;"></div>
+                </div>
+                <div class="bar-subtext">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;">🎯 M0.1: 神經科學與大腦結構 (皮質葉區、神經傳導物質功能)</span>
+                  <span style="font-weight: 700; color: #fb923c;">0%</span>
+                </div>
+              </div>
+              <span class="chevron">▾</span>
+            </summary>
+            
+            <div class="details-body">
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【PSY-01】期中大考 (Midterm · 生物與認知 · 佔 35%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">就緒待發車 (`PLANNED ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-10-30 (週五 14:20-16:20 · 普101) ｜ 🏁 戰術封卷：2026-10-26 (週一 · D-4 盲推哨兵)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>神經科學與大腦結構 (皮質葉區、神經傳導物質功能)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/22 晚</td>
+                      <td style="color: var(--text-muted);">腦構造與功能架構思維導圖筆記</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>感覺與知覺心理 (視聽機制、格式塔完形組織原則)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/24 晚</td>
+                      <td style="color: var(--text-muted);">知覺恆常性與深度線索核心概念對照</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>學習與記憶理論 (古典制約、操作制約、工作記憶模型)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/25 晚</td>
+                      <td style="color: var(--text-muted);">兩大制約增強物分類與遺忘曲線手抄紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.4</td>
+                      <td>期中核心概念名詞解釋與題庫選擇題全真盲刷</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/26 晚</td>
+                      <td style="color: var(--text-muted);">核心名詞抽測正確率 >= 90% (D-4 哨兵)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【PSY-02】期末大考 (Final · 發展與社會心理 · 佔 40%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-12-18 (週五 14:20-16:20 · 普101) ｜ 🏁 戰術封卷：2026-12-14 (週一 · D-4 盲推哨兵)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>認知與社會發展 (皮亞傑認知階段、艾瑞克森心理社會期)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/08 晚</td>
+                      <td style="color: var(--text-muted);">發展階段對照結構表</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>人格特質論 (Big Five 五大人格) 與常見心理疾患診斷</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/11 晚</td>
+                      <td style="color: var(--text-muted);">人格維度與焦慮/憂鬱疾患特徵對照表</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>期末全卷總複習與歷年重點案例速查演練</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/14 晚</td>
+                      <td style="color: var(--text-muted);">核心理論名詞閉卷抽測通關 (D-4 哨兵)</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <div class="milver-pill" style="color: #fb923c; border-color: #fb923c44;">M0.1.0</div>
-          </div>
-
-          <div class="progress-section">
-            <div class="progress-meta">
-              <span style="color: var(--text-muted); font-size: 11px;">攻堅完成率</span>
-              <span class="progress-pct" style="color: #fb923c;">0%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width: 0%; background: #fb923c; color: #fb923c;"></div>
-            </div>
-          </div>
-
-          <div class="target-focus">
-            <div class="target-focus-title">當前攻堅焦點 (M0.1)</div>
-            <div class="target-desc">🎯 神經科學與大腦結構 (皮質葉區、神經傳導物質功能) (1.5h)</div>
-            <div class="target-dl">🔴 考期：2026-10-30 (週五 14:20-16:20 · 普101) ｜ 🏁 哨兵：2026-10-26 (週一 · D-4 盲推哨兵)</div>
-          </div>
-        </div>
-      </div>
-      <div class="subject-card">
-        <div>
-          <div class="card-top">
-            <div class="subj-header">
-              <span class="subj-icon">💻</span>
-              <div>
-                <div class="subj-title">跨領域統計數據分析入門</div>
-                <div style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">CODE: STAT</div>
+          </details>
+          <details class="subject-item">
+            <summary class="subject-summary">
+              <div class="subj-info-col">
+                <span style="font-size: 20px;">💻</span>
+                <span>跨領域統計數據分析入門</span>
+              </div>
+              <div class="milver-tag" style="color: #2dd4bf;">M0.1.0</div>
+              <div class="subj-bar-col">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 0%; background: #2dd4bf; color: #2dd4bf;"></div>
+                </div>
+                <div class="bar-subtext">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;">🎯 M0.3: 期中專案報告 PPT 製作與代碼覆核發布</span>
+                  <span style="font-weight: 700; color: #2dd4bf;">0%</span>
+                </div>
+              </div>
+              <span class="chevron">▾</span>
+            </summary>
+            
+            <div class="details-body">
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【STAT-01】期中數據探索與建模 (Project 2 · 佔 35%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-11-10 (週二 14:20-17:20 · 博雅) ｜ 🏁 戰術封卷：2026-11-06 (週五 · D-4 提前封卷)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>資料清洗與探索性分析 (EDA / Pandas & Seaborn)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/27 晚</td>
+                      <td style="color: var(--text-muted);">Jupyter Notebook 遺漏值處理與特徵分佈圖</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>特徵工程與線性迴歸/分類模型訓練 (Scikit-Learn)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/03 晚</td>
+                      <td style="color: var(--text-muted);">模型訓練代碼與評估指標 R2/AUC 視覺化</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>期中專案報告 PPT 製作與代碼覆核發布</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/06 晚</td>
+                      <td style="color: var(--text-muted);">投影片 8 頁定稿 ＋ 零報錯代碼庫 (D-4 提前封卷)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【STAT-02】期末成果專案展演 (Final Project · 佔 45%) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-12-22 (週二 14:20-17:20 · 博雅) ｜ 🏁 戰術封卷：2026-12-18 (週五 · D-4 提前封卷)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>進階機器學習模型構建 (隨機森林、XGBoost、超參數微調)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/08 晚</td>
+                      <td style="color: var(--text-muted);">跨模型交叉驗證效能比較實驗數據表</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>成果展演海報與 5 分鐘 Pitch 報告演練</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/15 晚</td>
+                      <td style="color: var(--text-muted);">展示用互動 Demo 與口頭報告簡報定稿</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>最終報告書撰寫與代碼庫封裝發布</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/18 晚</td>
+                      <td style="color: var(--text-muted);">完整 Markdown 專案報告與 README (D-4 封卷)</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <div class="milver-pill" style="color: #2dd4bf; border-color: #2dd4bf44;">M0.1.0</div>
-          </div>
-
-          <div class="progress-section">
-            <div class="progress-meta">
-              <span style="color: var(--text-muted); font-size: 11px;">攻堅完成率</span>
-              <span class="progress-pct" style="color: #2dd4bf;">0%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width: 0%; background: #2dd4bf; color: #2dd4bf;"></div>
-            </div>
-          </div>
-
-          <div class="target-focus">
-            <div class="target-focus-title">當前攻堅焦點 (M0.3)</div>
-            <div class="target-desc">🎯 期中專案報告 PPT 製作與代碼覆核發布 (2.0h)</div>
-            <div class="target-dl">🔴 考期：2026-11-10 (週二 14:20-17:20 · 博雅) ｜ 🏁 哨兵：2026-11-06 (週五 · D-4 提前封卷)</div>
-          </div>
-        </div>
-      </div>
-      <div class="subject-card">
-        <div>
-          <div class="card-top">
-            <div class="subj-header">
-              <span class="subj-icon">♨️</span>
-              <div>
-                <div class="subj-title">熱力學一</div>
-                <div style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">CODE: TH</div>
+          </details>
+          <details class="subject-item">
+            <summary class="subject-summary">
+              <div class="subj-info-col">
+                <span style="font-size: 20px;">♨️</span>
+                <span>熱力學一</span>
+              </div>
+              <div class="milver-tag" style="color: #34d399;">M0.2.0</div>
+              <div class="subj-bar-col">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: 20%; background: #34d399; color: #34d399;"></div>
+                </div>
+                <div class="bar-subtext">
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 280px;">🎯 M0.2: 第一定律開放系統穩定流動能量方程 (SFEE)</span>
+                  <span style="font-weight: 700; color: #34d399;">20%</span>
+                </div>
+              </div>
+              <span class="chevron">▾</span>
+            </summary>
+            
+            <div class="details-body">
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【TH-01】第一次期中大考 (佔 35%) (20%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">主體施工中 (`M0.2 ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-10-21 (週三 14:20-16:20 · 生機101) ｜ 🏁 戰術封卷：2026-10-18 (週日 · D-3 全卷通關)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>Ch1~Ch2 PV 圖多方過程與功熱積分</td>
+                      <td><span class="badge-status badge-done">完工</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/14 晚</td>
+                      <td style="color: var(--text-muted);">A4 筆記對照表與典型積分解題卷 (完工)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>第一定律開放系統穩定流動能量方程 (SFEE)</td>
+                      <td><span class="badge-status badge-in_progress">施工中</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/15 晚</td>
+                      <td style="color: var(--text-muted);">渦輪機/壓縮機/噴嘴 3 題盲推紙卷 (施工中)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>第二定律熱機循環、卡諾效率與熵產原理</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/17 晚</td>
+                      <td style="color: var(--text-muted);">卡諾循環熱效率與熵產推導 (細部設計完成)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.4</td>
+                      <td>歷年期中大考全真 90m 閉卷盲模測試</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/18 晨</td>
+                      <td style="color: var(--text-muted);">限時 90m 閉卷盲模得分 >= 85 (D-3 全卷通關)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.5</td>
+                      <td>考前核心熱力公式與單位換算口袋卡</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">10/20 晚</td>
+                      <td style="color: var(--text-muted);">A4 手抄考前重點卡與易錯符號集 (考前定錨)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【TH-02】隨堂小考 2 (Quiz 2 · 熵產與可用能) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-11-11 (週三 16:20-17:20 · 生機101) ｜ 🏁 戰術封卷：2026-11-09 (週一 · D-2 提前封卷)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>Ch3~Ch4 理想氣體與不可壓縮固液體熵變公式</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/07 晨</td>
+                      <td style="color: var(--text-muted);">熵變 Δs 積分通式推導紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>不可逆過程熵產 σ 與可用能損失典型題</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/08 晚</td>
+                      <td style="color: var(--text-muted);">絕熱與等溫系統熵產 3 題盲解</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>Quiz 2 考前重點速查與歷年考題演練</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/09 晚</td>
+                      <td style="color: var(--text-muted);">A4 隨堂考錯題卡與盲解驗收 (D-2 封卷)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【TH-03】隨堂小考 3 (Quiz 3 · 蒸氣動力循環) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-12-02 (週三 16:20-17:20 · 生機101) ｜ 🏁 戰術封卷：2026-11-30 (週一 · D-2 提前封卷)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>朗肯循環 (Rankine Cycle) 各狀態點查表分析</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/28 晨</td>
+                      <td style="color: var(--text-muted);">蒸氣表查表與 T-s 圖狀態點定位紙卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>再熱 (Reheat) 與再生 (Regeneration) 循環</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/29 晚</td>
+                      <td style="color: var(--text-muted);">抽汽分流率與循環熱效率計算演練</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>Quiz 3 蒸氣動力考前全真模擬</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">11/30 晚</td>
+                      <td style="color: var(--text-muted);">T-s 圖繪製與熱效率運算零失誤 (D-2 封卷)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="ticket-block">
+                <div class="ticket-header">
+                  <span>🎯 【TH-04】期末大考 (Final · 全卷決戰) (0%)</span>
+                  <span style="font-size: 11.5px; color: var(--text-dim);">可行性規劃中 (`PLANNING ➔ 目標 M1.0 完工`)</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;">
+                  🔴 考期：2026-12-23 (週三 14:20-16:20 · 生機101) ｜ 🏁 戰術封卷：2026-12-16 (週三 · D-7 全卷盲推)
+                </div>
+                <table class="subtask-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">Minor</th>
+                      <th>子任務目標</th>
+                      <th style="width: 70px;">狀態</th>
+                      <th style="width: 70px;">車次</th>
+                      <th>驗收 DoD</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.1</td>
+                      <td>空氣標準動力循環 (Otto, Diesel, Brayton)</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/12 晨</td>
+                      <td style="color: var(--text-muted);">P-v / T-s 雙圖轉換與壓縮比熱效率題</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.2</td>
+                      <td>蒸氣壓縮冷凍循環與熱泵 COP 性能係數分析</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/14 晚</td>
+                      <td style="color: var(--text-muted);">P-h 圖查表與冷凍能力計算卷</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.3</td>
+                      <td>115-1 期末大考全卷全真 120m 閉卷盲模測試</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/16 晨</td>
+                      <td style="color: var(--text-muted);">限時 120m 盲模通關得分 >= 85 (D-7 哨兵)</td>
+                    </tr>
+                    <tr>
+                      <td style="font-family: 'JetBrains Mono', monospace; font-weight: 700;">M0.4</td>
+                      <td>全學期錯題池全數清零與考前定錨</td>
+                      <td><span class="badge-status badge-planned">就緒</span></td>
+                      <td style="font-family: 'JetBrains Mono', monospace;">12/22 晚</td>
+                      <td style="color: var(--text-muted);">終極錯題本紅筆全面覆盤</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
-            <div class="milver-pill" style="color: #34d399; border-color: #34d39944;">M0.2.0</div>
-          </div>
-
-          <div class="progress-section">
-            <div class="progress-meta">
-              <span style="color: var(--text-muted); font-size: 11px;">攻堅完成率</span>
-              <span class="progress-pct" style="color: #34d399;">20%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" style="width: 20%; background: #34d399; color: #34d399;"></div>
-            </div>
-          </div>
-
-          <div class="target-focus">
-            <div class="target-focus-title">當前攻堅焦點 (M0.2)</div>
-            <div class="target-desc">🎯 第一定律開放系統穩定流動能量方程 (SFEE) (2.0h)</div>
-            <div class="target-dl">🔴 考期：2026-10-21 (週三 14:20-16:20 · 生機101) ｜ 🏁 哨兵：2026-10-18 (週日 · D-3 全卷通關)</div>
-          </div>
+          </details>
         </div>
       </div>
-    </div>
+    </details>
 
     <footer>
-      <p><strong>PlanOS Third-Party Mission Control Dashboard</strong> · 唯讀隔離戰情報告台</p>
+      <p><strong>PlanOS Third-Party Mission Control Dashboard</strong> · 唯讀隔離戰情台</p>
       <p>數據源 SSOT：<code>PlanOS_v2/_lab_mvp/01_Subjects/</code> · 雙手不離鍵盤，做完打勾，不留認知負債。</p>
-      <p style="margin-top: 8px; opacity: 0.6;">© 2026 PlanOS High Command · Licensed under Private Governance Air-Gap Protocol</p>
     </footer>
 
   </div>
+
+  <script>
+    // Theme Switcher Logic with LocalStorage persistence
+    function initTheme() {
+      const savedTheme = localStorage.getItem('planos_theme');
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+        document.getElementById('themeToggle').innerHTML = '🌙 深色模式';
+      } else {
+        document.body.classList.remove('light-theme');
+        document.getElementById('themeToggle').innerHTML = '☀️ 亮色模式';
+      }
+    }
+
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle('light-theme');
+      const btn = document.getElementById('themeToggle');
+      if (isLight) {
+        localStorage.setItem('planos_theme', 'light');
+        btn.innerHTML = '🌙 深色模式';
+      } else {
+        localStorage.setItem('planos_theme', 'dark');
+        btn.innerHTML = '☀️ 亮色模式';
+      }
+    }
+
+    initTheme();
+  </script>
 
 </body>
 </html>
