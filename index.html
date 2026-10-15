@@ -261,6 +261,38 @@
       padding: 16px 18px;
     }
 
+    .filter-pills-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .pill-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .pill-btn:hover {
+      border-color: var(--border-highlight);
+      color: var(--text);
+    }
+
+    .pill-btn.active {
+      background: var(--tag-bg);
+      border-color: var(--border-highlight);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
     /* Radar Cards Grid */
     .radar-grid {
       display: grid;
@@ -546,8 +578,8 @@
         <div class="stat-lbl">10/19 電工+桌球</div>
       </div>
       <div class="stat-box">
-        <div class="stat-num" style="color: #fbbf24;">D-5</div>
-        <div class="stat-lbl">10/20 工數期中</div>
+        <div class="stat-num" style="color: #fbbf24;">26 場</div>
+        <div class="stat-lbl">登錄死線總量</div>
       </div>
       <div class="stat-box">
         <div class="stat-num" style="color: #34d399;">3 班車</div>
@@ -559,14 +591,20 @@
     <details class="accordion-section" open>
       <summary class="section-summary">
         <div class="summary-left">
-          <span>🚨 期中決戰戰略雷達</span>
-          <span class="summary-badge">11 場考期排定</span>
+          <span>🚨 全學期考期戰略雷達 (全量死線全景追蹤)</span>
+          <span class="summary-badge">26 場死線全量登錄</span>
         </div>
         <span class="chevron">▾</span>
       </summary>
       <div class="accordion-content">
+        <div class="filter-pills-bar">
+          <button class="pill-btn active" onclick="filterRadar('all', this)">全部死線 (26)</button>
+          <button class="pill-btn" onclick="filterRadar('rush', this)">🚨 兩週衝刺 (0)</button>
+          <button class="pill-btn" onclick="filterRadar('nov', this)">🍂 11月戰區 (0)</button>
+          <button class="pill-btn" onclick="filterRadar('dec', this)">❄️ 12月期末 (26)</button>
+        </div>
         <div class="radar-grid">
-          <div class="radar-card urgent">
+          <div class="radar-card urgent" data-category="dec">
             <div class="radar-card-top">
               <span class="radar-tag" style="color: #38bdf8;">⚡ 電工學與實習</span>
               <span class="cd-badge">D-4</span>
@@ -577,7 +615,7 @@
               <div>🏁 戰術封卷：2026-10-17 (週六 · D-2 提前封卷)</div>
             </div>
           </div>
-          <div class="radar-card urgent">
+          <div class="radar-card urgent" data-category="dec">
             <div class="radar-card-top">
               <span class="radar-tag" style="color: #4ade80;">🏓 桌球初級</span>
               <span class="cd-badge">D-4</span>
@@ -588,7 +626,7 @@
               <div>🏁 戰術封卷：2026-10-19 (週一 · 隨堂應試)</div>
             </div>
           </div>
-          <div class="radar-card urgent">
+          <div class="radar-card urgent" data-category="dec">
             <div class="radar-card-top">
               <span class="radar-tag" style="color: #fbbf24;">📐 工程數學一</span>
               <span class="cd-badge">D-5</span>
@@ -599,7 +637,7 @@
               <div>🏁 戰術封卷：2026-10-16 (週五 · D-4 盲推哨兵)</div>
             </div>
           </div>
-          <div class="radar-card ">
+          <div class="radar-card " data-category="dec">
             <div class="radar-card-top">
               <span class="radar-tag" style="color: #34d399;">♨️ 熱力學一</span>
               <span class="cd-badge">D-6</span>
@@ -610,7 +648,7 @@
               <div>🏁 戰術封卷：2026-10-18 (週日 · D-3 全卷通關)</div>
             </div>
           </div>
-          <div class="radar-card ">
+          <div class="radar-card " data-category="dec">
             <div class="radar-card-top">
               <span class="radar-tag" style="color: #f87171;">🔴 應用力學下</span>
               <span class="cd-badge">D-8</span>
@@ -621,7 +659,7 @@
               <div>🏁 戰術封卷：2026-10-19 (週一 · D-4 盲推哨兵)</div>
             </div>
           </div>
-          <div class="radar-card ">
+          <div class="radar-card " data-category="dec">
             <div class="radar-card-top">
               <span class="radar-tag" style="color: #38bdf8;">⚡ 電工學與實習</span>
               <span class="cd-badge">D-13</span>
@@ -632,7 +670,7 @@
               <div>🏁 戰術封卷：2026-10-26 (週一 · D-2 提前封卷)</div>
             </div>
           </div>
-          <div class="radar-card ">
+          <div class="radar-card " data-category="dec">
             <div class="radar-card-top">
               <span class="radar-tag" style="color: #c084fc;">🟣 機率與統計</span>
               <span class="cd-badge">D-14</span>
@@ -643,7 +681,7 @@
               <div>🏁 戰術封卷：2026-10-25 (週日 · D-4 盲推哨兵)</div>
             </div>
           </div>
-          <div class="radar-card ">
+          <div class="radar-card " data-category="dec">
             <div class="radar-card-top">
               <span class="radar-tag" style="color: #fb923c;">📚 普通心理學</span>
               <span class="cd-badge">D-15</span>
@@ -654,7 +692,7 @@
               <div>🏁 戰術封卷：2026-10-26 (週一 · D-4 盲推哨兵)</div>
             </div>
           </div>
-          <div class="radar-card ">
+          <div class="radar-card " data-category="dec">
             <div class="radar-card-top">
               <span class="radar-tag" style="color: #a78bfa;">🧠 邏輯</span>
               <span class="cd-badge">D-18</span>
@@ -665,7 +703,7 @@
               <div>🏁 戰術封卷：2026-10-29 (週四 · D-4 盲推哨兵)</div>
             </div>
           </div>
-          <div class="radar-card ">
+          <div class="radar-card " data-category="dec">
             <div class="radar-card-top">
               <span class="radar-tag" style="color: #4ade80;">🏓 桌球初級</span>
               <span class="cd-badge">D-18</span>
@@ -676,7 +714,7 @@
               <div>🏁 戰術封卷：2026-10-31 (週六 · 動作定型)</div>
             </div>
           </div>
-          <div class="radar-card ">
+          <div class="radar-card " data-category="dec">
             <div class="radar-card-top">
               <span class="radar-tag" style="color: #60a5fa;">🔵 會計學甲一上</span>
               <span class="cd-badge">D-20</span>
@@ -685,6 +723,171 @@
             <div class="radar-sub">
               <div>🔴 物理死線：2026-11-04 (週三 12:20-14:10 · 共同205)</div>
               <div>🏁 戰術封卷：2026-11-02 (週一 · D-2 提前封卷)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #2dd4bf;">💻 跨領域統計數據分析入門</span>
+              <span class="cd-badge">D-26</span>
+            </div>
+            <div style="font-weight: 700;">期中數據探索與建模 (Project 2 · 佔 35%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-11-10 (週二 14:20-17:20 · 博雅)</div>
+              <div>🏁 戰術封卷：2026-11-06 (週五 · D-4 提前封卷)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #34d399;">♨️ 熱力學一</span>
+              <span class="cd-badge">D-27</span>
+            </div>
+            <div style="font-weight: 700;">隨堂小考 2 (Quiz 2 · 熵產與可用能)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-11-11 (週三 16:20-17:20 · 生機101)</div>
+              <div>🏁 戰術封卷：2026-11-09 (週一 · D-2 提前封卷)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #60a5fa;">🔵 會計學甲一上</span>
+              <span class="cd-badge">D-32</span>
+            </div>
+            <div style="font-weight: 700;">第二次期中大考 (Midterm 2 · 佔 25%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-11-16 (週一 18:30-21:30 · 管二102)</div>
+              <div>🏁 戰術封卷：2026-11-12 (週四 · D-4 盲推哨兵)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #f87171;">🔴 應用力學下</span>
+              <span class="cd-badge">D-36</span>
+            </div>
+            <div style="font-weight: 700;">第二次大考 (Midterm 2 · 剛體運動學 · 佔 30%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-11-20 (週五 10:20-12:10 · 生機101)</div>
+              <div>🏁 戰術封卷：2026-11-16 (週一 · D-4 盲推哨兵)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #fbbf24;">📐 工程數學一</span>
+              <span class="cd-badge">D-40</span>
+            </div>
+            <div style="font-weight: 700;">第二次期中大考 (拉普拉斯轉換與矩陣)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-11-24 (週二 09:10-12:10)</div>
+              <div>🏁 戰術封卷：2026-11-20 (週五 · D-4 盲推哨兵)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #c084fc;">🟣 機率與統計</span>
+              <span class="cd-badge">D-42</span>
+            </div>
+            <div style="font-weight: 700;">隨堂小考 2 (Quiz 2 · 聯合機率分佈)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-11-26 (週四 13:20-14:20 · 生機101)</div>
+              <div>🏁 戰術封卷：2026-11-24 (週二 · D-2 提前封卷)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #34d399;">♨️ 熱力學一</span>
+              <span class="cd-badge">D-48</span>
+            </div>
+            <div style="font-weight: 700;">隨堂小考 3 (Quiz 3 · 蒸氣動力循環)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-12-02 (週三 16:20-17:20 · 生機101)</div>
+              <div>🏁 戰術封卷：2026-11-30 (週一 · D-2 提前封卷)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #f87171;">🔴 應用力學下</span>
+              <span class="cd-badge">D-64</span>
+            </div>
+            <div style="font-weight: 700;">期末大考 (Final · 剛體動力學 · 佔 35%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-12-18 (週五 10:20-12:10 · 生機101)</div>
+              <div>🏁 戰術封卷：2026-12-14 (週一 · D-4 盲推哨兵)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #fb923c;">📚 普通心理學</span>
+              <span class="cd-badge">D-64</span>
+            </div>
+            <div style="font-weight: 700;">期末大考 (Final · 發展與社會心理 · 佔 40%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-12-18 (週五 14:20-16:20 · 普101)</div>
+              <div>🏁 戰術封卷：2026-12-14 (週一 · D-4 盲推哨兵)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #60a5fa;">🔵 會計學甲一上</span>
+              <span class="cd-badge">D-67</span>
+            </div>
+            <div style="font-weight: 700;">期末大考 (Final · 全卷決戰 · 佔 30%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-12-21 (週一 18:30-21:30 · 管二102)</div>
+              <div>🏁 戰術封卷：2026-12-17 (週四 · D-4 盲推哨兵)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #a78bfa;">🧠 邏輯</span>
+              <span class="cd-badge">D-67</span>
+            </div>
+            <div style="font-weight: 700;">期末大考 (Final · 述詞邏輯 · 佔 40%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-12-21 (週一 13:20-15:10 · 博雅)</div>
+              <div>🏁 戰術封卷：2026-12-17 (週四 · D-4 盲推哨兵)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #4ade80;">🏓 桌球初級</span>
+              <span class="cd-badge">D-67</span>
+            </div>
+            <div style="font-weight: 700;">期末單打循環對抗賽 (Final · 佔 40%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-12-21 (週一 15:30-17:20 · 綜合體育館)</div>
+              <div>🏁 戰術封卷：2026-12-19 (週六 · 戰術定錨)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #2dd4bf;">💻 跨領域統計數據分析入門</span>
+              <span class="cd-badge">D-68</span>
+            </div>
+            <div style="font-weight: 700;">期末成果專案展演 (Final Project · 佔 45%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-12-22 (週二 14:20-17:20 · 博雅)</div>
+              <div>🏁 戰術封卷：2026-12-18 (週五 · D-4 提前封卷)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #34d399;">♨️ 熱力學一</span>
+              <span class="cd-badge">D-69</span>
+            </div>
+            <div style="font-weight: 700;">期末大考 (Final · 全卷決戰)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-12-23 (週三 14:20-16:20 · 生機101)</div>
+              <div>🏁 戰術封卷：2026-12-16 (週三 · D-7 全卷盲推)</div>
+            </div>
+          </div>
+          <div class="radar-card " data-category="dec">
+            <div class="radar-card-top">
+              <span class="radar-tag" style="color: #c084fc;">🟣 機率與統計</span>
+              <span class="cd-badge">D-70</span>
+            </div>
+            <div style="font-weight: 700;">期末大考 (Final · 抽樣檢定 · 佔 35%)</div>
+            <div class="radar-sub">
+              <div>🔴 物理死線：2026-12-24 (週四 13:20-16:20 · 生機101)</div>
+              <div>🏁 戰術封卷：2026-12-20 (週日 · D-4 盲推哨兵)</div>
             </div>
           </div>
         </div>
@@ -2224,6 +2427,19 @@
         localStorage.setItem('planos_theme', 'dark');
         btn.innerHTML = '☀️ 亮色模式';
       }
+    }
+
+    // Radar Filter Function
+    function filterRadar(cat, btn) {
+      document.querySelectorAll('.filter-pills-bar .pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.radar-card').forEach(card => {
+        if (cat === 'all' || card.dataset.category === cat) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
     }
 
     initTheme();
