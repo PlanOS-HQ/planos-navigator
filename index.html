@@ -399,6 +399,94 @@
       color: var(--text-dim);
     }
 
+    /* Train Day Cards & Timetable */
+    .train-day-card {
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .train-day-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .train-day-card.today {
+      border-color: rgba(56, 189, 248, 0.45);
+      background: rgba(56, 189, 248, 0.04);
+    }
+
+    .train-day-card.battle-day {
+      border-color: rgba(248, 113, 113, 0.4);
+      background: rgba(248, 113, 113, 0.03);
+    }
+
+    .train-day-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--border);
+      font-size: 13.5px;
+      font-weight: 700;
+    }
+
+    .train-day-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .train-day-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .day-exam-alert {
+      background: rgba(248, 113, 113, 0.1);
+      border: 1px solid rgba(248, 113, 113, 0.28);
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: #f87171;
+      line-height: 1.45;
+    }
+
+    .slot-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: var(--pill-bg);
+      color: var(--text);
+    }
+
+    .slot-pill.slot-morning {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+    }
+    .slot-pill.slot-noon {
+      background: rgba(251, 191, 36, 0.15);
+      color: #fbbf24;
+    }
+    .slot-pill.slot-evening {
+      background: rgba(168, 85, 247, 0.15);
+      color: #c084fc;
+    }
+    .slot-pill.slot-night {
+      background: rgba(244, 114, 182, 0.15);
+      color: #f472b6;
+    }
+
     /* 10 Subject Cards (Compact Accordions) */
     .subjects-list {
       display: flex;
@@ -582,8 +670,8 @@
         <div class="stat-lbl">登錄死線總量</div>
       </div>
       <div class="stat-box">
-        <div class="stat-num" style="color: #34d399;">3 班車</div>
-        <div class="stat-lbl">今日作戰焦點</div>
+        <div class="stat-num" style="color: #34d399;">25 班車</div>
+        <div class="stat-lbl">未來一週火車 (今日 3 班)</div>
       </div>
     </div>
 
@@ -597,7 +685,7 @@
         <span class="chevron">▾</span>
       </summary>
       <div class="accordion-content">
-        <div class="filter-pills-bar">
+        <div class="filter-pills-bar radar-filter-pills">
           <button class="pill-btn active" onclick="filterRadar('all', this)">全部死線 (26)</button>
           <button class="pill-btn" onclick="filterRadar('rush', this)">🚨 兩週衝刺 (0)</button>
           <button class="pill-btn" onclick="filterRadar('nov', this)">🍂 11月戰區 (0)</button>
@@ -894,53 +982,589 @@
       </div>
     </details>
 
-    <!-- Section 2: Today Focus (Collapsible) -->
+    <!-- Section 2: Weekly Rolling Train Dispatch (Collapsible) -->
     <details class="accordion-section" open>
       <summary class="section-summary">
         <div class="summary-left">
-          <span>🔥 今日前線作戰火車 (10/15 Focus)</span>
-          <span class="summary-badge">3 班施工任務</span>
+          <span>🚂 未來一週作戰火車班表 (7~9日滾動排班 · 10/15~10/23)</span>
+          <span class="summary-badge">25 班施工任務 · 5 場考期決戰</span>
         </div>
         <span class="chevron">▾</span>
       </summary>
       <div class="accordion-content">
-        <div class="task-row">
-          <div>
-            <div class="task-desc-main">
-              <span style="color: #38bdf8; font-weight: 700;">⚡ EE</span>
-              <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-left: 4px;">[10/15 晨]</span>
-              <span>M0.2：5.4 節點電壓法母題演練</span>
+        <div class="filter-pills-bar train-filter-pills">
+          <button class="pill-btn active" onclick="filterTrain('all', this)">全部一週 (25 班)</button>
+          <button class="pill-btn" onclick="filterTrain('10/15', this)">🔥 今天 (3)</button>
+          <button class="pill-btn" onclick="filterTrain('10/16', this)">10/16 五 (4)</button>
+          <button class="pill-btn" onclick="filterTrain('10/17', this)">10/17 六 (4)</button>
+          <button class="pill-btn" onclick="filterTrain('10/18', this)">10/18 日 (5)</button>
+          <button class="pill-btn" onclick="filterTrain('10/19', this)">🚨 10/19 一 (4+2考)</button>
+          <button class="pill-btn" onclick="filterTrain('10/20', this)">🚨 10/20 二 (1+1考)</button>
+          <button class="pill-btn" onclick="filterTrain('10/21', this)">🚨 10/21 三 (1+1考)</button>
+          <button class="pill-btn" onclick="filterTrain('10/22', this)">10/22 四 (2)</button>
+          <button class="pill-btn" onclick="filterTrain('10/23', this)">🚨 10/23 五 (1+1考)</button>
+        </div>
+        <div class="train-day-card today " data-date="10/15">
+          <div class="train-day-header">
+            <div class="train-day-title">
+              <span>10/15 (週四 · 今天 · 主體施工)</span>
             </div>
-            <div class="task-desc-sub">📦 驗收 DoD：P5.9, P5.11★ 演算紙卷 (施工中) (1.5h)</div>
+            <div class="train-day-meta">
+              <span>⏱️ 5.0h (300m)</span>
+              <span>·</span>
+              <span>3 班車</span>
+            </div>
           </div>
-          <div>
-            <span class="badge-status badge-in_progress">🔥 施工中</span>
+          <div class="train-tasks-list">
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-morning">🌅 晨</span>
+                  <span style="color: #38bdf8; font-weight: 700;">⚡ EE</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.2]</span>
+                  <span>5.4 節點電壓法母題演練</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：P5.9, P5.11★ 演算紙卷 (施工中)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 1.5h</span>
+                <span class="badge-status badge-in_progress">🔥 施工中</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-evening">🌙 晚</span>
+                  <span style="color: #38bdf8; font-weight: 700;">⚡ EE</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.3]</span>
+                  <span>5.5 戴維寧與諾頓等效電路</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：P5.21★, P5.26 盲解零失誤 (細部設計完成)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 1.5h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-evening">🌙 晚</span>
+                  <span style="color: #34d399; font-weight: 700;">♨️ TH</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.2]</span>
+                  <span>第一定律開放系統穩定流動能量方程 (SFEE)</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：渦輪機/壓縮機/噴嘴 3 題盲推紙卷 (施工中)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 2.0h</span>
+                <span class="badge-status badge-in_progress">🔥 施工中</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="task-row">
-          <div>
-            <div class="task-desc-main">
-              <span style="color: #38bdf8; font-weight: 700;">⚡ EE</span>
-              <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-left: 4px;">[10/15 晚]</span>
-              <span>M0.3：5.5 戴維寧與諾頓等效電路</span>
+        <div class="train-day-card  " data-date="10/16">
+          <div class="train-day-header">
+            <div class="train-day-title">
+              <span>10/16 (週五 · 明天)</span>
             </div>
-            <div class="task-desc-sub">📦 驗收 DoD：P5.21★, P5.26 盲解零失誤 (細部設計完成) (1.5h)</div>
+            <div class="train-day-meta">
+              <span>⏱️ 5.5h (330m)</span>
+              <span>·</span>
+              <span>4 班車</span>
+            </div>
           </div>
-          <div>
-            <span class="badge-status badge-planned">⏳ 已就緒</span>
+          <div class="train-tasks-list">
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-morning">🌅 晨</span>
+                  <span style="color: #f87171; font-weight: 700;">🔴 DYN</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.1]</span>
+                  <span>Ch12 質點曲線運動 (直角、自然 n-t、極座標 r-θ 加速度分解)</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：三大座標系速度與曲率半徑加速度盲推紙卷</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 2.0h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-evening">🌙 晚</span>
+                  <span style="color: #38bdf8; font-weight: 700;">⚡ EE</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.4]</span>
+                  <span>5.6 交流功率與最大功率傳輸</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：典型例題 2 題演算通關 (細部設計完成)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 1.0h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-evening">🌙 晚</span>
+                  <span style="color: #fbbf24; font-weight: 700;">📐 MATH</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.2]</span>
+                  <span>一階線性 ODE 與 Bernoulli 方程盲推演練</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：典型 Bernoulli 與積分因子盲推零失誤 (D-4 哨兵)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 1.5h</span>
+                <span class="badge-status badge-in_progress">🔥 施工中</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-night">🛌 睡</span>
+                  <span style="color: #38bdf8; font-weight: 700;">⚡ EE</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.5]</span>
+                  <span>5.7~5.8 交流諧振與頻率響應</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：公式對照與特性曲線筆記 (細部設計完成)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 1.0h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="task-row">
-          <div>
-            <div class="task-desc-main">
-              <span style="color: #34d399; font-weight: 700;">♨️ TH</span>
-              <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-left: 4px;">[10/15 晚]</span>
-              <span>M0.2：第一定律開放系統穩定流動能量方程 (SFEE)</span>
+        <div class="train-day-card  " data-date="10/17">
+          <div class="train-day-header">
+            <div class="train-day-title">
+              <span>10/17 (週六 · 週六)</span>
             </div>
-            <div class="task-desc-sub">📦 驗收 DoD：渦輪機/壓縮機/噴嘴 3 題盲推紙卷 (施工中) (2.0h)</div>
+            <div class="train-day-meta">
+              <span>⏱️ 7.0h (420m)</span>
+              <span>·</span>
+              <span>4 班車</span>
+            </div>
           </div>
-          <div>
-            <span class="badge-status badge-in_progress">🔥 施工中</span>
+          <div class="train-tasks-list">
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-morning">🌅 晨</span>
+                  <span style="color: #f87171; font-weight: 700;">🔴 DYN</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.2]</span>
+                  <span>Ch13 牛頓第二定律方程式 (自由體圖 FBD 與力平衡求解)</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：典型斜面摩擦與圓周運動動態平衡 3 題</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 2.0h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-morning">🌅 晨</span>
+                  <span style="color: #38bdf8; font-weight: 700;">⚡ EE</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.6]</span>
+                  <span>Ch5 考古題盲推與模擬測驗</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：全卷閉卷盲測得分 >= 85 (D-2 提前封卷)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 2.0h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-evening">🌙 晚</span>
+                  <span style="color: #fbbf24; font-weight: 700;">📐 MATH</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.3]</span>
+                  <span>二階常係數齊次 ODE 特徵方程式三種根</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：相異實根/重根/共軛複根典型 3 題 (細部設計完成)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 1.5h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-evening">🌙 晚</span>
+                  <span style="color: #34d399; font-weight: 700;">♨️ TH</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.3]</span>
+                  <span>第二定律熱機循環、卡諾效率與熵產原理</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：卡諾循環熱效率與熵產推導 (細部設計完成)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 1.5h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="train-day-card  battle-day" data-date="10/18">
+          <div class="train-day-header">
+            <div class="train-day-title">
+              <span>10/18 (週日 · 考前前夕衝刺)</span>
+            </div>
+            <div class="train-day-meta">
+              <span>⏱️ 7.5h (450m)</span>
+              <span>·</span>
+              <span>5 班車</span>
+            </div>
+          </div>
+          <div class="train-tasks-list">
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-morning">🌅 晨</span>
+                  <span style="color: #f87171; font-weight: 700;">🔴 DYN</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.3]</span>
+                  <span>Ch14 功與能、功能定理與動量/角動量守恆定律</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：彈簧位能與碰撞恢復係數 e 綜合題手算紙卷</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 2.0h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-morning">🌅 晨</span>
+                  <span style="color: #34d399; font-weight: 700;">♨️ TH</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.4]</span>
+                  <span>歷年期中大考全真 90m 閉卷盲模測試</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：限時 90m 閉卷盲模得分 >= 85 (D-3 全卷通關)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 2.5h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-noon">☀️ 午</span>
+                  <span style="color: #fbbf24; font-weight: 700;">📐 MATH</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.4]</span>
+                  <span>二階非齊次 ODE 待定係數法與參數變異法</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：Wronskian 與特解推導零失誤 (細部設計完成)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 2.0h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-evening">🌙 晚</span>
+                  <span style="color: #38bdf8; font-weight: 700;">⚡ EE</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.7]</span>
+                  <span>考前公式記憶卡與錯題速查</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：A4 錯題口袋卡一張 (考前定錨)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 0.5h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-night">🛌 睡</span>
+                  <span style="color: #4ade80; font-weight: 700;">🏓 PE</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.1]</span>
+                  <span>正反手平擊球動作要領複習 (站位角度與重心轉移意象)</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：動作要領思維導圖與發球規則速查</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 0.5h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="train-day-card  battle-day" data-date="10/19">
+          <div class="train-day-header">
+            <div class="train-day-title">
+              <span>10/19 (週一 · 🚨 考期戰役日)</span>
+            </div>
+            <div class="train-day-meta">
+              <span>⏱️ 7.0h (420m)</span>
+              <span>·</span>
+              <span>4 班車</span>
+            </div>
+          </div>
+          <div class="day-exam-alert">
+            <div>🚨 <strong>今日重大考場死線：</strong><span style='color: #38bdf8; font-weight: 700;'>⚡ 電工學與實習</span>：Ch5 交流電路隨堂小考 (絕對死線) (<code style='font-size: 11px;'>2026-10-19 (週一 10:20-12:10 · 電工教室)</code>) ｜ <span style='color: #4ade80; font-weight: 700;'>🏓 桌球初級</span>：隨堂技術小考 1 (Quiz 1 · 正反手平擊球) (<code style='font-size: 11px;'>2026-10-19 (週一 15:30-17:20 · 綜合體育館)</code>)</div>
+          </div>
+          <div class="train-tasks-list">
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-morning">🌅 晨</span>
+                  <span style="color: #f87171; font-weight: 700;">🔴 DYN</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.4]</span>
+                  <span>歷年 Midterm 1 考古題 90m 閉卷全真模擬測驗</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：限時 90m 閉卷盲模得分 >= 85 (D-4 哨兵)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 2.5h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-noon">☀️ 午</span>
+                  <span style="color: #4ade80; font-weight: 700;">🏓 PE</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.2]</span>
+                  <span>課堂實體正反手平擊連續對打測驗</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：連續平擊對打達標 >= 15 板無失誤</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 1.0h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-evening">🌙 晚</span>
+                  <span style="color: #fbbf24; font-weight: 700;">📐 MATH</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.5]</span>
+                  <span>歷年期中考古題全真 90m 閉卷盲模測試</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：限時 90m 閉卷盲測得分 >= 85 (考前全真模考)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 2.5h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-night">🛌 睡</span>
+                  <span style="color: #fbbf24; font-weight: 700;">📐 MATH</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.6]</span>
+                  <span>考前核心通解公式表與特殊積分型態口袋卡</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：A4 手抄考前重點精華一張 (考前定錨)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 1.0h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="train-day-card  battle-day" data-date="10/20">
+          <div class="train-day-header">
+            <div class="train-day-title">
+              <span>10/20 (週二 · 🚨 考期戰役日)</span>
+            </div>
+            <div class="train-day-meta">
+              <span>⏱️ 1.0h (60m)</span>
+              <span>·</span>
+              <span>1 班車</span>
+            </div>
+          </div>
+          <div class="day-exam-alert">
+            <div>🚨 <strong>今日重大考場死線：</strong><span style='color: #fbbf24; font-weight: 700;'>📐 工程數學一</span>：第一次期中大考 (佔 20% · 絕對死線) (<code style='font-size: 11px;'>2026-10-20 (週二 09:10-12:10 · 工數教室)</code>)</div>
+          </div>
+          <div class="train-tasks-list">
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-evening">🌙 晚</span>
+                  <span style="color: #34d399; font-weight: 700;">♨️ TH</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.5]</span>
+                  <span>考前核心熱力公式與單位換算口袋卡</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：A4 手抄考前重點卡與易錯符號集 (考前定錨)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 1.0h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="train-day-card  battle-day" data-date="10/21">
+          <div class="train-day-header">
+            <div class="train-day-title">
+              <span>10/21 (週三 · 🚨 考期戰役日)</span>
+            </div>
+            <div class="train-day-meta">
+              <span>⏱️ 2.0h (120m)</span>
+              <span>·</span>
+              <span>1 班車</span>
+            </div>
+          </div>
+          <div class="day-exam-alert">
+            <div>🚨 <strong>今日重大考場死線：</strong><span style='color: #34d399; font-weight: 700;'>♨️ 熱力學一</span>：第一次期中大考 (佔 35%) (<code style='font-size: 11px;'>2026-10-21 (週三 14:20-16:20 · 生機101)</code>)</div>
+          </div>
+          <div class="train-tasks-list">
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-morning">🌅 晨</span>
+                  <span style="color: #c084fc; font-weight: 700;">🟣 PROB</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.1]</span>
+                  <span>Ch1~Ch2 樣本空間、條件機率與貝氏定理 (Bayes)</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：全機率定理與逆機率 3 題手算演算紙卷</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 2.0h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="train-day-card  " data-date="10/22">
+          <div class="train-day-header">
+            <div class="train-day-title">
+              <span>10/22 (週四 · 週四)</span>
+            </div>
+            <div class="train-day-meta">
+              <span>⏱️ 2.5h (150m)</span>
+              <span>·</span>
+              <span>2 班車</span>
+            </div>
+          </div>
+          <div class="train-tasks-list">
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-evening">🌙 晚</span>
+                  <span style="color: #f87171; font-weight: 700;">🔴 DYN</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.5]</span>
+                  <span>考前動力學向量公式與常犯正負號易錯速查卡</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：A4 手抄考前重點卡一張 (考前定錨)</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 1.0h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-evening">🌙 晚</span>
+                  <span style="color: #fb923c; font-weight: 700;">📚 PSY</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.1]</span>
+                  <span>神經科學與大腦結構 (皮質葉區、神經傳導物質功能)</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：腦構造與功能架構思維導圖筆記</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 1.5h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="train-day-card  battle-day" data-date="10/23">
+          <div class="train-day-header">
+            <div class="train-day-title">
+              <span>10/23 (週五 · 🚨 考期戰役日)</span>
+            </div>
+            <div class="train-day-meta">
+              <span>⏱️ 2.0h (120m)</span>
+              <span>·</span>
+              <span>1 班車</span>
+            </div>
+          </div>
+          <div class="day-exam-alert">
+            <div>🚨 <strong>今日重大考場死線：</strong><span style='color: #f87171; font-weight: 700;'>🔴 應用力學下</span>：第一次大考 (Midterm 1 · 質點動力學 · 佔 35%) (<code style='font-size: 11px;'>2026-10-23 (週五 10:20-12:10 · 生機101)</code>)</div>
+          </div>
+          <div class="train-tasks-list">
+            <div class="task-row">
+              <div style="flex: 1; min-width: 260px;">
+                <div class="task-desc-main" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span class="slot-pill slot-evening">🌙 晚</span>
+                  <span style="color: #c084fc; font-weight: 700;">🟣 PROB</span>
+                  <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim);">[M0.2]</span>
+                  <span>Ch3 離散隨機變數 (二項、幾何、卜瓦松分佈 PMF/CDF)</span>
+                </div>
+                <div class="task-desc-sub" style="margin-top: 4px;">
+                  <span>📦 驗收 DoD：期望值 E(X) 與變異數 Var(X) 推導無失誤</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-muted);">⏱️ 2.0h</span>
+                <span class="badge-status badge-planned">⏳ 已就緒</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2431,10 +3055,23 @@
 
     // Radar Filter Function
     function filterRadar(cat, btn) {
-      document.querySelectorAll('.filter-pills-bar .pill-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.radar-filter-pills .pill-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       document.querySelectorAll('.radar-card').forEach(card => {
         if (cat === 'all' || card.dataset.category === cat) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Train Timetable Day Filter Function
+    function filterTrain(date, btn) {
+      document.querySelectorAll('.train-filter-pills .pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.train-day-card').forEach(card => {
+        if (date === 'all' || card.dataset.date === date) {
           card.style.display = '';
         } else {
           card.style.display = 'none';
