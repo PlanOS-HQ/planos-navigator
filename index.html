@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>公開承諾與成果發布台 · PlanOS</title>
+  <title>公開承諾發布看板 · PlanOS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -12,6 +12,7 @@
       --bg: #090c15;
       --bg-card: #0f1523;
       --bg-card-hover: #141c2e;
+      --bg-column: #0b101c;
       --bg-inset: #090d18;
       --border: rgba(255, 255, 255, 0.08);
       --border-highlight: rgba(56, 189, 248, 0.35);
@@ -22,39 +23,20 @@
       
       /* Semantic Palette */
       --c-planning: #94a3b8;
-      --c-planning-bg: rgba(148, 163, 184, 0.12);
-      --c-planning-border: rgba(148, 163, 184, 0.3);
-
       --c-planned: #38bdf8;
-      --c-planned-bg: rgba(56, 189, 248, 0.12);
-      --c-planned-border: rgba(56, 189, 248, 0.3);
-
       --c-executing: #f59e0b;
-      --c-executing-bg: rgba(245, 158, 11, 0.12);
-      --c-executing-border: rgba(245, 158, 11, 0.3);
-
       --c-review: #14b8a6;
-      --c-review-bg: rgba(20, 184, 166, 0.12);
-      --c-review-border: rgba(20, 184, 166, 0.3);
-
       --c-published: #10b981;
-      --c-published-bg: rgba(16, 185, 129, 0.12);
-      --c-published-border: rgba(16, 185, 129, 0.3);
-
       --c-canceled: #64748b;
-      --c-canceled-bg: rgba(100, 116, 139, 0.12);
-      --c-canceled-border: rgba(100, 116, 139, 0.3);
-
       --c-delayed: #ef4444;
-      --c-delayed-bg: rgba(239, 68, 68, 0.12);
-      --c-delayed-border: rgba(239, 68, 68, 0.35);
     }
 
     body.light-theme {
       --bg: #f8fafc;
       --bg-card: #ffffff;
       --bg-card-hover: #f8fafc;
-      --bg-inset: #f1f5f9;
+      --bg-column: #f1f5f9;
+      --bg-inset: #e2e8f0;
       --border: #e2e8f0;
       --border-highlight: #93c5fd;
       --text: #0f172a;
@@ -63,32 +45,12 @@
       --accent: #0284c7;
 
       --c-planning: #64748b;
-      --c-planning-bg: #f1f5f9;
-      --c-planning-border: #cbd5e1;
-
       --c-planned: #0284c7;
-      --c-planned-bg: #f0f9ff;
-      --c-planned-border: #bae6fd;
-
       --c-executing: #d97706;
-      --c-executing-bg: #fffbeb;
-      --c-executing-border: #fde68a;
-
       --c-review: #0d9488;
-      --c-review-bg: #f0fdfa;
-      --c-review-border: #99f6e4;
-
       --c-published: #059669;
-      --c-published-bg: #ecfdf5;
-      --c-published-border: #a7f3d0;
-
       --c-canceled: #64748b;
-      --c-canceled-bg: #f8fafc;
-      --c-canceled-border: #e2e8f0;
-
       --c-delayed: #dc2626;
-      --c-delayed-bg: #fef2f2;
-      --c-delayed-border: #fecaca;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -98,10 +60,10 @@
       font-family: 'Inter', 'Noto Sans TC', sans-serif;
       min-height: 100vh;
       line-height: 1.5;
-      padding: 24px 16px 60px;
+      padding: 20px 16px 60px;
       transition: background 0.2s ease, color 0.2s ease;
     }
-    .container { max-width: 900px; margin: 0 auto; }
+    .container { max-width: 1400px; margin: 0 auto; }
 
     /* Top Bar */
     .top-bar {
@@ -110,7 +72,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       padding-bottom: 14px;
       border-bottom: 1px solid var(--border);
     }
@@ -135,10 +97,11 @@
       color: var(--text-muted); background: var(--bg-inset);
       border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px;
     }
-    .theme-btn {
+    .tool-btn {
       background: var(--bg-card); border: 1px solid var(--border);
       color: var(--text); padding: 5px 12px; border-radius: 6px;
       font-size: 12px; font-weight: 600; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 4px;
     }
 
     /* Metrics Bar */
@@ -152,28 +115,28 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 12px 14px;
+      padding: 10px 14px;
     }
     .m-num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 800;
       margin-bottom: 2px;
     }
     .m-lbl {
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--text-dim);
       font-weight: 600;
     }
 
-    /* Toolbar: Filter & Sort */
+    /* Toolbar */
     .toolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-      background: var(--bg-inset);
+      background: var(--bg-column);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 8px 12px;
@@ -190,15 +153,10 @@
       color: var(--text-muted);
       padding: 4px 10px;
       border-radius: 6px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
-      transition: all 0.15s ease;
-    }
-    .f-btn:hover {
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.04);
     }
     .f-btn.active {
       background: var(--bg-card);
@@ -206,203 +164,163 @@
       color: var(--accent);
       font-weight: 700;
     }
-    .sort-group {
+
+    /* View Switcher */
+    .view-switcher {
       display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .sort-select {
-      background: var(--bg-card);
+      background: var(--bg-inset);
       border: 1px solid var(--border);
-      color: var(--text);
-      padding: 4px 8px;
       border-radius: 6px;
-      font-size: 12px;
-      font-family: inherit;
-      outline: none;
+      padding: 2px;
+    }
+    .v-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      padding: 4px 10px;
+      font-size: 11.5px;
+      font-weight: 600;
+      border-radius: 4px;
       cursor: pointer;
     }
+    .v-btn.active {
+      background: var(--bg-card);
+      color: var(--text);
+    }
 
-    /* Cards List */
-    .cards-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    /* Kanban Board Layout */
+    .kanban-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      align-items: start;
       margin-bottom: 32px;
     }
+    .kanban-col {
+      background: var(--bg-column);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 200px;
+    }
+    .col-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4px;
+    }
+    .col-title {
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .col-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--text-dim);
+    }
+
+    /* Flat Card (Zero Progress Bars) */
     .flat-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 18px;
-      transition: border-color 0.15s ease;
+      border-radius: 8px;
+      padding: 12px 14px;
+      transition: all 0.15s ease;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
     .flat-card:hover {
       border-color: var(--border-highlight);
+      transform: translateY(-1px);
     }
-    
-    /* Stage accent borders */
+
     .flat-card.stage-Planning { border-left: 3px solid var(--c-planning); }
     .flat-card.stage-Planned { border-left: 3px solid var(--c-planned); }
     .flat-card.stage-Executing { border-left: 3px solid var(--c-executing); }
     .flat-card.stage-Review { border-left: 3px solid var(--c-review); }
     .flat-card.stage-Published { border-left: 3px solid var(--c-published); }
-    .flat-card.stage-Canceled { border-left: 3px solid var(--c-canceled); opacity: 0.7; }
+    .flat-card.stage-Canceled { border-left: 3px solid var(--c-canceled); opacity: 0.65; }
     .flat-card.is-delayed { border-left: 3px solid var(--c-delayed) !important; }
 
-    /* Card Layout */
-    .c-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
     .c-title {
-      font-size: 15.5px;
+      font-size: 14.5px;
       font-weight: 700;
       color: var(--text);
       letter-spacing: -0.2px;
+      line-height: 1.4;
     }
     .flat-card.stage-Canceled .c-title {
       text-decoration: line-through;
       color: var(--text-dim);
     }
 
-    /* Stage Badges */
-    .stage-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .badge-Planning { background: var(--c-planning-bg); color: var(--c-planning); border: 1px solid var(--c-planning-border); }
-    .badge-Planned { background: var(--c-planned-bg); color: var(--c-planned); border: 1px solid var(--c-planned-border); }
-    .badge-Executing { background: var(--c-executing-bg); color: var(--c-executing); border: 1px solid var(--c-executing-border); }
-    .badge-Review { background: var(--c-review-bg); color: var(--c-review); border: 1px solid var(--c-review-border); }
-    .badge-Published { background: var(--c-published-bg); color: var(--c-published); border: 1px solid var(--c-published-border); }
-    .badge-Canceled { background: var(--c-canceled-bg); color: var(--c-canceled); border: 1px solid var(--c-canceled-border); }
-
-    /* Abstract Progress Rail (Hardware finish) */
-    .rail-wrap {
-      margin-bottom: 14px;
-    }
-    .progress-rail {
-      width: 100%;
-      height: 5px;
-      background: var(--bg-inset);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      border-radius: 4px;
-      transition: width 0.3s ease;
-    }
-    .fill-Planning { background: var(--c-planning); }
-    .fill-Planned { background: var(--c-planned); }
-    .fill-Executing { background: var(--c-executing); }
-    .fill-Review { background: var(--c-review); }
-    .fill-Published { background: var(--c-published); }
-    .fill-Canceled { background: var(--c-canceled); }
-
-    /* Abstract Milestone Chips */
-    .milestones-chips {
+    /* Timers & Badges */
+    .c-badge-row {
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-    .m-chip {
-      font-size: 11px;
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: var(--bg-inset);
-      border: 1px solid var(--border);
-      display: inline-flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 4px;
-      color: var(--text-dim);
-    }
-    .m-chip.done {
-      color: var(--text-muted);
-      border-color: rgba(255, 255, 255, 0.12);
-    }
-    .m-chip.done .icon {
-      color: var(--c-published);
-      font-weight: bold;
-    }
-    .m-chip:not(.done) .icon {
-      color: var(--text-dim);
-    }
-
-    /* Metadata Bar */
-    .c-meta {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 8px;
-      font-size: 12.5px;
-      color: var(--text-muted);
-      margin-bottom: 10px;
+      flex-wrap: wrap;
       background: var(--bg-inset);
       border: 1px solid var(--border);
-      padding: 8px 12px;
+      padding: 6px 10px;
       border-radius: 6px;
+      font-size: 12px;
     }
-    .c-meta-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .c-meta-lbl {
+    .c-target-date {
       color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
       font-size: 11.5px;
     }
-    .c-meta-val {
-      font-weight: 600;
-      color: var(--text);
-    }
-    .live-time-val {
+    .live-countdown {
       font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-    }
-    .live-time-val.is-delayed {
-      color: var(--c-delayed) !important;
       font-weight: 700;
+      font-size: 12px;
     }
-    .live-time-val.is-published {
+    .live-countdown.is-delayed {
+      color: var(--c-delayed) !important;
+    }
+    .live-countdown.is-published {
       color: var(--c-published);
     }
-    .live-time-val.is-canceled {
+    .live-countdown.is-canceled {
       color: var(--c-canceled);
     }
 
-    /* Content Description */
-    .c-content {
-      font-size: 13px;
+    .c-desc {
+      font-size: 12.5px;
       color: var(--text-muted);
-      line-height: 1.5;
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
+      line-height: 1.45;
     }
-    .c-content-lbl {
-      color: var(--text-dim);
-      font-weight: 700;
-      flex-shrink: 0;
-      font-size: 12px;
+
+    /* List View Container */
+    .list-view-wrap {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 900px;
+      margin: 0 auto 32px;
     }
 
     /* Collapsed Legacy Archive */
     details.legacy-archive {
       margin-top: 36px;
-      background: var(--bg-inset);
+      background: var(--bg-column);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 10px 14px;
@@ -435,350 +353,299 @@
     <div class="top-bar">
       <div class="site-title">
         <span class="live-dot"></span>
-        <span>公開承諾與成果發布台</span>
+        <span>公開承諾發布看板</span>
       </div>
       <div class="controls">
-        <span id="liveClock" class="clock-badge">2026-10-25 15:30:00 (GMT+8)</span>
-        <button id="themeToggle" class="theme-btn" onclick="toggleTheme()">☀️ 淺色</button>
+        <span id="liveClock" class="clock-badge">2026-10-25 16:08:00 (GMT+8)</span>
+        <button id="themeToggle" class="tool-btn" onclick="toggleTheme()">☀️ 淺色</button>
       </div>
     </div>
 
     <!-- Metrics Bar -->
     <div class="metrics-bar">
       <div class="m-card">
-        <div class="m-num" id="metricExecuting" style="color: var(--c-executing);">1 項</div>
-        <div class="m-lbl">攻堅施工中</div>
+        <div class="m-num" style="color: var(--c-executing);">1 案</div>
+        <div class="m-lbl">🚀 攻堅中</div>
       </div>
       <div class="m-card">
-        <div class="m-num" id="metricPlanned" style="color: var(--c-planned);">2 項</div>
-        <div class="m-lbl">已定檔排程</div>
+        <div class="m-num" style="color: var(--c-planned);">2 案</div>
+        <div class="m-lbl">📅 已定檔</div>
       </div>
       <div class="m-card">
-        <div class="m-num" id="metricDelayed" style="color: var(--c-delayed);">0 項</div>
-        <div class="m-lbl">目前延期項</div>
+        <div class="m-num" style="color: var(--c-review);">1 案</div>
+        <div class="m-lbl">🔍 驗收中</div>
       </div>
       <div class="m-card">
-        <div class="m-num" id="metricPublished" style="color: var(--c-published);">2 項</div>
-        <div class="m-lbl">已如約交付</div>
+        <div class="m-num" id="metricDelayed" style="color: var(--c-delayed);">0 案</div>
+        <div class="m-lbl">🚨 目前延期</div>
+      </div>
+      <div class="m-card">
+        <div class="m-num" style="color: var(--c-published);">2 案</div>
+        <div class="m-lbl">✨ 已交付</div>
       </div>
     </div>
 
-    <!-- Toolbar: Filter & Sort -->
+    <!-- Toolbar -->
     <div class="toolbar">
       <div class="filter-group">
-        <button class="f-btn active" onclick="filterCards('all', this)">全部 (8)</button>
+        <button class="f-btn active" onclick="filterCards('all', this)">全部看板 (8)</button>
         <button class="f-btn" onclick="filterCards('Executing', this)">攻堅中 (1)</button>
         <button class="f-btn" onclick="filterCards('Planned', this)">已定檔 (2)</button>
-        <button class="f-btn" onclick="filterCards('Review', this)">驗收中 (1)</button>
         <button class="f-btn" onclick="filterCards('delayed', this)">已延期 (<span id="delayedTabCount">0</span>)</button>
-        <button class="f-btn" onclick="filterCards('Planning', this)">探索中 (1)</button>
         <button class="f-btn" onclick="filterCards('Published', this)">已交付 (2)</button>
-        <button class="f-btn" onclick="filterCards('Canceled', this)">已取消 (1)</button>
       </div>
-      <div class="sort-group">
-        <span style="font-size: 12px; color: var(--text-dim);">排序:</span>
-        <select class="sort-select" onchange="sortCards(this.value)">
-          <option value="time-asc">📅 目標時間 (最近在先)</option>
-          <option value="time-desc">📅 目標時間 (最遠在先)</option>
-          <option value="delay-desc">🚨 延期時間 (最多在先)</option>
-          <option value="stage-order">🏷️ 階段順序 (流程先後)</option>
-        </select>
+
+      <div class="view-switcher">
+        <button id="btnKanban" class="v-btn active" onclick="switchView('kanban')">📊 看板視圖</button>
+        <button id="btnList" class="v-btn" onclick="switchView('list')">📋 列表視圖</button>
       </div>
     </div>
 
-    <!-- Standard Flat Cards List -->
-    <div class="cards-list" id="cardsContainer">
+    <!-- 1. Pure Kanban Board Mode -->
+    <div class="kanban-board" id="kanbanBoard">
+      <div class="kanban-col col-Executing" data-stage="Executing">
+        <div class="col-header">
+          <div class="col-title" style="color: var(--c-executing);">🚀 攻堅中</div>
+          <div class="col-count">1</div>
+        </div>
+        <div class="flat-card stage-Executing" 
+             data-stage="Executing" 
+             data-target="2026-10-25T21:00:00+08:00" 
+             data-ts="1792933200">
+          <div class="c-title">應用力學 Ch12 核心精華筆記與題解手稿上線</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-10-25 21:00</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          <div class="c-desc">整理應用力學 Ch12 核心必考觀念、歷屆題解與盲點標註，今晚 21:00 前完成 PDF 排版並公開上線。</div>
+        </div>
+      </div>
+      <div class="kanban-col col-Planned" data-stage="Planned">
+        <div class="col-header">
+          <div class="col-title" style="color: var(--c-planned);">📅 已定檔</div>
+          <div class="col-count">2</div>
+        </div>
+        <div class="flat-card stage-Planned" 
+             data-stage="Planned" 
+             data-target="2026-10-28T21:00:00+08:00" 
+             data-ts="1793192400">
+          <div class="c-title">應用力學 Ch13 核心精華筆記與題解手稿上線</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-10-28 21:00</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          <div class="c-desc">延續 Ch12 筆記規格，於本週三晚間 21:00 前產出 Ch13 向量精華筆記檔。</div>
+        </div>
+        <div class="flat-card stage-Planned" 
+             data-stage="Planned" 
+             data-target="2026-11-05T00:00:00+08:00" 
+             data-ts="1793808000">
+          <div class="c-title">🤖 線上課程自動評分工具</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-11-05 00:00</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          <div class="c-desc">開發自動化作業檢查腳本，提供精確規則評分。</div>
+        </div>
+      </div>
+      <div class="kanban-col col-Review" data-stage="Review">
+        <div class="col-header">
+          <div class="col-title" style="color: var(--c-review);">🔍 驗收中</div>
+          <div class="col-count">1</div>
+        </div>
+        <div class="flat-card stage-Review" 
+             data-stage="Review" 
+             data-target="2026-10-27T12:00:00+08:00" 
+             data-ts="1793073600">
+          <div class="c-title">🎙️ Podcast 第一集試播集音訊上架</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-10-27 12:00</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          <div class="c-desc">首集試播音訊最後打磨，10/27 中午 12:00 正式推播至串流平台。</div>
+        </div>
+      </div>
+      <div class="kanban-col col-Planning" data-stage="Planning">
+        <div class="col-header">
+          <div class="col-title" style="color: var(--c-planning);">💡 探索中</div>
+          <div class="col-count">1</div>
+        </div>
+        <div class="flat-card stage-Planning" 
+             data-stage="Planning" 
+             data-target="" 
+             data-ts="9999999999">
+          <div class="c-title">💡 跨裝置實時剪貼簿同步工具 (跨 Mac/Win/iOS)</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 待定</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          <div class="c-desc">探索基於區域網的高速加密剪貼簿同步架構，評估實用性與開發工期。</div>
+        </div>
+      </div>
+      <div class="kanban-col col-Published" data-stage="Published">
+        <div class="col-header">
+          <div class="col-title" style="color: var(--c-published);">✨ 已交付</div>
+          <div class="col-count">2</div>
+        </div>
+        <div class="flat-card stage-Published" 
+             data-stage="Published" 
+             data-target="2026-10-24T20:00:00+08:00" 
+             data-ts="1792843200">
+          <div class="c-title">萬物演進四階體系與防內耗工作法則入法</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-10-24 20:00</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          <div class="c-desc">完成系統行為規範修訂，並公開至 GitHub 組織。</div>
+        </div>
+        <div class="flat-card stage-Published" 
+             data-stage="Published" 
+             data-target="2026-10-15T18:00:00+08:00" 
+             data-ts="1792058400">
+          <div class="c-title">鐵道排班與時間管理演算法實裝</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-10-15 18:00</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          <div class="c-desc">完成時間塊排班演算法，並整合進日常主控台。</div>
+        </div>
+      </div>
+      <div class="kanban-col col-Canceled" data-stage="Canceled">
+        <div class="col-header">
+          <div class="col-title" style="color: var(--c-canceled);">🛑 已取消</div>
+          <div class="col-count">1</div>
+        </div>
+        <div class="flat-card stage-Canceled" 
+             data-stage="Canceled" 
+             data-target="2026-10-20T18:00:00+08:00" 
+             data-ts="1792490400">
+          <div class="c-title">全自動網頁爬蟲與每日新聞摘要機器人</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-10-20 18:00</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          <div class="c-desc">經評估現有開源工具已可完全替代，邊際效益過低，戰略止損取消研發。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Minimalist Flat List View Mode (Zero Progress Bars) -->
+    <div class="list-view-wrap" id="listView">
       <div class="flat-card stage-Executing" 
            data-stage="Executing" 
            data-target="2026-10-25T21:00:00+08:00" 
-           data-ts="1792933200" 
-           data-delay="0">
-        <div class="c-top">
+           data-ts="1792933200">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
           <div class="c-title">應用力學 Ch12 核心精華筆記與題解手稿上線</div>
-          <div>
-            <span class="stage-badge badge-Executing">Executing</span>
-          </div>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-executing);">Executing</span>
         </div>
-
-        <!-- Abstract Progress Rail -->
-        <div class="rail-wrap">
-          <div class="progress-rail">
-            <div class="progress-fill fill-Executing" style="width: 67%;"></div>
-          </div>
-          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>Ch12 觀念重點與核心公式推導</span><span class="m-chip done"><span class="icon">✓</span>精選歷屆考題與盲點題解整理</span><span class="m-chip "><span class="icon">○</span>向量排版 PDF 匯出與公開上傳</span></div>
+        <div class="c-badge-row">
+          <span class="c-target-date">📅 2026-10-25 21:00</span>
+          <span class="live-countdown" data-role="countdown">計算中...</span>
         </div>
-
-        <div class="c-meta">
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 目標定檔:</span>
-            <span class="c-meta-val">2026-10-25 21:00</span>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">⏳ 時間狀態:</span>
-            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
-          </div>
-        </div>
-
-        <div class="c-content">
-          <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>整理應用力學 Ch12 核心必考觀念、歷屆題解與盲點標註，於今晚 21:00 前完成 PDF 排版並公開上線。</span>
-        </div>
-      </div>
-      <div class="flat-card stage-Planned" 
-           data-stage="Planned" 
-           data-target="2026-10-28T21:00:00+08:00" 
-           data-ts="1793192400" 
-           data-delay="0">
-        <div class="c-top">
-          <div class="c-title">應用力學 Ch13 核心精華筆記與題解手稿上線</div>
-          <div>
-            <span class="stage-badge badge-Planned">Planned</span>
-          </div>
-        </div>
-
-        <!-- Abstract Progress Rail -->
-        <div class="rail-wrap">
-          <div class="progress-rail">
-            <div class="progress-fill fill-Planned" style="width: 25%;"></div>
-          </div>
-          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>鎖定 Ch13 核心章節範圍</span><span class="m-chip "><span class="icon">○</span>觀念推導手稿撰寫</span><span class="m-chip "><span class="icon">○</span>歷屆經典大題詳解</span><span class="m-chip "><span class="icon">○</span>向量 PDF 輸出發布</span></div>
-        </div>
-
-        <div class="c-meta">
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 目標定檔:</span>
-            <span class="c-meta-val">2026-10-28 21:00</span>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">⏳ 時間狀態:</span>
-            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
-          </div>
-        </div>
-
-        <div class="c-content">
-          <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>延續 Ch12 筆記規格，於本週三晚間 21:00 前產出 Ch13 向量精華筆記檔。</span>
-        </div>
+        <div class="c-desc">整理應用力學 Ch12 核心必考觀念、歷屆題解與盲點標註，今晚 21:00 前完成 PDF 排版並公開上線。</div>
       </div>
       <div class="flat-card stage-Review" 
            data-stage="Review" 
            data-target="2026-10-27T12:00:00+08:00" 
-           data-ts="1793073600" 
-           data-delay="0">
-        <div class="c-top">
+           data-ts="1793073600">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
           <div class="c-title">🎙️ Podcast 第一集試播集音訊上架</div>
-          <div>
-            <span class="stage-badge badge-Review">Review</span>
-          </div>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-review);">Review</span>
         </div>
-
-        <!-- Abstract Progress Rail -->
-        <div class="rail-wrap">
-          <div class="progress-rail">
-            <div class="progress-fill fill-Review" style="width: 50%;"></div>
-          </div>
-          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>45 分鐘音訊錄製完成</span><span class="m-chip done"><span class="icon">✓</span>粗剪與降噪處理</span><span class="m-chip "><span class="icon">○</span>母帶最後試聽校對</span><span class="m-chip "><span class="icon">○</span>封面圖匯出與串流平台上傳</span></div>
+        <div class="c-badge-row">
+          <span class="c-target-date">📅 2026-10-27 12:00</span>
+          <span class="live-countdown" data-role="countdown">計算中...</span>
         </div>
-
-        <div class="c-meta">
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 目標定檔:</span>
-            <span class="c-meta-val">2026-10-27 12:00</span>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">⏳ 時間狀態:</span>
-            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
-          </div>
+        <div class="c-desc">首集試播音訊最後打磨，10/27 中午 12:00 正式推播至串流平台。</div>
+      </div>
+      <div class="flat-card stage-Planned" 
+           data-stage="Planned" 
+           data-target="2026-10-28T21:00:00+08:00" 
+           data-ts="1793192400">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+          <div class="c-title">應用力學 Ch13 核心精華筆記與題解手稿上線</div>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-planned);">Planned</span>
         </div>
-
-        <div class="c-content">
-          <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>首集試播音訊最後打磨，預計於 10/27 中午 12:00 正式推播至串流平台。</span>
+        <div class="c-badge-row">
+          <span class="c-target-date">📅 2026-10-28 21:00</span>
+          <span class="live-countdown" data-role="countdown">計算中...</span>
         </div>
+        <div class="c-desc">延續 Ch12 筆記規格，於本週三晚間 21:00 前產出 Ch13 向量精華筆記檔。</div>
       </div>
       <div class="flat-card stage-Planned" 
            data-stage="Planned" 
            data-target="2026-11-05T00:00:00+08:00" 
-           data-ts="1793808000" 
-           data-delay="0">
-        <div class="c-top">
+           data-ts="1793808000">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
           <div class="c-title">🤖 線上課程自動評分工具</div>
-          <div>
-            <span class="stage-badge badge-Planned">Planned</span>
-          </div>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-planned);">Planned</span>
         </div>
-
-        <!-- Abstract Progress Rail -->
-        <div class="rail-wrap">
-          <div class="progress-rail">
-            <div class="progress-fill fill-Planned" style="width: 33%;"></div>
-          </div>
-          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>格式規格化定義</span><span class="m-chip "><span class="icon">○</span>評分演算法核心代碼</span><span class="m-chip "><span class="icon">○</span>邊界案例壓力測試</span></div>
+        <div class="c-badge-row">
+          <span class="c-target-date">📅 2026-11-05 00:00</span>
+          <span class="live-countdown" data-role="countdown">計算中...</span>
         </div>
-
-        <div class="c-meta">
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 目標定檔:</span>
-            <span class="c-meta-val">2026-11-05 00:00</span>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">⏳ 時間狀態:</span>
-            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
-          </div>
-        </div>
-
-        <div class="c-content">
-          <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>開發自動化作業檢查腳本，提供精確規則評分。</span>
-        </div>
+        <div class="c-desc">開發自動化作業檢查腳本，提供精確規則評分。</div>
       </div>
       <div class="flat-card stage-Planning" 
            data-stage="Planning" 
            data-target="" 
-           data-ts="9999999999" 
-           data-delay="0">
-        <div class="c-top">
+           data-ts="9999999999">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
           <div class="c-title">💡 跨裝置實時剪貼簿同步工具 (跨 Mac/Win/iOS)</div>
-          <div>
-            <span class="stage-badge badge-Planning">Planning</span>
-          </div>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-planning);">Planning</span>
         </div>
-
-        <!-- Abstract Progress Rail -->
-        <div class="rail-wrap">
-          <div class="progress-rail">
-            <div class="progress-fill fill-Planning" style="width: 0%;"></div>
-          </div>
-          <div class="milestones-chips"><span class="m-chip "><span class="icon">○</span>區域網加密協定評估</span><span class="m-chip "><span class="icon">○</span>本地廣播延遲測試</span></div>
+        <div class="c-badge-row">
+          <span class="c-target-date">📅 待定</span>
+          <span class="live-countdown" data-role="countdown">計算中...</span>
         </div>
-
-        <div class="c-meta">
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 目標定檔:</span>
-            <span class="c-meta-val">待定</span>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">⏳ 時間狀態:</span>
-            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
-          </div>
-        </div>
-
-        <div class="c-content">
-          <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>探索基於區域網的高速加密剪貼簿同步架構，評估實用性與開發工期。</span>
-        </div>
+        <div class="c-desc">探索基於區域網的高速加密剪貼簿同步架構，評估實用性與開發工期。</div>
       </div>
       <div class="flat-card stage-Published" 
            data-stage="Published" 
            data-target="2026-10-24T20:00:00+08:00" 
-           data-ts="1792843200" 
-           data-delay="0">
-        <div class="c-top">
+           data-ts="1792843200">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
           <div class="c-title">萬物演進四階體系與防內耗工作法則入法</div>
-          <div>
-            <span class="stage-badge badge-Published">Published</span>
-          </div>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-published);">Published</span>
         </div>
-
-        <!-- Abstract Progress Rail -->
-        <div class="rail-wrap">
-          <div class="progress-rail">
-            <div class="progress-fill fill-Published" style="width: 100%;"></div>
-          </div>
-          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>法案草案起草與辯論</span><span class="m-chip done"><span class="icon">✓</span>元首正式簽核入法</span></div>
+        <div class="c-badge-row">
+          <span class="c-target-date">📅 2026-10-24 20:00</span>
+          <span class="live-countdown" data-role="countdown">計算中...</span>
         </div>
-
-        <div class="c-meta">
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 目標定檔:</span>
-            <span class="c-meta-val">2026-10-24 20:00</span>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">⏳ 時間狀態:</span>
-            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
-          </div>
-        </div>
-
-        <div class="c-content">
-          <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>完成系統行為規範修訂，並公開至 GitHub 組織。</span>
-        </div>
+        <div class="c-desc">完成系統行為規範修訂，並公開至 GitHub 組織。</div>
       </div>
       <div class="flat-card stage-Published" 
            data-stage="Published" 
            data-target="2026-10-15T18:00:00+08:00" 
-           data-ts="1792058400" 
-           data-delay="0">
-        <div class="c-top">
+           data-ts="1792058400">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
           <div class="c-title">鐵道排班與時間管理演算法實裝</div>
-          <div>
-            <span class="stage-badge badge-Published">Published</span>
-          </div>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-published);">Published</span>
         </div>
-
-        <!-- Abstract Progress Rail -->
-        <div class="rail-wrap">
-          <div class="progress-rail">
-            <div class="progress-fill fill-Published" style="width: 100%;"></div>
-          </div>
-          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>演算法原型驗證</span><span class="m-chip done"><span class="icon">✓</span>整合進營運長每日主控台</span></div>
+        <div class="c-badge-row">
+          <span class="c-target-date">📅 2026-10-15 18:00</span>
+          <span class="live-countdown" data-role="countdown">計算中...</span>
         </div>
-
-        <div class="c-meta">
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 目標定檔:</span>
-            <span class="c-meta-val">2026-10-15 18:00</span>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">⏳ 時間狀態:</span>
-            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
-          </div>
-        </div>
-
-        <div class="c-content">
-          <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>完成時間塊排班演算法，並整合進日常主控台。</span>
-        </div>
+        <div class="c-desc">完成時間塊排班演算法，並整合進日常主控台。</div>
       </div>
       <div class="flat-card stage-Canceled" 
            data-stage="Canceled" 
            data-target="2026-10-20T18:00:00+08:00" 
-           data-ts="1792490400" 
-           data-delay="0">
-        <div class="c-top">
+           data-ts="1792490400">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
           <div class="c-title">全自動網頁爬蟲與每日新聞摘要機器人</div>
-          <div>
-            <span class="stage-badge badge-Canceled">Canceled</span>
-          </div>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-canceled);">Canceled</span>
         </div>
-
-        <!-- Abstract Progress Rail -->
-        <div class="rail-wrap">
-          <div class="progress-rail">
-            <div class="progress-fill fill-Canceled" style="width: 100%;"></div>
-          </div>
-          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>初步架構可行性評估</span></div>
+        <div class="c-badge-row">
+          <span class="c-target-date">📅 2026-10-20 18:00</span>
+          <span class="live-countdown" data-role="countdown">計算中...</span>
         </div>
-
-        <div class="c-meta">
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 目標定檔:</span>
-            <span class="c-meta-val">2026-10-20 18:00</span>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">⏳ 時間狀態:</span>
-            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
-          </div>
-        </div>
-
-        <div class="c-content">
-          <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>經評估現有開源工具已可完全替代，邊際效益過低，戰略止損取消研發。</span>
-        </div>
+        <div class="c-desc">經評估現有開源工具已可完全替代，邊際效益過低，戰略止損取消研發。</div>
       </div>
     </div>
 
-    <!-- Hidden Collapsed Legacy Archive -->
+    <!-- Collapsed Legacy Archive -->
     <details class="legacy-archive">
       <summary>📦 過去內部作業紀錄存檔 (50 案 · 預設折疊)</summary>
       <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 6px;">
@@ -987,7 +854,7 @@
 
     <!-- Footer -->
     <footer>
-      <div>公開進度公證站 · 客觀記錄每一次承諾與交付</div>
+      <div>公開承諾看板 · 客觀記錄每一次定檔與發布</div>
       <div>
         <a href="v2.1_legacy.html" style="color: var(--accent); text-decoration: none;">歷史版本</a> ·
         <a href="https://github.com/PlanOS-HQ/PlanOS_v2" target="_blank" style="color: var(--accent); text-decoration: none;">GitHub 組織</a>
@@ -1009,50 +876,46 @@
         if (!timeEl) return;
 
         if (stage === 'Published') {
-          timeEl.innerText = '已如約發布';
-          timeEl.className = 'c-meta-val live-time-val is-published';
+          timeEl.innerText = '已如約交付';
+          timeEl.className = 'live-countdown is-published';
           card.classList.remove('is-delayed');
-          card.dataset.delay = '0';
           return;
         }
 
         if (stage === 'Canceled') {
-          timeEl.innerText = '已正式取消';
-          timeEl.className = 'c-meta-val live-time-val is-canceled';
+          timeEl.innerText = '已取消';
+          timeEl.className = 'live-countdown is-canceled';
           card.classList.remove('is-delayed');
-          card.dataset.delay = '0';
           return;
         }
 
         if (!targetAttr || targetAttr === '待定') {
-          timeEl.innerText = '目標時間待定';
-          timeEl.className = 'c-meta-val live-time-val';
+          timeEl.innerText = '時間待定';
+          timeEl.className = 'live-countdown';
           card.classList.remove('is-delayed');
-          card.dataset.delay = '0';
           return;
         }
 
         const targetDate = new Date(targetAttr);
         if (isNaN(targetDate.getTime())) {
-          timeEl.innerText = '時間格式待校準';
+          timeEl.innerText = '時間待校準';
           return;
         }
 
         const diff = targetDate.getTime() - now.getTime();
 
         if (diff > 0) {
-          // On track, counting down
+          // On track countdown
           const days = Math.floor(diff / (1000 * 60 * 60 * 24));
           const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
           const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
           timeEl.innerText = `倒數 ${days} 天 ${hours} 小時 ${minutes} 分 ${seconds} 秒`;
-          timeEl.className = 'c-meta-val live-time-val';
+          timeEl.className = 'live-countdown';
           card.classList.remove('is-delayed');
-          card.dataset.delay = '0';
         } else {
-          // Overdue / Delayed / Slippage
+          // Overdue / Delayed
           delayedCount++;
           const absDiff = Math.abs(diff);
           const days = Math.floor(absDiff / (1000 * 60 * 60 * 24));
@@ -1061,65 +924,62 @@
           const seconds = Math.floor((absDiff % (1000 * 60)) / 1000);
 
           timeEl.innerText = `已延期 ${days} 天 ${hours} 小時 ${minutes} 分 ${seconds} 秒`;
-          timeEl.className = 'c-meta-val live-time-val is-delayed';
+          timeEl.className = 'live-countdown is-delayed';
           card.classList.add('is-delayed');
-          // delay seconds for precise sorting
-          card.dataset.delay = Math.floor(absDiff / 1000);
         }
       });
 
-      // Update delayed counter badge in metrics & toolbar
       const metricDelayed = document.getElementById('metricDelayed');
-      if (metricDelayed) metricDelayed.innerText = `${delayedCount} 項`;
+      if (metricDelayed) metricDelayed.innerText = `${delayedCount} 案`;
       const tabDelayed = document.getElementById('delayedTabCount');
       if (tabDelayed) tabDelayed.innerText = delayedCount;
+    }
+
+    function switchView(view) {
+      const board = document.getElementById('kanbanBoard');
+      const list = document.getElementById('listView');
+      const btnK = document.getElementById('btnKanban');
+      const btnL = document.getElementById('btnList');
+
+      if (view === 'kanban') {
+        board.style.display = 'grid';
+        list.style.display = 'none';
+        btnK.classList.add('active');
+        btnL.classList.remove('active');
+      } else {
+        board.style.display = 'none';
+        list.style.display = 'flex';
+        btnK.classList.remove('active');
+        btnL.classList.add('active');
+      }
     }
 
     function filterCards(status, btn) {
       document.querySelectorAll('.filter-group .f-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      document.querySelectorAll('.flat-card').forEach(card => {
+
+      // Filter in Kanban Board (hide/show entire columns or cards)
+      document.querySelectorAll('.kanban-col').forEach(col => {
+        if (status === 'all') {
+          col.style.display = '';
+        } else if (status === 'delayed') {
+          const hasDelayed = col.querySelector('.flat-card.is-delayed');
+          col.style.display = hasDelayed ? '' : 'none';
+        } else {
+          col.style.display = (col.dataset.stage === status) ? '' : 'none';
+        }
+      });
+
+      // Filter in List View
+      document.querySelectorAll('#listView .flat-card').forEach(card => {
         if (status === 'all') {
           card.style.display = '';
         } else if (status === 'delayed') {
           card.style.display = card.classList.contains('is-delayed') ? '' : 'none';
-        } else if (card.dataset.stage === status) {
-          card.style.display = '';
         } else {
-          card.style.display = 'none';
+          card.style.display = (card.dataset.stage === status) ? '' : 'none';
         }
       });
-    }
-
-    const STAGE_ORDER_MAP = {
-      'Planning': 1,
-      'Planned': 2,
-      'Executing': 3,
-      'Review': 4,
-      'Published': 5,
-      'Canceled': 6
-    };
-
-    function sortCards(mode) {
-      const container = document.getElementById('cardsContainer');
-      const cards = Array.from(container.querySelectorAll('.flat-card'));
-
-      cards.sort((a, b) => {
-        const tsA = parseInt(a.dataset.ts, 10);
-        const tsB = parseInt(b.dataset.ts, 10);
-        const delayA = parseInt(a.dataset.delay, 10);
-        const delayB = parseInt(b.dataset.delay, 10);
-        const stageA = STAGE_ORDER_MAP[a.dataset.stage] || 99;
-        const stageB = STAGE_ORDER_MAP[b.dataset.stage] || 99;
-
-        if (mode === 'time-asc') return tsA - tsB;
-        if (mode === 'time-desc') return tsB - tsA;
-        if (mode === 'delay-desc') return delayB - delayA;
-        if (mode === 'stage-order') return stageA - stageB;
-        return 0;
-      });
-
-      cards.forEach(c => container.appendChild(c));
     }
 
     function initTheme() {
