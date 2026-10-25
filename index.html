@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PlanOS 扁平發布雷達 · 定檔卡片庫 (v2.5)</title>
+  <title>公開承諾與進度發布台</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #07090e;
-      --bg-card: #0d121d;
-      --bg-card-hover: #121929;
-      --bg-inset: #080b12;
+      --bg: #090c15;
+      --bg-card: #0f1523;
+      --bg-card-hover: #141c2e;
+      --bg-inset: #090d18;
       --border: rgba(255, 255, 255, 0.08);
-      --border-highlight: rgba(56, 189, 248, 0.4);
+      --border-highlight: rgba(56, 189, 248, 0.35);
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
@@ -62,7 +62,7 @@
       padding: 24px 16px 60px;
       transition: background 0.2s ease, color 0.2s ease;
     }
-    .container { max-width: 920px; margin: 0 auto; }
+    .container { max-width: 880px; margin: 0 auto; }
 
     /* Top Bar */
     .top-bar {
@@ -71,22 +71,17 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       padding-bottom: 14px;
       border-bottom: 1px solid var(--border);
     }
-    .sys-badge {
-      display: inline-flex;
+    .site-title {
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
-      font-weight: 700;
-      color: var(--text-muted);
+      letter-spacing: -0.3px;
     }
     .live-dot {
       width: 7px; height: 7px; border-radius: 50%;
@@ -95,7 +90,7 @@
     }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 
-    .controls-group { display: flex; align-items: center; gap: 10px; }
+    .controls { display: flex; align-items: center; gap: 10px; }
     .clock-badge {
       font-family: 'JetBrains Mono', monospace; font-size: 12px;
       color: var(--text-muted); background: var(--bg-inset);
@@ -107,8 +102,8 @@
       font-size: 12px; font-weight: 600; cursor: pointer;
     }
 
-    /* Metrics Strip */
-    .metrics-strip {
+    /* Metrics Bar */
+    .metrics-bar {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
       gap: 10px;
@@ -118,21 +113,18 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 10px 14px;
+      padding: 12px 14px;
     }
     .m-num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 800;
-      line-height: 1.2;
       margin-bottom: 2px;
     }
     .m-lbl {
-      font-size: 11px;
+      font-size: 11.5px;
       color: var(--text-dim);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-weight: 600;
     }
 
     /* Toolbar: Filter & Sort */
@@ -144,7 +136,7 @@
       gap: 12px;
       background: var(--bg-inset);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 8px 12px;
       margin-bottom: 20px;
     }
@@ -159,7 +151,7 @@
       color: var(--text-muted);
       padding: 4px 10px;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 600;
       cursor: pointer;
       font-family: inherit;
@@ -192,7 +184,7 @@
       cursor: pointer;
     }
 
-    /* Unified Flat Card */
+    /* Cards List */
     .cards-list {
       display: flex;
       flex-direction: column;
@@ -203,7 +195,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 14px 18px;
+      padding: 16px 18px;
       transition: border-color 0.15s ease;
       position: relative;
     }
@@ -220,42 +212,24 @@
       border-left: 3px solid var(--accent);
     }
 
-    /* Card Top Line */
+    /* Card Layout */
     .c-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
-    }
-    .c-id-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .c-id {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      background: var(--bg-inset);
-      border: 1px solid var(--border);
-      color: var(--text-dim);
-      padding: 2px 6px;
-      border-radius: 4px;
     }
     .c-title {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--text);
       letter-spacing: -0.2px;
     }
-
-    /* Countdown / Delay Badges */
     .c-badge {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 700;
       padding: 3px 8px;
       border-radius: 4px;
@@ -278,12 +252,12 @@
       border-color: var(--success-border);
     }
 
-    /* Card Meta Data Grid */
+    /* Metadata Row */
     .c-meta {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 8px;
-      font-size: 12px;
+      font-size: 12.5px;
       color: var(--text-muted);
       margin-bottom: 10px;
       background: var(--bg-inset);
@@ -297,53 +271,48 @@
       gap: 6px;
     }
     .c-meta-lbl {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
       color: var(--text-dim);
     }
     .c-meta-val {
-      font-family: 'JetBrains Mono', monospace;
       font-weight: 600;
       color: var(--text);
     }
 
-    /* Phase Mini Progress Bar */
-    .phase-bar-wrap {
+    /* Mini Progress Bar */
+    .progress-inline {
       display: inline-flex;
       align-items: center;
       gap: 6px;
     }
     .mini-track {
-      width: 40px;
-      height: 4px;
+      width: 44px;
+      height: 5px;
       background: var(--border);
-      border-radius: 2px;
+      border-radius: 3px;
       overflow: hidden;
     }
     .mini-fill {
       height: 100%;
       background: var(--accent);
-      border-radius: 2px;
+      border-radius: 3px;
     }
 
-    /* DoD Line */
-    .c-dod {
-      font-size: 12px;
+    /* Content Description */
+    .c-content {
+      font-size: 13px;
       color: var(--text-muted);
-      line-height: 1.4;
+      line-height: 1.5;
       display: flex;
       align-items: baseline;
       gap: 6px;
     }
-    .c-dod-lbl {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10.5px;
-      font-weight: 700;
+    .c-content-lbl {
       color: var(--text-dim);
+      font-weight: 700;
       flex-shrink: 0;
     }
 
-    /* Bottom Legacy Collapsible */
+    /* Collapsed Legacy Archive */
     details.legacy-archive {
       margin-top: 36px;
       background: var(--bg-inset);
@@ -353,9 +322,8 @@
     }
     details.legacy-archive summary {
       cursor: pointer;
-      font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--text-dim);
       outline: none;
     }
@@ -378,35 +346,35 @@
     
     <!-- Top Bar -->
     <div class="top-bar">
-      <div class="sys-badge">
+      <div class="site-title">
         <span class="live-dot"></span>
-        <span>PLANOS PLEDGE RADAR // FLAT EDITION</span>
+        <span>公開承諾與進度發布台</span>
       </div>
-      <div class="controls-group">
-        <span id="liveClock" class="clock-badge">2026-10-25 15:15:00 (GMT+8)</span>
+      <div class="controls">
+        <span id="liveClock" class="clock-badge">2026-10-25 15:20:00 (GMT+8)</span>
         <button id="themeToggle" class="theme-btn" onclick="toggleTheme()">☀️ 淺色</button>
       </div>
     </div>
 
-    <!-- Metrics Strip -->
-    <div class="metrics-strip">
+    <!-- Metrics Bar -->
+    <div class="metrics-bar">
       <div class="m-card">
         <div class="m-num" style="color: #10b981;">100.0%</div>
-        <div class="m-lbl">承諾兌現率</div>
+        <div class="m-lbl">準時達成率</div>
       </div>
       <div class="m-card">
-        <div class="m-num" style="color: #38bdf8;">4 案</div>
-        <div class="m-lbl">推進中 (In Progress)</div>
+        <div class="m-num" style="color: #38bdf8;">4 項</div>
+        <div class="m-lbl">進行中目標</div>
       </div>
       <div class="m-card">
         <div class="m-num" style="color: var(--success);">
           +0 天
         </div>
-        <div class="m-lbl">延期赤字 (Slippage)</div>
+        <div class="m-lbl">累計延後天數</div>
       </div>
       <div class="m-card">
-        <div class="m-num" style="color: #ffffff;">2 案</div>
-        <div class="m-lbl">已兌現 (Done)</div>
+        <div class="m-num" style="color: #ffffff;">2 項</div>
+        <div class="m-lbl">已順利完成</div>
       </div>
     </div>
 
@@ -415,27 +383,24 @@
       <div class="filter-group">
         <button class="f-btn active" onclick="filterCards('all', this)">全部 (6)</button>
         <button class="f-btn" onclick="filterCards('in_progress', this)">進行中 (4)</button>
-        <button class="f-btn" onclick="filterCards('delayed', this)">🚨 延期中 (0)</button>
+        <button class="f-btn" onclick="filterCards('delayed', this)">🚨 已延期 (0)</button>
         <button class="f-btn" onclick="filterCards('done', this)">🟢 已完成 (2)</button>
       </div>
       <div class="sort-group">
-        <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">排序:</span>
+        <span style="font-size: 12px; color: var(--text-dim);">排序:</span>
         <select class="sort-select" onchange="sortCards(this.value)">
-          <option value="time-asc">📅 定檔時間 (最近在先)</option>
-          <option value="time-desc">📅 定檔時間 (最遠在先)</option>
-          <option value="delay-desc">🚨 延期天數 (最多在先)</option>
+          <option value="time-asc">📅 預計時間 (最近在先)</option>
+          <option value="time-desc">📅 預計時間 (最遠在先)</option>
+          <option value="delay-desc">🚨 延後天數 (最多在先)</option>
         </select>
       </div>
     </div>
 
-    <!-- Flat Cards List -->
+    <!-- Standard Flat Cards List -->
     <div class="cards-list" id="cardsContainer">
       <div class="flat-card card-in_progress" data-status="in_progress" data-ts="1793019600" data-delay="0">
         <div class="c-top">
-          <div class="c-id-title">
-            <span class="c-id">PUB-26-001</span>
-            <span class="c-title">應用力學 Ch12 p.45~p.78 精華筆記與錯題解析 PDF 上線</span>
-          </div>
+          <div class="c-title">應用力學 Ch12 p.45~p.78 精華筆記與錯題解析 PDF 上線</div>
           <div>
             <span class="c-badge warning">⏳ 剩 1 天 5 小時</span>
           </div>
@@ -443,33 +408,30 @@
 
         <div class="c-meta">
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 定檔時間:</span>
+            <span class="c-meta-lbl">📅 預計發布:</span>
             <span class="c-meta-val">2026-10-26 21:00</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📊 階段:</span>
-            <div class="phase-bar-wrap">
-              <span class="c-meta-val">M0.3 封裝 · 75%</span>
+            <span class="c-meta-lbl">📊 目前進度:</span>
+            <div class="progress-inline">
+              <span class="c-meta-val">75%</span>
               <div class="mini-track"><div class="mini-fill" style="width: 75%;"></div></div>
             </div>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">🏷️ 狀態:</span>
+            <span class="c-meta-lbl">🏷️ 目前狀態:</span>
             <span class="c-meta-val" style="color: var(--accent);">進行中</span>
           </div>
         </div>
 
-        <div class="c-dod">
-          <span class="c-dod-lbl">🎯 驗收標準 (DoD):</span>
-          <span>p.45-60 觀念精華整理 · p.61-78 錯題解析與盲點標註 · 輸出向量排版 PDF 並上傳公開</span>
+        <div class="c-content">
+          <span class="c-content-lbl">📝 承諾內容:</span>
+          <span>p.45-60 觀念精華整理、p.61-78 錯題解析與盲點標註、輸出向量排版 PDF 並上傳公開</span>
         </div>
       </div>
       <div class="flat-card card-in_progress" data-status="in_progress" data-ts="1793073600" data-delay="0">
         <div class="c-top">
-          <div class="c-id-title">
-            <span class="c-id">POD-26-001</span>
-            <span class="c-title">🎙️ Podcast Ep.01 錄音與剪輯後製</span>
-          </div>
+          <div class="c-title">🎙️ Podcast 第一集：錄音與剪輯後製</div>
           <div>
             <span class="c-badge warning">⏳ 剩 1 天 20 小時</span>
           </div>
@@ -477,33 +439,30 @@
 
         <div class="c-meta">
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 定檔時間:</span>
+            <span class="c-meta-lbl">📅 預計發布:</span>
             <span class="c-meta-val">2026-10-27 12:00</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📊 階段:</span>
-            <div class="phase-bar-wrap">
-              <span class="c-meta-val">M0.2 錄製 · 40%</span>
+            <span class="c-meta-lbl">📊 目前進度:</span>
+            <div class="progress-inline">
+              <span class="c-meta-val">40%</span>
               <div class="mini-track"><div class="mini-fill" style="width: 40%;"></div></div>
             </div>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">🏷️ 狀態:</span>
+            <span class="c-meta-lbl">🏷️ 目前狀態:</span>
             <span class="c-meta-val" style="color: var(--accent);">進行中</span>
           </div>
         </div>
 
-        <div class="c-dod">
-          <span class="c-dod-lbl">🎯 驗收標準 (DoD):</span>
-          <span>完成 45 分鐘錄音 · AU 降噪與剪輯後製 · 輸出 MP3 與發行封面</span>
+        <div class="c-content">
+          <span class="c-content-lbl">📝 承諾內容:</span>
+          <span>完成 45 分鐘音訊錄製、降噪剪輯後製、輸出 MP3 與封面並發布到串流平台</span>
         </div>
       </div>
       <div class="flat-card card-in_progress" data-status="in_progress" data-ts="1793808000" data-delay="0">
         <div class="c-top">
-          <div class="c-id-title">
-            <span class="c-id">BOT-26-001</span>
-            <span class="c-title">🤖 OCW Bot 自動評分模組上線</span>
-          </div>
+          <div class="c-title">🤖 線上課程自動評分工具上線</div>
           <div>
             <span class="c-badge normal">剩 10 天</span>
           </div>
@@ -511,33 +470,30 @@
 
         <div class="c-meta">
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 定檔時間:</span>
+            <span class="c-meta-lbl">📅 預計發布:</span>
             <span class="c-meta-val">2026-11-05 00:00</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📊 階段:</span>
-            <div class="phase-bar-wrap">
-              <span class="c-meta-val">M0.1 原型 · 25%</span>
+            <span class="c-meta-lbl">📊 目前進度:</span>
+            <div class="progress-inline">
+              <span class="c-meta-val">25%</span>
               <div class="mini-track"><div class="mini-fill" style="width: 25%;"></div></div>
             </div>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">🏷️ 狀態:</span>
+            <span class="c-meta-lbl">🏷️ 目前狀態:</span>
             <span class="c-meta-val" style="color: var(--accent);">進行中</span>
           </div>
         </div>
 
-        <div class="c-dod">
-          <span class="c-dod-lbl">🎯 驗收標準 (DoD):</span>
-          <span>完成評分核心演算法 · 跑通 3 個單元測試案例</span>
+        <div class="c-content">
+          <span class="c-content-lbl">📝 承諾內容:</span>
+          <span>完成評分核心演算法、通過測試並提供給同學試用</span>
         </div>
       </div>
       <div class="flat-card card-in_progress" data-status="in_progress" data-ts="1794672000" data-delay="0">
         <div class="c-top">
-          <div class="c-id-title">
-            <span class="c-id">SYS-26-001</span>
-            <span class="c-title">🛠️ PlanOS v2.5 雙軌架構正式版發布</span>
-          </div>
+          <div class="c-title">🛠️ 個人作業系統 PlanOS v2.5 正式版發布</div>
           <div>
             <span class="c-badge normal">剩 20 天</span>
           </div>
@@ -545,100 +501,94 @@
 
         <div class="c-meta">
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 定檔時間:</span>
+            <span class="c-meta-lbl">📅 預計發布:</span>
             <span class="c-meta-val">2026-11-15 00:00</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📊 階段:</span>
-            <div class="phase-bar-wrap">
-              <span class="c-meta-val">M0.2 核心 · 60%</span>
+            <span class="c-meta-lbl">📊 目前進度:</span>
+            <div class="progress-inline">
+              <span class="c-meta-val">60%</span>
               <div class="mini-track"><div class="mini-fill" style="width: 60%;"></div></div>
             </div>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">🏷️ 狀態:</span>
+            <span class="c-meta-lbl">🏷️ 目前狀態:</span>
             <span class="c-meta-val" style="color: var(--accent);">進行中</span>
           </div>
         </div>
 
-        <div class="c-dod">
-          <span class="c-dod-lbl">🎯 驗收標準 (DoD):</span>
-          <span>完成雙軌版本控制法典 · 產出正式 Annotated Release Tag</span>
+        <div class="c-content">
+          <span class="c-content-lbl">📝 承諾內容:</span>
+          <span>完成使用手冊與法規整理、產出開源安裝檔</span>
         </div>
       </div>
       <div class="flat-card card-done" data-status="done" data-ts="1792843200" data-delay="0">
         <div class="c-top">
-          <div class="c-id-title">
-            <span class="c-id">LAW-26-001</span>
-            <span class="c-title">🏛️ 萬物演進四階協議與 LifeOS 三大不變量法典入法</span>
-          </div>
+          <div class="c-title">萬物演進四階體系與防內耗工作法則入法</div>
           <div>
-            <span class="c-badge done">✓ 已完成交付</span>
+            <span class="c-badge done">✓ 已順利完成</span>
           </div>
         </div>
 
         <div class="c-meta">
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 定檔時間:</span>
+            <span class="c-meta-lbl">📅 預計發布:</span>
             <span class="c-meta-val">2026-10-24 20:00</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📊 階段:</span>
-            <div class="phase-bar-wrap">
-              <span class="c-meta-val">M1.0 發布 · 100%</span>
+            <span class="c-meta-lbl">📊 目前進度:</span>
+            <div class="progress-inline">
+              <span class="c-meta-val">100%</span>
               <div class="mini-track"><div class="mini-fill" style="width: 100%;"></div></div>
             </div>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">🏷️ 狀態:</span>
+            <span class="c-meta-lbl">🏷️ 目前狀態:</span>
             <span class="c-meta-val" style="color: var(--success);">已完成</span>
           </div>
         </div>
 
-        <div class="c-dod">
-          <span class="c-dod-lbl">🎯 驗收標準 (DoD):</span>
-          <span>完整寫入 AGENTS.md · 部署雙向 Issue Templates · 生效 RFC-26-018 與 019</span>
+        <div class="c-content">
+          <span class="c-content-lbl">📝 承諾內容:</span>
+          <span>完成系統行為規範修訂，並公開至 GitHub 組織</span>
         </div>
       </div>
       <div class="flat-card card-done" data-status="done" data-ts="1792058400" data-delay="0">
         <div class="c-top">
-          <div class="c-id-title">
-            <span class="c-id">OPS-26-001</span>
-            <span class="c-title">🚄 鐵道部會單件流派工演算法 v1.0 實裝</span>
-          </div>
+          <div class="c-title">鐵道排班與時間管理演算法實裝</div>
           <div>
-            <span class="c-badge done">✓ 已完成交付</span>
+            <span class="c-badge done">✓ 已順利完成</span>
           </div>
         </div>
 
         <div class="c-meta">
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 定檔時間:</span>
+            <span class="c-meta-lbl">📅 預計發布:</span>
             <span class="c-meta-val">2026-10-15 18:00</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📊 階段:</span>
-            <div class="phase-bar-wrap">
-              <span class="c-meta-val">M1.0 發布 · 100%</span>
+            <span class="c-meta-lbl">📊 目前進度:</span>
+            <div class="progress-inline">
+              <span class="c-meta-val">100%</span>
               <div class="mini-track"><div class="mini-fill" style="width: 100%;"></div></div>
             </div>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">🏷️ 狀態:</span>
+            <span class="c-meta-lbl">🏷️ 目前狀態:</span>
             <span class="c-meta-val" style="color: var(--success);">已完成</span>
           </div>
         </div>
 
-        <div class="c-dod">
-          <span class="c-dod-lbl">🎯 驗收標準 (DoD):</span>
-          <span>完成 Train Dispatcher 演算法 · 部署至 115-1 排程總控台</span>
+        <div class="c-content">
+          <span class="c-content-lbl">📝 承諾內容:</span>
+          <span>完成時間塊排班演算法，並整合進日常主控台</span>
         </div>
       </div>
     </div>
 
-    <!-- Hidden Collapsed Legacy Internal Archive -->
+    <!-- Hidden Collapsed Legacy Archive -->
     <details class="legacy-archive">
-      <summary>📦 內部日常作戰工單存檔 (50 案 · 預設隱藏)</summary>
+      <summary>📦 過去內部作業紀錄存檔 (50 案 · 預設隱藏)</summary>
       <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 6px;">
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[DYN-001] 10/30 應力 Midterm 1</span>
@@ -829,15 +779,15 @@
           <span>Backlog</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[TICKET] 🎙️ 10/26 Podcast Ep.01 錄音與剪輯</span>
+          <span>[TASK] 🎙️ 10/26 Podcast Ep.01 錄音與剪輯</span>
           <span>Backlog</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[TICKET] 🤖 11/05 OCW Bot 自動評分模組上線</span>
+          <span>[TASK] 🤖 11/05 OCW Bot 自動評分模組上線</span>
           <span>Backlog</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[TICKET] 🛠️ 11/15 PlanOS v2.5 雙軌正式版發布</span>
+          <span>[TASK] 🛠️ 11/15 PlanOS v2.5 雙軌正式版發布</span>
           <span>Backlog</span>
         </div>
       </div>
@@ -845,9 +795,9 @@
 
     <!-- Footer -->
     <footer>
-      <div>PlanOS Studio · SSOT: LAUNCH_SLATE.md</div>
+      <div>公開進度公證站 · 客觀記錄每一次承諾與交付</div>
       <div>
-        <a href="v2.1_legacy.html" style="color: var(--accent); text-decoration: none;">v2.1 歷史版本</a> ·
+        <a href="v2.1_legacy.html" style="color: var(--accent); text-decoration: none;">歷史版本</a> ·
         <a href="https://github.com/PlanOS-HQ/PlanOS_v2" target="_blank" style="color: var(--accent); text-decoration: none;">GitHub 組織</a>
       </div>
     </footer>
@@ -855,7 +805,6 @@
   </div>
 
   <script>
-    // Realtime Client-side Filter
     function filterCards(status, btn) {
       document.querySelectorAll('.filter-group .f-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -868,7 +817,6 @@
       });
     }
 
-    // Realtime Client-side Sort
     function sortCards(mode) {
       const container = document.getElementById('cardsContainer');
       const cards = Array.from(container.querySelectorAll('.flat-card'));
