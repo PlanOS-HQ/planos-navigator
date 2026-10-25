@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PlanOS 公開承諾工作台 (Live Commitment Table)</title>
+  <title>PlanOS 公開承諾工作台 (Live Commitment Workbench)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -12,25 +12,28 @@
       --bg-main: #090d16;
       --bg-surface: #0f172a;
       --bg-card: #131d33;
-      --bg-card-hover: #182440;
-      --border: #1e293b;
-      --border-bright: #334155;
+      --bg-card-hover: #182542;
+      --bg-card-active: #1e2c4e;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-bright: rgba(255, 255, 255, 0.16);
       --text: #f8fafc;
       --text-dim: #94a3b8;
       --text-muted: #64748b;
       --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.2);
 
       --c-executing: #38bdf8;
       --c-planned: #a855f7;
       --c-review: #f59e0b;
       --c-planning: #94a3b8;
       --c-published: #10b981;
+      --c-canceled: #64748b;
       --c-slip: #f43f5e;
       --c-slip-bg: rgba(244, 63, 94, 0.12);
       --c-slip-border: rgba(244, 63, 94, 0.35);
 
       --font-mono: 'JetBrains Mono', monospace;
-      --font-sans: 'Inter', 'Noto Sans TC', sans-serif;
+      --font-sans: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     [data-theme="light"] {
@@ -38,18 +41,21 @@
       --bg-surface: #ffffff;
       --bg-card: #f1f5f9;
       --bg-card-hover: #e2e8f0;
+      --bg-card-active: #cbd5e1;
       --border: #e2e8f0;
       --border-bright: #cbd5e1;
       --text: #0f172a;
       --text-dim: #475569;
       --text-muted: #94a3b8;
       --accent: #0284c7;
+      --accent-glow: rgba(2, 132, 199, 0.15);
 
       --c-executing: #0284c7;
       --c-planned: #7c3aed;
       --c-review: #d97706;
       --c-planning: #64748b;
       --c-published: #059669;
+      --c-canceled: #94a3b8;
       --c-slip: #e11d48;
       --c-slip-bg: rgba(225, 29, 72, 0.1);
       --c-slip-border: rgba(225, 29, 72, 0.3);
@@ -69,11 +75,17 @@
       display: flex;
       flex-direction: column;
       line-height: 1.5;
-      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
+    /* Top Bar */
     .top-bar {
-      background: var(--bg-surface);
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
       padding: 12px 24px;
       display: flex;
@@ -81,7 +93,12 @@
       align-items: center;
       position: sticky;
       top: 0;
-      z-index: 50;
+      z-index: 100;
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+
+    [data-theme="light"] .top-bar {
+      background: rgba(255, 255, 255, 0.88);
     }
 
     .site-title {
@@ -93,18 +110,50 @@
       letter-spacing: -0.3px;
     }
 
-    .live-dot {
-      width: 9px;
-      height: 9px;
-      background: var(--c-executing);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--c-executing);
-      animation: pulse 2s infinite ease-in-out;
+    .live-beacon {
+      position: relative;
+      width: 10px;
+      height: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.3); opacity: 0.6; }
+    .beacon-core {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    .beacon-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #10b981;
+      opacity: 0.8;
+      animation: beacon-pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes beacon-pulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      70% { transform: scale(2.6); opacity: 0; }
+      100% { transform: scale(2.6); opacity: 0; }
+    }
+
+    .version-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      letter-spacing: 0;
     }
 
     .controls {
@@ -133,16 +182,30 @@
       background: rgba(56, 189, 248, 0.2);
       border-color: var(--accent);
       transform: translateY(-1px);
+      box-shadow: 0 2px 8px var(--accent-glow);
+    }
+
+    .external-arrow {
+      font-size: 11px;
+      opacity: 0.8;
+      transition: transform 0.2s ease;
+    }
+
+    .hq-link-badge:hover .external-arrow {
+      transform: translate(1px, -1px);
     }
 
     .clock-badge {
       font-family: var(--font-mono);
       font-size: 12px;
+      font-weight: 500;
       color: var(--text-dim);
       background: var(--bg-card);
       border: 1px solid var(--border);
       padding: 6px 12px;
       border-radius: 8px;
+      font-feature-settings: "tnum";
+      white-space: nowrap;
     }
 
     .tool-btn {
@@ -154,14 +217,19 @@
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
     }
 
     .tool-btn:hover {
       background: var(--bg-card-hover);
       border-color: var(--border-bright);
+      transform: translateY(-1px);
     }
 
+    /* Container */
     .container {
       max-width: 1280px;
       width: 100%;
@@ -174,76 +242,91 @@
     .dashboard-header {
       background: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px 24px;
+      border-radius: 14px;
+      padding: 22px 26px;
       margin-bottom: 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
     }
 
     .header-text h1 {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 800;
-      margin-bottom: 4px;
-      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+      letter-spacing: -0.6px;
     }
 
     .header-text p {
       color: var(--text-dim);
       font-size: 13px;
+      line-height: 1.5;
     }
 
     .kpi-row {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
     .kpi-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 8px;
+      padding: 10px 16px;
+      border-radius: 10px;
       text-align: center;
-      min-width: 80px;
+      min-width: 96px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-bright);
     }
 
     .kpi-card .val {
       font-family: var(--font-mono);
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
+      line-height: 1.2;
+      font-feature-settings: "tnum";
     }
 
     .kpi-card .lbl {
       font-size: 11px;
+      font-weight: 500;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 4px;
+      white-space: nowrap;
     }
 
-    /* Filter Tabs */
+    /* Filter Bar */
     .filter-bar {
       display: flex;
       gap: 8px;
       margin-bottom: 16px;
       overflow-x: auto;
       padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
     }
 
     .tab-btn {
       background: var(--bg-surface);
       border: 1px solid var(--border);
       color: var(--text-dim);
-      padding: 6px 14px;
+      padding: 7px 14px;
       border-radius: 8px;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       transition: all 0.2s ease;
       white-space: nowrap;
     }
@@ -251,10 +334,11 @@
     .tab-btn:hover {
       background: var(--bg-card);
       color: var(--text);
+      border-color: var(--border-bright);
     }
 
     .tab-btn.active {
-      background: rgba(56, 189, 248, 0.15);
+      background: rgba(56, 189, 248, 0.12);
       border-color: var(--accent);
       color: var(--accent);
     }
@@ -262,23 +346,33 @@
     .tab-count {
       font-family: var(--font-mono);
       font-size: 11px;
+      font-weight: 600;
       background: var(--bg-card);
-      padding: 1px 6px;
+      padding: 1px 7px;
       border-radius: 10px;
       border: 1px solid var(--border);
+      color: var(--text);
+      font-feature-settings: "tnum";
     }
 
     /* Table Container */
     .table-container {
       background: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .table-responsive-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .commitment-table {
       width: 100%;
+      min-width: 760px;
       border-collapse: collapse;
       text-align: left;
     }
@@ -289,9 +383,10 @@
       font-size: 12px;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
       padding: 14px 20px;
       border-bottom: 1px solid var(--border);
+      white-space: nowrap;
     }
 
     .commitment-table td {
@@ -301,7 +396,7 @@
     }
 
     .table-row {
-      transition: background 0.15s ease;
+      transition: background-color 0.15s ease;
     }
 
     .table-row:hover {
@@ -312,29 +407,46 @@
       border-bottom: none;
     }
 
-    /* Column 1: Track (賽道) */
+    /* Column 1: Track */
     .col-track {
-      width: 110px;
+      width: 120px;
       white-space: nowrap;
     }
 
     .track-pill {
       display: inline-flex;
       align-items: center;
-      padding: 3px 10px;
+      padding: 3px 9px;
       border-radius: 6px;
       font-size: 11px;
       font-family: var(--font-mono);
       font-weight: 700;
-      letter-spacing: 0.3px;
-      border: 1px solid transparent;
+      letter-spacing: 0.4px;
       text-transform: uppercase;
+      border: 1px solid transparent;
     }
 
-    /* Column 2: Title (承諾事項) */
+    .track-projects {
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    .track-studies {
+      color: #a78bfa;
+      background: rgba(167, 139, 250, 0.12);
+      border-color: rgba(167, 139, 250, 0.3);
+    }
+
+    .track-habits {
+      color: #34d399;
+      background: rgba(52, 211, 153, 0.12);
+      border-color: rgba(52, 211, 153, 0.3);
+    }
+
+    /* Column 2: Title / Commitment */
     .col-title {
       min-width: 260px;
-      max-width: 460px;
     }
 
     .title-wrap {
@@ -348,15 +460,16 @@
       font-weight: 600;
       color: var(--text);
       letter-spacing: -0.2px;
+      line-height: 1.4;
     }
 
     .row-desc {
       font-size: 12px;
       color: var(--text-muted);
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
-    /* Column 3: Status (狀態) */
+    /* Column 3: Status */
     .col-status {
       width: 140px;
       white-space: nowrap;
@@ -366,22 +479,59 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 5px 12px;
+      padding: 4px 11px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 600;
-      border: 1px solid transparent;
-      letter-spacing: -0.2px;
       font-family: var(--font-mono);
+      letter-spacing: -0.2px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .badge-executing {
+      color: var(--c-executing);
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    .badge-planned {
+      color: var(--c-planned);
+      background: rgba(168, 85, 247, 0.12);
+      border-color: rgba(168, 85, 247, 0.35);
+    }
+
+    .badge-review {
+      color: var(--c-review);
+      background: rgba(245, 158, 11, 0.12);
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+
+    .badge-planning {
+      color: var(--c-planning);
+      background: rgba(148, 163, 184, 0.12);
+      border-color: rgba(148, 163, 184, 0.35);
+    }
+
+    .badge-publish {
+      color: var(--c-published);
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    .badge-canceled {
+      color: var(--c-canceled);
+      background: rgba(100, 116, 139, 0.12);
+      border-color: rgba(100, 116, 139, 0.35);
     }
 
     .status-icon {
-      font-size: 13px;
+      font-size: 12px;
     }
 
-    /* Column 4: Progress (進度 - 數字) */
+    /* Column 4: Progress */
     .col-progress {
-      width: 160px;
+      width: 150px;
       white-space: nowrap;
     }
 
@@ -393,14 +543,15 @@
 
     .progress-num {
       font-family: var(--font-mono);
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       letter-spacing: -0.3px;
+      font-feature-settings: "tnum";
     }
 
     .progress-track {
       width: 100%;
-      height: 6px;
+      height: 5px;
       background: var(--bg-main);
       border-radius: 3px;
       overflow: hidden;
@@ -410,10 +561,10 @@
     .progress-fill {
       height: 100%;
       border-radius: 3px;
-      transition: width 0.3s ease;
+      transition: width 0.4s ease;
     }
 
-    /* Column 5: Deadline (發布時間) */
+    /* Column 5: Deadline */
     .col-deadline {
       width: 220px;
       white-space: nowrap;
@@ -422,7 +573,7 @@
     .deadline-wrap {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 5px;
     }
 
     .deadline-date {
@@ -430,25 +581,31 @@
       font-size: 13px;
       font-weight: 600;
       color: var(--text);
+      font-feature-settings: "tnum";
     }
 
     .countdown-badge {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 600;
-      padding: 2px 8px;
+      padding: 3px 8px;
       border-radius: 6px;
       background: var(--bg-card);
       color: var(--text-dim);
       border: 1px solid var(--border);
       width: fit-content;
+      white-space: nowrap;
+      font-feature-settings: "tnum";
     }
 
     .countdown-badge.urgent {
       color: var(--c-executing);
       background: rgba(56, 189, 248, 0.12);
       border-color: rgba(56, 189, 248, 0.35);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.15);
     }
 
     .countdown-badge.slipping {
@@ -465,61 +622,110 @@
     }
 
     @keyframes pulse-slip {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(0.99); }
+    }
+
+    /* Empty state */
+    .empty-row td {
+      padding: 48px 24px;
+      text-align: center;
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .empty-icon {
+      font-size: 32px;
+      opacity: 0.6;
+    }
+
+    .empty-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .empty-desc {
+      font-size: 13px;
+      color: var(--text-muted);
     }
 
     /* Footer */
     footer {
       border-top: 1px solid var(--border);
-      padding: 20px 24px;
+      padding: 22px 24px;
       text-align: center;
       font-size: 12px;
       color: var(--text-muted);
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       background: var(--bg-surface);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
     }
 
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+      opacity: 0.85;
+    }
+
+    /* Mobile Responsive */
     @media (max-width: 768px) {
       .top-bar {
-        padding: 12px 16px;
+        padding: 10px 16px;
       }
-      .site-title span:last-child {
+
+      .site-title .title-text {
+        font-size: 14px;
+      }
+
+      .hq-link-badge span:nth-child(2) {
         display: none;
       }
-      .site-title::after {
-        content: "承諾工作台";
-      }
+
       .container {
-        padding: 16px;
+        padding: 16px 12px;
       }
+
       .dashboard-header {
+        padding: 18px 16px;
         flex-direction: column;
         align-items: flex-start;
       }
+
       .kpi-row {
         width: 100%;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 8px;
       }
+
       .kpi-card {
-        flex: 1;
         min-width: 0;
-        padding: 6px 8px;
+        padding: 8px 6px;
       }
+
       .kpi-card .val {
-        font-size: 15px;
+        font-size: 17px;
       }
-      .table-container {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+
+      .kpi-card .lbl {
+        font-size: 10px;
       }
+
       .commitment-table th, .commitment-table td {
         padding: 12px 14px;
-      }
-      .col-title {
-        min-width: 180px;
       }
     }
   </style>
@@ -529,16 +735,24 @@
   <!-- Top Bar -->
   <header class="top-bar">
     <div class="site-title">
-      <span class="live-dot"></span>
-      <span>PlanOS 公開承諾工作台 (Live View 14)</span>
+      <span class="live-beacon">
+        <span class="beacon-core"></span>
+        <span class="beacon-ring"></span>
+      </span>
+      <span class="title-text">PlanOS 公開承諾工作台</span>
+      <span class="version-tag">v2.5</span>
     </div>
     <div class="controls">
-      <a href="https://github.com/orgs/PlanOS-HQ/projects/1/views/14" target="_blank" class="hq-link-badge">
-        <span>⚡ 總部 View 14 表格</span>
-        <span>↗</span>
+      <a href="https://github.com/orgs/PlanOS-HQ/projects/1/views/14" target="_blank" rel="noopener noreferrer" class="hq-link-badge" title="在新分頁開啟總部 View 14 原生表格">
+        <span class="hq-icon">⚡</span>
+        <span>總部 View 14 表格</span>
+        <span class="external-arrow">↗</span>
       </a>
-      <span id="liveClock" class="clock-badge">2026-10-25 17:05:00 (GMT+8)</span>
-      <button id="themeToggle" class="tool-btn" onclick="toggleTheme()">☀️ 淺色</button>
+      <div id="liveClock" class="clock-badge">2026-10-25 17:15:00 (GMT+8)</div>
+      <button id="themeToggle" class="tool-btn" onclick="toggleTheme()" aria-label="切換深淺主題">
+        <span id="themeIcon">☀️</span>
+        <span id="themeText">淺色</span>
+      </button>
     </div>
   </header>
 
@@ -546,309 +760,509 @@
     <!-- Header Banner -->
     <div class="dashboard-header">
       <div class="header-text">
-        <h1>公開承諾發布工作台 (Public Commitment Table)</h1>
-        <p>1:1 直連 GitHub Project 1 · View 14 表格 · 徹底解耦 · 聚焦狀態、進度與發布時間</p>
+        <h1>公開承諾發布工作台 (Public Commitment Workbench)</h1>
+        <p>1:1 直連 GitHub Projects View 14 · 公開承諾事項、執行進度與交付倒數</p>
       </div>
       <div class="kpi-row">
         <div class="kpi-card">
-          <div class="val" style="color: var(--text);">4</div>
-          <div class="lbl">Total</div>
+          <div class="val" id="kpiTotal" style="color: var(--text);">4</div>
+          <div class="lbl">全部承諾 Total</div>
         </div>
         <div class="kpi-card">
-          <div class="val" style="color: var(--c-executing);">1</div>
-          <div class="lbl">Executing</div>
+          <div class="val" id="kpiExecuting" style="color: var(--c-executing);">1</div>
+          <div class="lbl">攻堅推進 Executing</div>
         </div>
         <div class="kpi-card">
-          <div class="val" style="color: var(--c-planning);">3</div>
-          <div class="lbl">Planning</div>
+          <div class="val" id="kpiPlanned" style="color: var(--c-planned);">0</div>
+          <div class="lbl">就緒待發 Planned</div>
         </div>
         <div class="kpi-card">
-          <div class="val" style="color: var(--c-published);">0</div>
-          <div class="lbl">Publish</div>
+          <div class="val" id="kpiPlanning" style="color: var(--c-planning);">3</div>
+          <div class="lbl">前期規劃 Planning</div>
+        </div>
+        <div class="kpi-card">
+          <div class="val" id="kpiPublish" style="color: var(--c-published);">0</div>
+          <div class="lbl">交付發布 Publish</div>
         </div>
       </div>
     </div>
 
     <!-- Filter Bar -->
     <div class="filter-bar">
-      <button class="tab-btn active" onclick="filterTable('all', this)">All <span class="tab-count">4</span></button>
-      <button class="tab-btn" onclick="filterTable('executing', this)">🚀 Executing <span class="tab-count">1</span></button>
-      <button class="tab-btn" onclick="filterTable('planned', this)">📅 Planned <span class="tab-count">0</span></button>
-      <button class="tab-btn" onclick="filterTable('review', this)">🔍 Review <span class="tab-count">0</span></button>
-      <button class="tab-btn" onclick="filterTable('planning', this)">💡 Planning <span class="tab-count">3</span></button>
-      <button class="tab-btn" onclick="filterTable('published', this)">✨ Publish <span class="tab-count">0</span></button>
+      <button class="tab-btn active" data-filter="all" onclick="filterTable('all', this)">
+        <span>全部承諾 All</span>
+        <span class="tab-count" id="countAll">4</span>
+      </button>
+      <button class="tab-btn" data-filter="executing" onclick="filterTable('executing', this)">
+        <span>🚀 執行中 Executing</span>
+        <span class="tab-count" id="countExecuting">1</span>
+      </button>
+      <button class="tab-btn" data-filter="planned" onclick="filterTable('planned', this)">
+        <span>📅 已就緒 Planned</span>
+        <span class="tab-count" id="countPlanned">0</span>
+      </button>
+      <button class="tab-btn" data-filter="review" onclick="filterTable('review', this)">
+        <span>🔍 待審核 Review</span>
+        <span class="tab-count" id="countReview">0</span>
+      </button>
+      <button class="tab-btn" data-filter="planning" onclick="filterTable('planning', this)">
+        <span>💡 規劃中 Planning</span>
+        <span class="tab-count" id="countPlanning">3</span>
+      </button>
+      <button class="tab-btn" data-filter="publish" onclick="filterTable('publish', this)">
+        <span>✨ 已發布 Publish</span>
+        <span class="tab-count" id="countPublish">0</span>
+      </button>
     </div>
 
     <!-- Main Commitment Table -->
     <div class="table-container">
-      <table class="commitment-table">
-        <thead>
-          <tr>
-            <th>賽道 (Track)</th>
-            <th>公開承諾事項</th>
-            <th>狀態 (Status)</th>
-            <th>進度 (Progress)</th>
-            <th>發布時間</th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr class="table-row stage-executing" data-stage="executing" data-track="projects" data-target="2026-10-25T23:59:59+08:00" data-ts="1792943999">
-          <!-- 第 1 欄：Track (賽道) -->
-          <td class="col-track">
-            <span class="track-pill" style="color: #38bdf8; background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3);">
-              Projects
-            </span>
-          </td>
-
-          <!-- 第 2 欄：承諾事項 (Title) -->
-          <td class="col-title">
-            <div class="title-wrap">
-              <span class="row-title">應用力學 Ch12 核心精華筆記與題解手稿上線</span>
-              <div class="row-desc">今晚 21:00 前完成 PDF 排版並公開上線。</div>
-            </div>
-          </td>
-
-          <!-- 第 3 欄：狀態 (Status: Planning, Planned, Executing, Review, Publish) -->
-          <td class="col-status">
-            <span class="status-pill" style="color: #38bdf8; background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.35);">
-              <span class="status-icon">🚀</span>
-              <span>Executing</span>
-            </span>
-          </td>
-
-          <!-- 第 4 欄：進度 (Progress - 數字) -->
-          <td class="col-progress">
-            <div class="progress-wrap">
-              <div class="progress-num" style="color: var(--c-executing);">80%</div>
-              <div class="progress-track">
-                <div class="progress-fill" style="width: 80%; background: var(--c-executing);"></div>
-              </div>
-            </div>
-          </td>
-
-          <!-- 第 5 欄：發布時間 (Publish Time) -->
-          <td class="col-deadline">
-            <div class="deadline-wrap">
-              <div class="deadline-date">📅 2026-10-25</div>
-              <div class="countdown-badge" data-role="countdown">計算中...</div>
-            </div>
-          </td>
-        </tr>
-        <tr class="table-row stage-planning" data-stage="planning" data-track="projects" data-target="2026-10-26T23:59:59+08:00" data-ts="1793030399">
-          <!-- 第 1 欄：Track (賽道) -->
-          <td class="col-track">
-            <span class="track-pill" style="color: #38bdf8; background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3);">
-              Projects
-            </span>
-          </td>
-
-          <!-- 第 2 欄：承諾事項 (Title) -->
-          <td class="col-title">
-            <div class="title-wrap">
-              <span class="row-title">🎙️ 10/26 Podcast Ep.01 錄音與剪輯</span>
-              
-            </div>
-          </td>
-
-          <!-- 第 3 欄：狀態 (Status: Planning, Planned, Executing, Review, Publish) -->
-          <td class="col-status">
-            <span class="status-pill" style="color: #94a3b8; background: rgba(148, 163, 184, 0.12); border-color: rgba(148, 163, 184, 0.35);">
-              <span class="status-icon">💡</span>
-              <span>Planning</span>
-            </span>
-          </td>
-
-          <!-- 第 4 欄：進度 (Progress - 數字) -->
-          <td class="col-progress">
-            <div class="progress-wrap">
-              <div class="progress-num" style="color: var(--text-muted);">0%</div>
-              <div class="progress-track">
-                <div class="progress-fill" style="width: 0%; background: var(--text-muted);"></div>
-              </div>
-            </div>
-          </td>
-
-          <!-- 第 5 欄：發布時間 (Publish Time) -->
-          <td class="col-deadline">
-            <div class="deadline-wrap">
-              <div class="deadline-date">📅 2026-10-26</div>
-              <div class="countdown-badge" data-role="countdown">計算中...</div>
-            </div>
-          </td>
-        </tr>
-        <tr class="table-row stage-planning" data-stage="planning" data-track="projects" data-target="2026-11-05T23:59:59+08:00" data-ts="1793894399">
-          <!-- 第 1 欄：Track (賽道) -->
-          <td class="col-track">
-            <span class="track-pill" style="color: #38bdf8; background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3);">
-              Projects
-            </span>
-          </td>
-
-          <!-- 第 2 欄：承諾事項 (Title) -->
-          <td class="col-title">
-            <div class="title-wrap">
-              <span class="row-title">🤖 11/05 OCW Bot 自動評分模組上線</span>
-              
-            </div>
-          </td>
-
-          <!-- 第 3 欄：狀態 (Status: Planning, Planned, Executing, Review, Publish) -->
-          <td class="col-status">
-            <span class="status-pill" style="color: #94a3b8; background: rgba(148, 163, 184, 0.12); border-color: rgba(148, 163, 184, 0.35);">
-              <span class="status-icon">💡</span>
-              <span>Planning</span>
-            </span>
-          </td>
-
-          <!-- 第 4 欄：進度 (Progress - 數字) -->
-          <td class="col-progress">
-            <div class="progress-wrap">
-              <div class="progress-num" style="color: var(--text-muted);">0%</div>
-              <div class="progress-track">
-                <div class="progress-fill" style="width: 0%; background: var(--text-muted);"></div>
-              </div>
-            </div>
-          </td>
-
-          <!-- 第 5 欄：發布時間 (Publish Time) -->
-          <td class="col-deadline">
-            <div class="deadline-wrap">
-              <div class="deadline-date">📅 2026-11-05</div>
-              <div class="countdown-badge" data-role="countdown">計算中...</div>
-            </div>
-          </td>
-        </tr>
-        <tr class="table-row stage-planning" data-stage="planning" data-track="projects" data-target="2026-11-15T23:59:59+08:00" data-ts="1794758399">
-          <!-- 第 1 欄：Track (賽道) -->
-          <td class="col-track">
-            <span class="track-pill" style="color: #38bdf8; background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3);">
-              Projects
-            </span>
-          </td>
-
-          <!-- 第 2 欄：承諾事項 (Title) -->
-          <td class="col-title">
-            <div class="title-wrap">
-              <span class="row-title">🛠️ 11/15 PlanOS v2.5 雙軌正式版發布</span>
-              
-            </div>
-          </td>
-
-          <!-- 第 3 欄：狀態 (Status: Planning, Planned, Executing, Review, Publish) -->
-          <td class="col-status">
-            <span class="status-pill" style="color: #94a3b8; background: rgba(148, 163, 184, 0.12); border-color: rgba(148, 163, 184, 0.35);">
-              <span class="status-icon">💡</span>
-              <span>Planning</span>
-            </span>
-          </td>
-
-          <!-- 第 4 欄：進度 (Progress - 數字) -->
-          <td class="col-progress">
-            <div class="progress-wrap">
-              <div class="progress-num" style="color: var(--text-muted);">0%</div>
-              <div class="progress-track">
-                <div class="progress-fill" style="width: 0%; background: var(--text-muted);"></div>
-              </div>
-            </div>
-          </td>
-
-          <!-- 第 5 欄：發布時間 (Publish Time) -->
-          <td class="col-deadline">
-            <div class="deadline-wrap">
-              <div class="deadline-date">📅 2026-11-15</div>
-              <div class="countdown-badge" data-role="countdown">計算中...</div>
-            </div>
-          </td>
-        </tr>
-
-        </tbody>
-      </table>
+      <div class="table-responsive-wrapper">
+        <table class="commitment-table">
+          <thead>
+            <tr>
+              <th class="col-track-th">賽道 Track</th>
+              <th class="col-title-th">公開承諾事項 Commitment</th>
+              <th class="col-status-th">狀態 Status</th>
+              <th class="col-progress-th">進度 Progress</th>
+              <th class="col-deadline-th">發布時間 Publish Time</th>
+            </tr>
+          </thead>
+          <tbody id="commitmentTbody">
+            <!-- Static Initial Markup (Guarantees zero layout shift & seamless offline/local browsing) -->
+            <tr class="table-row stage-executing" data-stage="executing" data-target="2026-10-25T23:59:59+08:00" data-ts="1792943999">
+              <td class="col-track">
+                <span class="track-pill track-projects">PROJECTS</span>
+              </td>
+              <td class="col-title">
+                <div class="title-wrap">
+                  <span class="row-title">應用力學 Ch12 核心精華筆記與題解手稿上線</span>
+                  <div class="row-desc">今晚 21:00 前完成 PDF 排版並公開上線。</div>
+                </div>
+              </td>
+              <td class="col-status">
+                <span class="status-pill badge-executing">
+                  <span class="status-icon">🚀</span>
+                  <span>Executing</span>
+                </span>
+              </td>
+              <td class="col-progress">
+                <div class="progress-wrap">
+                  <div class="progress-num" style="color: var(--c-executing);">80%</div>
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width: 80%; background: var(--c-executing);"></div>
+                  </div>
+                </div>
+              </td>
+              <td class="col-deadline">
+                <div class="deadline-wrap">
+                  <div class="deadline-date">📅 2026-10-25</div>
+                  <div class="countdown-badge" data-role="countdown">計算中...</div>
+                </div>
+              </td>
+            </tr>
+            <tr class="table-row stage-planning" data-stage="planning" data-target="2026-10-26T23:59:59+08:00" data-ts="1793030399">
+              <td class="col-track">
+                <span class="track-pill track-projects">PROJECTS</span>
+              </td>
+              <td class="col-title">
+                <div class="title-wrap">
+                  <span class="row-title">🎙️ 10/26 Podcast Ep.01 錄音與剪輯</span>
+                </div>
+              </td>
+              <td class="col-status">
+                <span class="status-pill badge-planning">
+                  <span class="status-icon">💡</span>
+                  <span>Planning</span>
+                </span>
+              </td>
+              <td class="col-progress">
+                <div class="progress-wrap">
+                  <div class="progress-num" style="color: var(--text-muted);">0%</div>
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width: 0%; background: var(--text-muted);"></div>
+                  </div>
+                </div>
+              </td>
+              <td class="col-deadline">
+                <div class="deadline-wrap">
+                  <div class="deadline-date">📅 2026-10-26</div>
+                  <div class="countdown-badge" data-role="countdown">計算中...</div>
+                </div>
+              </td>
+            </tr>
+            <tr class="table-row stage-planning" data-stage="planning" data-target="2026-11-05T23:59:59+08:00" data-ts="1793894399">
+              <td class="col-track">
+                <span class="track-pill track-projects">PROJECTS</span>
+              </td>
+              <td class="col-title">
+                <div class="title-wrap">
+                  <span class="row-title">🤖 11/05 OCW Bot 自動評分模組上線</span>
+                </div>
+              </td>
+              <td class="col-status">
+                <span class="status-pill badge-planning">
+                  <span class="status-icon">💡</span>
+                  <span>Planning</span>
+                </span>
+              </td>
+              <td class="col-progress">
+                <div class="progress-wrap">
+                  <div class="progress-num" style="color: var(--text-muted);">0%</div>
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width: 0%; background: var(--text-muted);"></div>
+                  </div>
+                </div>
+              </td>
+              <td class="col-deadline">
+                <div class="deadline-wrap">
+                  <div class="deadline-date">📅 2026-11-05</div>
+                  <div class="countdown-badge" data-role="countdown">計算中...</div>
+                </div>
+              </td>
+            </tr>
+            <tr class="table-row stage-planning" data-stage="planning" data-target="2026-11-15T23:59:59+08:00" data-ts="1794758399">
+              <td class="col-track">
+                <span class="track-pill track-projects">PROJECTS</span>
+              </td>
+              <td class="col-title">
+                <div class="title-wrap">
+                  <span class="row-title">🛠️ 11/15 PlanOS v2.5 雙軌正式版發布</span>
+                </div>
+              </td>
+              <td class="col-status">
+                <span class="status-pill badge-planning">
+                  <span class="status-icon">💡</span>
+                  <span>Planning</span>
+                </span>
+              </td>
+              <td class="col-progress">
+                <div class="progress-wrap">
+                  <div class="progress-num" style="color: var(--text-muted);">0%</div>
+                  <div class="progress-track">
+                    <div class="progress-fill" style="width: 0%; background: var(--text-muted);"></div>
+                  </div>
+                </div>
+              </td>
+              <td class="col-deadline">
+                <div class="deadline-wrap">
+                  <div class="deadline-date">📅 2026-11-15</div>
+                  <div class="countdown-badge" data-role="countdown">計算中...</div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
   <!-- Footer -->
   <footer>
-    <div>工作台來源：<a href="https://github.com/orgs/PlanOS-HQ/projects/1/views/14" target="_blank" style="color: var(--accent); text-decoration: none;">GitHub Project 1 · View 14 (Table Layout)</a> · 徹底解耦 · 零分數運算</div>
+    <div>工作台來源：<a href="https://github.com/orgs/PlanOS-HQ/projects/1/views/14" target="_blank" rel="noopener noreferrer">GitHub Project 1 · View 14 (Table Layout)</a> · 直連解耦數據契約 · 零分數運算</div>
     <div>
-      <a href="https://github.com/orgs/PlanOS-HQ/projects/1/views/14" target="_blank" style="color: var(--accent); text-decoration: none;">總部編輯承諾表格</a> ·
-      <a href="https://github.com/PlanOS-HQ/PlanOS_v2" target="_blank" style="color: var(--accent); text-decoration: none;">GitHub 組織</a>
+      <a href="https://github.com/orgs/PlanOS-HQ/projects/1/views/14" target="_blank" rel="noopener noreferrer">總部編輯承諾表格</a> ·
+      <a href="https://github.com/PlanOS-HQ/PlanOS_v2" target="_blank" rel="noopener noreferrer">GitHub 組織庫</a> ·
+      <span>PlanOS Navigator v2.5 Production Build</span>
     </div>
   </footer>
 
   <script>
-    // Theme Toggle
-    function toggleTheme() {
+    // Embedded Static Data Fallback (Zero CORS failures on file:// protocol)
+    const STATIC_COMMITMENTS = [
+      {
+        "id": "PVTI_lADOFJ2zN84BoFq2zhDVcx4",
+        "track": "Projects",
+        "title": "應用力學 Ch12 核心精華筆記與題解手稿上線",
+        "status": "Executing",
+        "progress": 80,
+        "deadline": "2026-10-25",
+        "iso_deadline": "2026-10-25T23:59:59+08:00",
+        "timestamp": 1792943999,
+        "description": "今晚 21:00 前完成 PDF 排版並公開上線。"
+      },
+      {
+        "id": "PVTI_lADOFJ2zN84BoFq2zhCoYR8",
+        "track": "Projects",
+        "title": "🎙️ 10/26 Podcast Ep.01 錄音與剪輯",
+        "status": "Planning",
+        "progress": 0,
+        "deadline": "2026-10-26",
+        "iso_deadline": "2026-10-26T23:59:59+08:00",
+        "timestamp": 1793030399,
+        "description": ""
+      },
+      {
+        "id": "PVTI_lADOFJ2zN84BoFq2zhCoYeg",
+        "track": "Projects",
+        "title": "🤖 11/05 OCW Bot 自動評分模組上線",
+        "status": "Planning",
+        "progress": 0,
+        "deadline": "2026-11-05",
+        "iso_deadline": "2026-11-05T23:59:59+08:00",
+        "timestamp": 1793894399,
+        "description": ""
+      },
+      {
+        "id": "PVTI_lADOFJ2zN84BoFq2zhCoYo4",
+        "track": "Projects",
+        "title": "🛠️ 11/15 PlanOS v2.5 雙軌正式版發布",
+        "status": "Planning",
+        "progress": 0,
+        "deadline": "2026-11-15",
+        "iso_deadline": "2026-11-15T23:59:59+08:00",
+        "timestamp": 1794758399,
+        "description": ""
+      }
+    ];
+
+    const STATUS_CONFIG = {
+      Executing: { label: "Executing", filterKey: "executing", colorVar: "var(--c-executing)", badgeClass: "badge-executing", icon: "🚀" },
+      Planned:   { label: "Planned",   filterKey: "planned",   colorVar: "var(--c-planned)",   badgeClass: "badge-planned",   icon: "📅" },
+      Review:    { label: "Review",    filterKey: "review",    colorVar: "var(--c-review)",    badgeClass: "badge-review",    icon: "🔍" },
+      Planning:  { label: "Planning",  filterKey: "planning",  colorVar: "var(--c-planning)",  badgeClass: "badge-planning",  icon: "💡" },
+      Publish:   { label: "Publish",   filterKey: "publish",   colorVar: "var(--c-published)", badgeClass: "badge-publish",   icon: "✨" },
+      Published: { label: "Publish",   filterKey: "publish",   colorVar: "var(--c-published)", badgeClass: "badge-publish",   icon: "✨" },
+      Done:      { label: "Publish",   filterKey: "publish",   colorVar: "var(--c-published)", badgeClass: "badge-publish",   icon: "✨" },
+      Canceled:  { label: "Canceled",  filterKey: "canceled",  colorVar: "var(--c-canceled)",  badgeClass: "badge-canceled",  icon: "⚪" }
+    };
+
+    const TRACK_CONFIG = {
+      Projects: { label: "PROJECTS", class: "track-projects" },
+      Studies:  { label: "STUDIES",  class: "track-studies" },
+      Habits:   { label: "HABITS",   class: "track-habits" }
+    };
+
+    let commitmentsData = STATIC_COMMITMENTS;
+    let currentFilter = 'all';
+
+    function getStatusFilterKey(rawStatus) {
+      if (!rawStatus) return 'planning';
+      const s = rawStatus.trim().toLowerCase();
+      if (s === 'executing' || s === 'in progress') return 'executing';
+      if (s === 'planned' || s === 'todo') return 'planned';
+      if (s === 'review' || s === 'stuck') return 'review';
+      if (s === 'planning' || s === 'backlog') return 'planning';
+      if (s === 'publish' || s === 'published' || s === 'done') return 'publish';
+      if (s === 'canceled' || s === 'cancelled') return 'canceled';
+      return 'planning';
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // Theme Management
+    function applyTheme(theme) {
       const html = document.documentElement;
-      const btn = document.getElementById('themeToggle');
-      if (html.getAttribute('data-theme') === 'light') {
-        html.removeAttribute('data-theme');
-        btn.textContent = '☀️ 淺色';
-        localStorage.setItem('planos-theme', 'dark');
-      } else {
+      const icon = document.getElementById('themeIcon');
+      const text = document.getElementById('themeText');
+
+      if (theme === 'light') {
         html.setAttribute('data-theme', 'light');
-        btn.textContent = '🌙 深色';
+        if (icon) icon.textContent = '🌙';
+        if (text) text.textContent = '深色';
         localStorage.setItem('planos-theme', 'light');
+      } else {
+        html.removeAttribute('data-theme');
+        if (icon) icon.textContent = '☀️';
+        if (text) text.textContent = '淺色';
+        localStorage.setItem('planos-theme', 'dark');
       }
     }
-    if (localStorage.getItem('planos-theme') === 'light') {
-      document.documentElement.setAttribute('data-theme', 'light');
-      document.getElementById('themeToggle').textContent = '🌙 深色';
+
+    function toggleTheme() {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      applyTheme(isLight ? 'dark' : 'light');
     }
 
-    // Filter Table
-    function filterTable(stage, btn) {
+    // Fast Client-side Filter
+    function filterTable(filterKey, btn) {
+      currentFilter = filterKey;
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const rows = document.querySelectorAll('.table-row');
-      rows.forEach(r => {
-        if (stage === 'all' || r.getAttribute('data-stage') === stage) {
-          r.style.display = '';
-        } else {
-          r.style.display = 'none';
-        }
-      });
+      if (btn) btn.classList.add('active');
+      renderTable(commitmentsData, currentFilter);
     }
 
-    // Realtime Clock & Dynamic Countdowns
-    function updateTimers() {
-      const now = new Date();
-      
-      // Update top live clock
-      const pad = n => String(n).padStart(2, '0');
-      const yyyy = now.getFullYear();
-      const mm = pad(now.getMonth() + 1);
-      const dd = pad(now.getDate());
-      const hh = pad(now.getHours());
-      const min = pad(now.getMinutes());
-      const ss = pad(now.getSeconds());
-      const clockEl = document.getElementById('liveClock');
-      if (clockEl) {
-        clockEl.textContent = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss} (GMT+8)`;
+    // Render Metrics and Tab Counts
+    function updateMetrics(items) {
+      const counts = {
+        all: items.length,
+        executing: 0,
+        planned: 0,
+        review: 0,
+        planning: 0,
+        publish: 0,
+        canceled: 0
+      };
+
+      items.forEach(it => {
+        const k = getStatusFilterKey(it.status);
+        if (counts[k] !== undefined) counts[k]++;
+      });
+
+      const setEl = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      };
+
+      setEl('kpiTotal', counts.all);
+      setEl('kpiExecuting', counts.executing);
+      setEl('kpiPlanned', counts.planned);
+      setEl('kpiPlanning', counts.planning);
+      setEl('kpiPublish', counts.publish);
+
+      setEl('countAll', counts.all);
+      setEl('countExecuting', counts.executing);
+      setEl('countPlanned', counts.planned);
+      setEl('countReview', counts.review);
+      setEl('countPlanning', counts.planning);
+      setEl('countPublish', counts.publish);
+    }
+
+    // Render Table Rows
+    function renderTable(items, activeFilter = 'all') {
+      const tbody = document.getElementById('commitmentTbody');
+      if (!tbody) return;
+
+      const filtered = items.filter(it => {
+        if (activeFilter === 'all') return true;
+        const filterKey = getStatusFilterKey(it.status);
+        return filterKey === activeFilter;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr class="empty-row">
+            <td colspan="5">
+              <div class="empty-state">
+                <span class="empty-icon">📂</span>
+                <div class="empty-title">目前尚無此狀態之公開承諾事項</div>
+                <div class="empty-desc">切換上方分類標籤或至總部 View 14 建立新承諾卡片</div>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
       }
 
-      // Update rows countdown
+      tbody.innerHTML = filtered.map(it => {
+        const stKey = getStatusFilterKey(it.status);
+        const stConfig = STATUS_CONFIG[it.status] || STATUS_CONFIG.Planning;
+        const trConfig = TRACK_CONFIG[it.track] || { label: it.track || 'PROJECTS', class: 'track-projects' };
+        const prog = parseInt(it.progress, 10) || 0;
+        const descHtml = it.description ? `<div class="row-desc">${escapeHtml(it.description)}</div>` : '';
+
+        let progColor = 'var(--text-muted)';
+        if (prog >= 100 || stKey === 'publish') progColor = 'var(--c-published)';
+        else if (stKey === 'executing') progColor = 'var(--c-executing)';
+        else if (prog > 0) progColor = 'var(--c-planned)';
+
+        return `
+          <tr class="table-row stage-${stKey}" data-stage="${stKey}" data-target="${escapeHtml(it.iso_deadline || '')}" data-ts="${it.timestamp || 0}">
+            <td class="col-track">
+              <span class="track-pill ${trConfig.class}">
+                ${escapeHtml(trConfig.label)}
+              </span>
+            </td>
+            <td class="col-title">
+              <div class="title-wrap">
+                <span class="row-title">${escapeHtml(it.title)}</span>
+                ${descHtml}
+              </div>
+            </td>
+            <td class="col-status">
+              <span class="status-pill ${stConfig.badgeClass}">
+                <span class="status-icon">${stConfig.icon}</span>
+                <span>${escapeHtml(stConfig.label)}</span>
+              </span>
+            </td>
+            <td class="col-progress">
+              <div class="progress-wrap">
+                <div class="progress-num" style="color: ${progColor};">${prog}%</div>
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: ${prog}%; background: ${progColor};"></div>
+                </div>
+              </div>
+            </td>
+            <td class="col-deadline">
+              <div class="deadline-wrap">
+                <div class="deadline-date">📅 ${escapeHtml(it.deadline || '待定')}</div>
+                <div class="countdown-badge" data-role="countdown">計算中...</div>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      updateCountdowns();
+    }
+
+    // Realtime Clock (Strict Asia/Taipei GMT+8)
+    function updateLiveClock() {
+      const now = new Date();
+      try {
+        const formatter = new Intl.DateTimeFormat('zh-TW', {
+          timeZone: 'Asia/Taipei',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        });
+        const parts = formatter.formatToParts(now);
+        const getPart = type => parts.find(p => p.type === type)?.value || '00';
+        const str = `${getPart('year')}-${getPart('month')}-${getPart('day')} ${getPart('hour')}:${getPart('minute')}:${getPart('second')} (GMT+8)`;
+        const el = document.getElementById('liveClock');
+        if (el) el.textContent = str;
+      } catch (e) {
+        const pad = n => String(n).padStart(2, '0');
+        const str = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} (GMT+8)`;
+        const el = document.getElementById('liveClock');
+        if (el) el.textContent = str;
+      }
+    }
+
+    // Dynamic Countdown & Overdue Timers
+    function updateCountdowns() {
+      const now = new Date();
       const rows = document.querySelectorAll('.table-row');
+
       rows.forEach(r => {
-        const targetStr = r.getAttribute('data-target');
-        const stage = r.getAttribute('data-stage');
+        const targetIso = r.getAttribute('data-target');
+        const stage = (r.getAttribute('data-stage') || '').toLowerCase();
         const badge = r.querySelector('[data-role="countdown"]');
         if (!badge) return;
 
-        if (stage === 'published') {
+        if (stage === 'publish' || stage === 'published') {
           badge.textContent = '✅ 已如期交付';
           badge.className = 'countdown-badge done';
           return;
         }
 
-        if (!targetStr) {
-          badge.textContent = '待定發布檔期';
+        if (!targetIso || targetIso === '待定') {
+          badge.textContent = '檔期待定';
           badge.className = 'countdown-badge';
           return;
         }
 
-        const target = new Date(targetStr);
-        const diffMs = target - now;
+        const targetDate = new Date(targetIso);
+        if (isNaN(targetDate.getTime())) {
+          badge.textContent = '檔期待定';
+          badge.className = 'countdown-badge';
+          return;
+        }
+
+        const diffMs = targetDate.getTime() - now.getTime();
+        const pad = n => String(n).padStart(2, '0');
 
         if (diffMs > 0) {
           const totalSecs = Math.floor(diffMs / 1000);
@@ -860,6 +1274,9 @@
           if (days === 0) {
             badge.textContent = `今晚 · 剩餘 ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
             badge.className = 'countdown-badge urgent';
+          } else if (days === 1) {
+            badge.textContent = `明天 · 剩餘 1天 ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+            badge.className = 'countdown-badge';
           } else {
             badge.textContent = `倒數 ${days} 天 ${pad(hours)} 時 ${pad(minutes)} 分`;
             badge.className = 'countdown-badge';
@@ -881,8 +1298,44 @@
       });
     }
 
-    setInterval(updateTimers, 1000);
-    updateTimers();
+    // App Initialization with Dynamic Fetch & Inline Fallback
+    async function initApp() {
+      // 1. Initial UI update
+      updateMetrics(commitmentsData);
+      updateCountdowns();
+      updateLiveClock();
+
+      // 2. Start Tickers
+      setInterval(updateLiveClock, 1000);
+      setInterval(updateCountdowns, 1000);
+
+      // 3. Dynamic fetch (auto refresh on web)
+      try {
+        const res = await fetch('commitments.json?t=' + Date.now());
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            commitmentsData = data;
+            updateMetrics(commitmentsData);
+            renderTable(commitmentsData, currentFilter);
+            console.info('[PlanOS] Synchronized ' + data.length + ' live commitments from commitments.json');
+          }
+        }
+      } catch (err) {
+        console.info('[PlanOS] Local file or offline mode; continuing with static fallback data:', err.message);
+      }
+    }
+
+    // Restore saved theme immediately
+    if (localStorage.getItem('planos-theme') === 'light') {
+      applyTheme('light');
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
   </script>
 </body>
 </html>
