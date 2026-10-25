@@ -400,6 +400,48 @@
       flex-wrap: wrap;
     }
 
+    .priority-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .prio-p0 {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .prio-p1 {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .prio-p2 {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+
+    .prio-p3 {
+      background: rgba(148, 163, 184, 0.15);
+      color: #94a3b8;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .score-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
     .status-badge {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
@@ -677,30 +719,36 @@
       </div>
     </div>
 
-    <!-- Section 1: Active Commitments -->
+    <!-- Section 1: Active Commitments (Filtered to Active Window) -->
     <div class="section-container">
       <div class="section-header">
         <div class="section-title">
-          <span>⚔️ 當前立案軍令狀 (Active Commitments)</span>
-          <span class="badge-count">34 案推進中</span>
+          <span>⚔️ 當前窗口作戰軍令狀 (Active Sprint Window)</span>
+          <span class="badge-count">9 案鎖定中</span>
         </div>
+        <span style="font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">filter: start-date &lt;= @today &lt;= deadline</span>
       </div>
       <div class="commitment-card ">
         <div class="card-top">
           <div class="card-id-title">
-            <span class="item-id">TASK</span>
-            <span class="item-title">🎙️ 10/26 Podcast Ep.01 錄音與剪輯</span>
+            <span class="item-id">DYN-001</span>
+            <span class="priority-pill prio-p0">P0</span>
+            <span class="item-title">10/30 應力 Midterm 1</span>
           </div>
           <div class="card-meta-tags">
+            <span class="score-badge">D+8.20.40</span>
             <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill warning">剩 1 天 ⏳</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-10-26</span>
+            <span class="countdown-pill normal">剩 5 天</span>
+            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-10-30</span>
           </div>
         </div>
 
         <div class="card-dod-box">
           <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
+          <div>- [ ] M0.1 Ch12
+- [ ] M0.2 Ch13
+- [ ] M0.3 Ch14
+- [ ] M0.4 Review</div>
         </div>
 
         <div class="progress-bar-container">
@@ -715,9 +763,11 @@
         <div class="card-top">
           <div class="card-id-title">
             <span class="item-id">EE-008</span>
+            <span class="priority-pill prio-p1">P1</span>
             <span class="item-title">10/28 電工 Q7</span>
           </div>
           <div class="card-meta-tags">
+            <span class="score-badge">D+3.20.40</span>
             <span class="status-badge badge-todo">🎯 就緒上膛</span>
             <span class="countdown-pill warning">剩 3 天 ⏳</span>
             <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-10-28</span>
@@ -747,9 +797,11 @@
         <div class="card-top">
           <div class="card-id-title">
             <span class="item-id">PROB-001</span>
+            <span class="priority-pill prio-p1">P1</span>
             <span class="item-title">10/29 機統 Midterm</span>
           </div>
           <div class="card-meta-tags">
+            <span class="score-badge">D+9.20.40</span>
             <span class="status-badge badge-todo">🎯 就緒上膛</span>
             <span class="countdown-pill normal">剩 4 天</span>
             <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-10-29</span>
@@ -775,39 +827,12 @@
       <div class="commitment-card ">
         <div class="card-top">
           <div class="card-id-title">
-            <span class="item-id">DYN-001</span>
-            <span class="item-title">10/30 應力 Midterm 1</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 5 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-10-30</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>- [ ] M0.1 Ch12
-- [ ] M0.2 Ch13
-- [ ] M0.3 Ch14
-- [ ] M0.4 Review</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
             <span class="item-id">PSY-001</span>
+            <span class="priority-pill prio-p1">P1</span>
             <span class="item-title">10/30 普心 Midterm</span>
           </div>
           <div class="card-meta-tags">
+            <span class="score-badge">D+8.20.40</span>
             <span class="status-badge badge-todo">🎯 就緒上膛</span>
             <span class="countdown-pill normal">剩 5 天</span>
             <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-10-30</span>
@@ -835,9 +860,11 @@
         <div class="card-top">
           <div class="card-id-title">
             <span class="item-id">LOGIC-001</span>
+            <span class="priority-pill prio-p2">P2</span>
             <span class="item-title">11/02 邏輯 Midterm</span>
           </div>
           <div class="card-meta-tags">
+            <span class="score-badge">D+5.20.40</span>
             <span class="status-badge badge-todo">🎯 就緒上膛</span>
             <span class="countdown-pill normal">剩 8 天</span>
             <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-02</span>
@@ -868,39 +895,12 @@
       <div class="commitment-card ">
         <div class="card-top">
           <div class="card-id-title">
-            <span class="item-id">PE-002</span>
-            <span class="item-title">11/02 桌球 Midterm</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 8 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-02</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>- [ ] M0.1 Part 1
-- [ ] M0.2 Part 2
-- [ ] M0.3 Part 3
-- [ ] M0.4 Review</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
             <span class="item-id">ACC-005</span>
+            <span class="priority-pill prio-p2">P2</span>
             <span class="item-title">11/04 會計 Q4</span>
           </div>
           <div class="card-meta-tags">
+            <span class="score-badge">D-0.00.00</span>
             <span class="status-badge badge-todo">🎯 就緒上膛</span>
             <span class="countdown-pill normal">剩 10 天</span>
             <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-04</span>
@@ -924,9 +924,11 @@
         <div class="card-top">
           <div class="card-id-title">
             <span class="item-id">TASK</span>
+            <span class="priority-pill prio-p2">P2</span>
             <span class="item-title">🤖 11/05 OCW Bot 自動評分模組上線</span>
           </div>
           <div class="card-meta-tags">
+            <span class="score-badge">D+2.20.41</span>
             <span class="status-badge badge-todo">🎯 就緒上膛</span>
             <span class="countdown-pill normal">剩 11 天</span>
             <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-05</span>
@@ -949,65 +951,15 @@
       <div class="commitment-card ">
         <div class="card-top">
           <div class="card-id-title">
-            <span class="item-id">ACC-006</span>
-            <span class="item-title">11/11 會計 Q5</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 17 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-11</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">TH-003</span>
-            <span class="item-title">11/11 熱力 Q2</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 17 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-11</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
             <span class="item-id">TASK</span>
-            <span class="item-title">🛠️ 11/15 PlanOS v2.5 雙軌正式版發布</span>
+            <span class="priority-pill prio-p3">P3</span>
+            <span class="item-title">🎙️ 10/26 Podcast Ep.01 錄音與剪輯</span>
           </div>
           <div class="card-meta-tags">
+            <span class="score-badge">D+3.20.41</span>
             <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 21 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-15</span>
+            <span class="countdown-pill warning">剩 1 天 ⏳</span>
+            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-10-26</span>
           </div>
         </div>
 
@@ -1027,565 +979,24 @@
       <div class="commitment-card ">
         <div class="card-top">
           <div class="card-id-title">
-            <span class="item-id">ACC-007</span>
-            <span class="item-title">11/16 會計 Midterm 2</span>
+            <span class="item-id">PE-002</span>
+            <span class="priority-pill prio-p3">P3</span>
+            <span class="item-title">11/02 桌球 Midterm</span>
           </div>
           <div class="card-meta-tags">
+            <span class="score-badge">D+5.20.40</span>
             <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 22 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-16</span>
+            <span class="countdown-pill normal">剩 8 天</span>
+            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-02</span>
           </div>
         </div>
 
         <div class="card-dod-box">
           <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">MATH-004</span>
-            <span class="item-title">11/17 工數 Q3</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 23 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-17</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">DYN-002</span>
-            <span class="item-title">11/20 應力 Midterm 2</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 26 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-20</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">PE-003</span>
-            <span class="item-title">11/23 桌球 Test 1</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 29 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-23</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">PROB-003</span>
-            <span class="item-title">11/26 機統 Q2</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 32 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-26</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">PE-004</span>
-            <span class="item-title">11/30 桌球 Test 2</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 36 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-11-30</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">ACC-008</span>
-            <span class="item-title">12/02 會計 Q6</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 38 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-02</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">TH-004</span>
-            <span class="item-title">12/02 熱力 Q3</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 38 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-02</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">PE-005</span>
-            <span class="item-title">12/07 桌球 Test 3</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 43 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-07</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">STAT-001</span>
-            <span class="item-title">12/08 跨領域 Report 1</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 44 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-08</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">PE-006</span>
-            <span class="item-title">12/14 桌球 Test 4</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 50 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-14</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">MATH-005</span>
-            <span class="item-title">12/15 工數 Q4</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 51 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-15</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">STAT-002</span>
-            <span class="item-title">12/15 跨領域 Report 2</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 51 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-15</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">ACC-009</span>
-            <span class="item-title">12/16 會計 Q7</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 52 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-16</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">DYN-003</span>
-            <span class="item-title">12/18 應力 Final</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 54 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-18</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">PSY-002</span>
-            <span class="item-title">12/18 普心 Final</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 54 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-18</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">EE-009</span>
-            <span class="item-title">12/21 電工 Final</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 57 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-21</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">LOGIC-002</span>
-            <span class="item-title">12/21 邏輯 Final</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 57 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-21</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">ACC-010</span>
-            <span class="item-title">12/21 會計 Final</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 57 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-21</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">MATH-006</span>
-            <span class="item-title">12/22 工數 Final</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 58 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-22</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">TH-005</span>
-            <span class="item-title">12/23 熱力 Final</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 59 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-23</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
-        </div>
-
-        <div class="progress-bar-container">
-          <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
-          </div>
-          <div class="progress-percent" style="">0%</div>
-        </div>
-        
-      </div>
-      <div class="commitment-card ">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">PROB-004</span>
-            <span class="item-title">12/24 機統 Final</span>
-          </div>
-          <div class="card-meta-tags">
-            <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill normal">剩 60 天</span>
-            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-12-24</span>
-          </div>
-        </div>
-
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
+          <div>- [ ] M0.1 Part 1
+- [ ] M0.2 Part 2
+- [ ] M0.3 Part 3
+- [ ] M0.4 Review</div>
         </div>
 
         <div class="progress-bar-container">
@@ -1619,6 +1030,7 @@
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">MATH-001</span>
+              <span class="priority-pill prio-p1">P1</span>
               <span class="item-title">10/20 工數 Midterm</span>
             </div>
             <div class="card-meta-tags">
@@ -1637,13 +1049,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">TH-001</span>
+              <span class="priority-pill prio-p0">P0</span>
               <span class="item-title">10/21 熱力 Midterm</span>
             </div>
             <div class="card-meta-tags">
@@ -1665,13 +1078,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">EE-001</span>
+              <span class="priority-pill prio-p2">P2</span>
               <span class="item-title">10/19 電工 Q5</span>
             </div>
             <div class="card-meta-tags">
@@ -1690,13 +1104,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">EE-002</span>
+              <span class="priority-pill prio-p2">P2</span>
               <span class="item-title">10/21 電工 Q6</span>
             </div>
             <div class="card-meta-tags">
@@ -1717,13 +1132,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">EE-004</span>
+              <span class="priority-pill prio-p2">P2</span>
               <span class="item-title">09/14 電工 Q1</span>
             </div>
             <div class="card-meta-tags">
@@ -1742,13 +1158,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">EE-005</span>
+              <span class="priority-pill prio-p2">P2</span>
               <span class="item-title">09/21 電工 Q2</span>
             </div>
             <div class="card-meta-tags">
@@ -1767,13 +1184,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">ACC-001</span>
+              <span class="priority-pill prio-p2">P2</span>
               <span class="item-title">09/23 會計 Q1</span>
             </div>
             <div class="card-meta-tags">
@@ -1792,13 +1210,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">MATH-002</span>
+              <span class="priority-pill prio-p2">P2</span>
               <span class="item-title">09/29 工數 Q1</span>
             </div>
             <div class="card-meta-tags">
@@ -1817,13 +1236,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">EE-006</span>
+              <span class="priority-pill prio-p2">P2</span>
               <span class="item-title">09/30 電工 Q3</span>
             </div>
             <div class="card-meta-tags">
@@ -1842,13 +1262,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">ACC-002</span>
+              <span class="priority-pill prio-p2">P2</span>
               <span class="item-title">09/30 會計 Q2</span>
             </div>
             <div class="card-meta-tags">
@@ -1867,13 +1288,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">ACC-003</span>
+              <span class="priority-pill prio-p2">P2</span>
               <span class="item-title">10/07 會計 Q3</span>
             </div>
             <div class="card-meta-tags">
@@ -1892,13 +1314,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">TH-002</span>
+              <span class="priority-pill prio-p2">P2</span>
               <span class="item-title">10/07 熱力 Q1</span>
             </div>
             <div class="card-meta-tags">
@@ -1917,13 +1340,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">PROB-002</span>
+              <span class="priority-pill prio-p2">P2</span>
               <span class="item-title">10/08 機統 Q1</span>
             </div>
             <div class="card-meta-tags">
@@ -1942,13 +1366,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">EE-007</span>
+              <span class="priority-pill prio-p2">P2</span>
               <span class="item-title">10/12 電工 Q4</span>
             </div>
             <div class="card-meta-tags">
@@ -1967,13 +1392,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">ACC-004</span>
+              <span class="priority-pill prio-p0">P0</span>
               <span class="item-title">10/12 會計 Midterm 1</span>
             </div>
             <div class="card-meta-tags">
@@ -1992,13 +1418,14 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
         <div class="commitment-card card-shipped verdict-item" data-category="shipped">
           <div class="card-top">
             <div class="card-id-title">
               <span class="item-id">MATH-003</span>
+              <span class="priority-pill prio-p2">P2</span>
               <span class="item-title">10/13 工數 Q2</span>
             </div>
             <div class="card-meta-tags">
@@ -2017,7 +1444,7 @@
             <div class="post-mortem-header header-shipped">
               <span>🏆 履約證明 (Proof of Work)</span>
             </div>
-            <div>如期履約：通過客觀 DoD 檢驗並已完工封卷。</div>
+            <div>如期履約：通過客觀及格線，已完工封卷。</div>
           </div>
         </div>
       </div>
