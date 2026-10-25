@@ -1,0 +1,46 @@
+[
+  {
+    "id": "PVTI_lADOFJ2zN84BoFq2zhDVcx4",
+    "track": "Projects",
+    "title": "應用力學 Ch12 核心精華筆記與題解手稿上線",
+    "status": "Executing",
+    "progress": 80,
+    "deadline": "2026-10-25",
+    "iso_deadline": "2026-10-25T23:59:59+08:00",
+    "timestamp": 1792943999,
+    "description": "今晚 21:00 前完成 PDF 排版並公開上線。"
+  },
+  {
+    "id": "PVTI_lADOFJ2zN84BoFq2zhCoYR8",
+    "track": "Projects",
+    "title": "🎙️ 10/26 Podcast Ep.01 錄音與剪輯",
+    "status": "Planning",
+    "progress": 0,
+    "deadline": "2026-10-26",
+    "iso_deadline": "2026-10-26T23:59:59+08:00",
+    "timestamp": 1793030399,
+    "description": ""
+  },
+  {
+    "id": "PVTI_lADOFJ2zN84BoFq2zhCoYeg",
+    "track": "Projects",
+    "title": "🤖 11/05 OCW Bot 自動評分模組上線",
+    "status": "Planning",
+    "progress": 0,
+    "deadline": "2026-11-05",
+    "iso_deadline": "2026-11-05T23:59:59+08:00",
+    "timestamp": 1793894399,
+    "description": ""
+  },
+  {
+    "id": "PVTI_lADOFJ2zN84BoFq2zhCoYo4",
+    "track": "Projects",
+    "title": "🛠️ 11/15 PlanOS v2.5 雙軌正式版發布",
+    "status": "Planning",
+    "progress": 0,
+    "deadline": "2026-11-15",
+    "iso_deadline": "2026-11-15T23:59:59+08:00",
+    "timestamp": 1794758399,
+    "description": ""
+  }
+]
