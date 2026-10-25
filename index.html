@@ -312,10 +312,29 @@
       border-bottom: none;
     }
 
-    /* Column: Title */
+    /* Column 1: Track (賽道) */
+    .col-track {
+      width: 110px;
+      white-space: nowrap;
+    }
+
+    .track-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      border: 1px solid transparent;
+      text-transform: uppercase;
+    }
+
+    /* Column 2: Title (承諾事項) */
     .col-title {
-      min-width: 280px;
-      max-width: 480px;
+      min-width: 260px;
+      max-width: 460px;
     }
 
     .title-wrap {
@@ -337,7 +356,7 @@
       line-height: 1.4;
     }
 
-    /* Column: Status */
+    /* Column 3: Status (狀態) */
     .col-status {
       width: 140px;
       white-space: nowrap;
@@ -353,15 +372,16 @@
       font-weight: 600;
       border: 1px solid transparent;
       letter-spacing: -0.2px;
+      font-family: var(--font-mono);
     }
 
     .status-icon {
       font-size: 13px;
     }
 
-    /* Column: Progress (數字) */
+    /* Column 4: Progress (進度 - 數字) */
     .col-progress {
-      width: 180px;
+      width: 160px;
       white-space: nowrap;
     }
 
@@ -393,7 +413,7 @@
       transition: width 0.3s ease;
     }
 
-    /* Column: Deadline / Publish Time */
+    /* Column 5: Deadline (發布時間) */
     .col-deadline {
       width: 220px;
       white-space: nowrap;
@@ -499,7 +519,7 @@
         padding: 12px 14px;
       }
       .col-title {
-        min-width: 200px;
+        min-width: 180px;
       }
     }
   </style>
@@ -517,7 +537,7 @@
         <span>⚡ 總部 View 14 表格</span>
         <span>↗</span>
       </a>
-      <span id="liveClock" class="clock-badge">2026-10-25 16:55:00 (GMT+8)</span>
+      <span id="liveClock" class="clock-badge">2026-10-25 17:05:00 (GMT+8)</span>
       <button id="themeToggle" class="tool-btn" onclick="toggleTheme()">☀️ 淺色</button>
     </div>
   </header>
@@ -532,30 +552,31 @@
       <div class="kpi-row">
         <div class="kpi-card">
           <div class="val" style="color: var(--text);">4</div>
-          <div class="lbl">總承諾</div>
+          <div class="lbl">Total</div>
         </div>
         <div class="kpi-card">
           <div class="val" style="color: var(--c-executing);">1</div>
-          <div class="lbl">攻堅中</div>
+          <div class="lbl">Executing</div>
         </div>
         <div class="kpi-card">
           <div class="val" style="color: var(--c-planning);">3</div>
-          <div class="lbl">探索中</div>
+          <div class="lbl">Planning</div>
         </div>
         <div class="kpi-card">
           <div class="val" style="color: var(--c-published);">0</div>
-          <div class="lbl">已交付</div>
+          <div class="lbl">Publish</div>
         </div>
       </div>
     </div>
 
     <!-- Filter Bar -->
     <div class="filter-bar">
-      <button class="tab-btn active" onclick="filterTable('all', this)">全部 <span class="tab-count">4</span></button>
-      <button class="tab-btn" onclick="filterTable('executing', this)">🚀 攻堅中 <span class="tab-count">1</span></button>
-      <button class="tab-btn" onclick="filterTable('planned', this)">📅 已定檔 <span class="tab-count">0</span></button>
-      <button class="tab-btn" onclick="filterTable('planning', this)">💡 探索中 <span class="tab-count">3</span></button>
-      <button class="tab-btn" onclick="filterTable('published', this)">✨ 已交付 <span class="tab-count">0</span></button>
+      <button class="tab-btn active" onclick="filterTable('all', this)">All <span class="tab-count">4</span></button>
+      <button class="tab-btn" onclick="filterTable('executing', this)">🚀 Executing <span class="tab-count">1</span></button>
+      <button class="tab-btn" onclick="filterTable('planned', this)">📅 Planned <span class="tab-count">0</span></button>
+      <button class="tab-btn" onclick="filterTable('review', this)">🔍 Review <span class="tab-count">0</span></button>
+      <button class="tab-btn" onclick="filterTable('planning', this)">💡 Planning <span class="tab-count">3</span></button>
+      <button class="tab-btn" onclick="filterTable('published', this)">✨ Publish <span class="tab-count">0</span></button>
     </div>
 
     <!-- Main Commitment Table -->
@@ -563,15 +584,23 @@
       <table class="commitment-table">
         <thead>
           <tr>
+            <th>賽道 (Track)</th>
             <th>公開承諾事項</th>
-            <th>狀態</th>
+            <th>狀態 (Status)</th>
             <th>進度 (數字)</th>
             <th>發布時間</th>
           </tr>
         </thead>
         <tbody>
-        <tr class="table-row stage-executing" data-stage="executing" data-target="2026-10-25T23:59:59+08:00" data-ts="1792943999">
-          <!-- 承諾事項 (Title) -->
+        <tr class="table-row stage-executing" data-stage="executing" data-track="projects" data-target="2026-10-25T23:59:59+08:00" data-ts="1792943999">
+          <!-- 第 1 欄：Track (賽道) -->
+          <td class="col-track">
+            <span class="track-pill" style="color: #38bdf8; background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3);">
+              Projects
+            </span>
+          </td>
+
+          <!-- 第 2 欄：承諾事項 (Title) -->
           <td class="col-title">
             <div class="title-wrap">
               <span class="row-title">應用力學 Ch12 核心精華筆記與題解手稿上線</span>
@@ -579,15 +608,15 @@
             </div>
           </td>
 
-          <!-- 狀態 (Status) -->
+          <!-- 第 3 欄：狀態 (Status: Planning, Planned, Executing, Review, Publish) -->
           <td class="col-status">
             <span class="status-pill" style="color: #38bdf8; background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.35);">
               <span class="status-icon">🚀</span>
-              <span>攻堅中</span>
+              <span>Executing</span>
             </span>
           </td>
 
-          <!-- 進度 (Progress - 數字) -->
+          <!-- 第 4 欄：進度 (Progress - 數字) -->
           <td class="col-progress">
             <div class="progress-wrap">
               <div class="progress-num" style="color: var(--c-executing);">80%</div>
@@ -597,7 +626,7 @@
             </div>
           </td>
 
-          <!-- 發布時間 (Publish Time) -->
+          <!-- 第 5 欄：發布時間 (Publish Time) -->
           <td class="col-deadline">
             <div class="deadline-wrap">
               <div class="deadline-date">📅 2026-10-25</div>
@@ -605,8 +634,15 @@
             </div>
           </td>
         </tr>
-        <tr class="table-row stage-planning" data-stage="planning" data-target="2026-10-26T23:59:59+08:00" data-ts="1793030399">
-          <!-- 承諾事項 (Title) -->
+        <tr class="table-row stage-planning" data-stage="planning" data-track="projects" data-target="2026-10-26T23:59:59+08:00" data-ts="1793030399">
+          <!-- 第 1 欄：Track (賽道) -->
+          <td class="col-track">
+            <span class="track-pill" style="color: #38bdf8; background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3);">
+              Projects
+            </span>
+          </td>
+
+          <!-- 第 2 欄：承諾事項 (Title) -->
           <td class="col-title">
             <div class="title-wrap">
               <span class="row-title">🎙️ 10/26 Podcast Ep.01 錄音與剪輯</span>
@@ -614,15 +650,15 @@
             </div>
           </td>
 
-          <!-- 狀態 (Status) -->
+          <!-- 第 3 欄：狀態 (Status: Planning, Planned, Executing, Review, Publish) -->
           <td class="col-status">
             <span class="status-pill" style="color: #94a3b8; background: rgba(148, 163, 184, 0.12); border-color: rgba(148, 163, 184, 0.35);">
               <span class="status-icon">💡</span>
-              <span>探索中</span>
+              <span>Planning</span>
             </span>
           </td>
 
-          <!-- 進度 (Progress - 數字) -->
+          <!-- 第 4 欄：進度 (Progress - 數字) -->
           <td class="col-progress">
             <div class="progress-wrap">
               <div class="progress-num" style="color: var(--text-muted);">0%</div>
@@ -632,7 +668,7 @@
             </div>
           </td>
 
-          <!-- 發布時間 (Publish Time) -->
+          <!-- 第 5 欄：發布時間 (Publish Time) -->
           <td class="col-deadline">
             <div class="deadline-wrap">
               <div class="deadline-date">📅 2026-10-26</div>
@@ -640,8 +676,15 @@
             </div>
           </td>
         </tr>
-        <tr class="table-row stage-planning" data-stage="planning" data-target="2026-11-05T23:59:59+08:00" data-ts="1793894399">
-          <!-- 承諾事項 (Title) -->
+        <tr class="table-row stage-planning" data-stage="planning" data-track="projects" data-target="2026-11-05T23:59:59+08:00" data-ts="1793894399">
+          <!-- 第 1 欄：Track (賽道) -->
+          <td class="col-track">
+            <span class="track-pill" style="color: #38bdf8; background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3);">
+              Projects
+            </span>
+          </td>
+
+          <!-- 第 2 欄：承諾事項 (Title) -->
           <td class="col-title">
             <div class="title-wrap">
               <span class="row-title">🤖 11/05 OCW Bot 自動評分模組上線</span>
@@ -649,15 +692,15 @@
             </div>
           </td>
 
-          <!-- 狀態 (Status) -->
+          <!-- 第 3 欄：狀態 (Status: Planning, Planned, Executing, Review, Publish) -->
           <td class="col-status">
             <span class="status-pill" style="color: #94a3b8; background: rgba(148, 163, 184, 0.12); border-color: rgba(148, 163, 184, 0.35);">
               <span class="status-icon">💡</span>
-              <span>探索中</span>
+              <span>Planning</span>
             </span>
           </td>
 
-          <!-- 進度 (Progress - 數字) -->
+          <!-- 第 4 欄：進度 (Progress - 數字) -->
           <td class="col-progress">
             <div class="progress-wrap">
               <div class="progress-num" style="color: var(--text-muted);">0%</div>
@@ -667,7 +710,7 @@
             </div>
           </td>
 
-          <!-- 發布時間 (Publish Time) -->
+          <!-- 第 5 欄：發布時間 (Publish Time) -->
           <td class="col-deadline">
             <div class="deadline-wrap">
               <div class="deadline-date">📅 2026-11-05</div>
@@ -675,8 +718,15 @@
             </div>
           </td>
         </tr>
-        <tr class="table-row stage-planning" data-stage="planning" data-target="2026-11-15T23:59:59+08:00" data-ts="1794758399">
-          <!-- 承諾事項 (Title) -->
+        <tr class="table-row stage-planning" data-stage="planning" data-track="projects" data-target="2026-11-15T23:59:59+08:00" data-ts="1794758399">
+          <!-- 第 1 欄：Track (賽道) -->
+          <td class="col-track">
+            <span class="track-pill" style="color: #38bdf8; background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.3);">
+              Projects
+            </span>
+          </td>
+
+          <!-- 第 2 欄：承諾事項 (Title) -->
           <td class="col-title">
             <div class="title-wrap">
               <span class="row-title">🛠️ 11/15 PlanOS v2.5 雙軌正式版發布</span>
@@ -684,15 +734,15 @@
             </div>
           </td>
 
-          <!-- 狀態 (Status) -->
+          <!-- 第 3 欄：狀態 (Status: Planning, Planned, Executing, Review, Publish) -->
           <td class="col-status">
             <span class="status-pill" style="color: #94a3b8; background: rgba(148, 163, 184, 0.12); border-color: rgba(148, 163, 184, 0.35);">
               <span class="status-icon">💡</span>
-              <span>探索中</span>
+              <span>Planning</span>
             </span>
           </td>
 
-          <!-- 進度 (Progress - 數字) -->
+          <!-- 第 4 欄：進度 (Progress - 數字) -->
           <td class="col-progress">
             <div class="progress-wrap">
               <div class="progress-num" style="color: var(--text-muted);">0%</div>
@@ -702,7 +752,7 @@
             </div>
           </td>
 
-          <!-- 發布時間 (Publish Time) -->
+          <!-- 第 5 欄：發布時間 (Publish Time) -->
           <td class="col-deadline">
             <div class="deadline-wrap">
               <div class="deadline-date">📅 2026-11-15</div>
