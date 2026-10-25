@@ -19,7 +19,6 @@
       --text-muted: #94a3b8;
       --text-dim: #64748b;
       --accent: #38bdf8;
-      --accent-glow: rgba(56, 189, 248, 0.15);
       --danger: #f43f5e;
       --danger-bg: rgba(244, 63, 94, 0.12);
       --danger-border: rgba(244, 63, 94, 0.35);
@@ -53,7 +52,7 @@
       --warning-border: #fde68a;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background: var(--bg);
       color: var(--text);
@@ -63,7 +62,7 @@
       padding: 24px 16px 60px;
       transition: background 0.2s ease, color 0.2s ease;
     }
-    .container { max-width: 960px; margin: 0 auto; }
+    .container { max-width: 920px; margin: 0 auto; }
 
     /* Top Bar */
     .top-bar {
@@ -72,7 +71,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       padding-bottom: 14px;
       border-bottom: 1px solid var(--border);
     }
@@ -102,64 +101,26 @@
       color: var(--text-muted); background: var(--bg-inset);
       border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px;
     }
-    .action-btn {
+    .theme-btn {
       background: var(--bg-card); border: 1px solid var(--border);
       color: var(--text); padding: 5px 12px; border-radius: 6px;
-      font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none;
-      display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s ease;
-    }
-    .action-btn:hover { border-color: var(--border-highlight); color: var(--accent); }
-
-    /* View Switcher Tabs (Dual-Mode) */
-    .view-switcher-bar {
-      display: flex;
-      gap: 8px;
-      background: var(--bg-inset);
-      border: 1px solid var(--border);
-      padding: 4px;
-      border-radius: 10px;
-      margin-bottom: 24px;
-      width: fit-content;
-    }
-    .view-tab-btn {
-      padding: 7px 16px;
-      border-radius: 7px;
-      font-size: 12.5px;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.15s ease;
-      background: transparent;
-      color: var(--text-muted);
-      font-family: inherit;
-    }
-    .view-tab-btn.active {
-      background: var(--bg-card);
-      color: var(--accent);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      border: 1px solid var(--border);
+      font-size: 12px; font-weight: 600; cursor: pointer;
     }
 
-    /* Keynote Hero Card */
-    .keynote-hero {
+    /* Hero Keynote Card */
+    .hero-card {
       background: linear-gradient(145deg, #0f1626, #090e18);
       border: 1px solid rgba(56, 189, 248, 0.25);
       border-radius: 16px;
       padding: 24px 28px;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
       box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
-      position: relative;
-      overflow: hidden;
     }
-    body.light-theme .keynote-hero {
+    body.light-theme .hero-card {
       background: linear-gradient(145deg, #ffffff, #f0f9ff);
       border-color: #bae6fd;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
     }
-    .keynote-badge {
+    .hero-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -174,21 +135,20 @@
       letter-spacing: 0.5px;
       margin-bottom: 12px;
     }
-    .keynote-title {
-      font-size: 24px;
+    .hero-title {
+      font-size: 22px;
       font-weight: 900;
       letter-spacing: -0.4px;
-      margin-bottom: 8px;
-      line-height: 1.3;
+      margin-bottom: 6px;
+      line-height: 1.35;
     }
-    .keynote-desc {
+    .hero-desc {
       color: var(--text-muted);
-      font-size: 14px;
-      margin-bottom: 20px;
+      font-size: 13.5px;
+      margin-bottom: 18px;
     }
 
-    /* Delay / Countdown Ribbon */
-    .keynote-countdown-row {
+    .hero-timer-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -196,73 +156,44 @@
       gap: 16px;
       background: var(--bg-inset);
       border: 1px solid var(--border);
-      padding: 14px 20px;
-      border-radius: 12px;
+      padding: 12px 18px;
+      border-radius: 10px;
     }
-    .countdown-timer {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-    }
-    .timer-val {
+    .hero-timer-val {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 26px;
+      font-size: 20px;
       font-weight: 800;
       color: #38bdf8;
     }
-    .timer-lbl {
-      font-size: 12px;
+    .hero-timer-lbl {
+      font-size: 11px;
       color: var(--text-dim);
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-    }
-    .slippage-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      font-weight: 800;
-      padding: 6px 12px;
-      border-radius: 8px;
-    }
-    .slippage-on-time {
-      background: var(--success-bg);
-      color: var(--success);
-      border: 1px solid var(--success-border);
-    }
-    .slippage-delayed {
-      background: var(--danger-bg);
-      color: var(--danger);
-      border: 1px solid var(--danger-border);
-      animation: pulse-danger 1.8s infinite;
-    }
-    @keyframes pulse-danger {
-      0%, 100% { box-shadow: 0 0 0 rgba(244, 63, 94, 0); }
-      50% { box-shadow: 0 0 14px rgba(244, 63, 94, 0.4); }
+      margin-left: 8px;
     }
 
-    /* Keynote Stats Bar */
-    .keynote-stats {
+    /* Metrics Bar */
+    .metrics-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-      margin-bottom: 32px;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-bottom: 28px;
     }
-    .k-stat-box {
+    .metric-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
+      border-radius: 10px;
+      padding: 12px 14px;
     }
-    .k-stat-num {
+    .metric-num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 800;
       margin-bottom: 2px;
     }
-    .k-stat-lbl {
+    .metric-lbl {
       font-size: 11px;
       color: var(--text-dim);
       font-weight: 700;
@@ -270,123 +201,127 @@
       letter-spacing: 0.5px;
     }
 
-    /* Cards */
-    .commitment-card {
+    /* Section Header */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-header h2 {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    /* Drop Card */
+    .drop-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 18px;
-      margin-bottom: 14px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
       transition: all 0.2s ease;
-      position: relative;
     }
-    .commitment-card:hover {
-      border-color: var(--border-highlight);
-    }
-    .card-top {
+    .drop-card:hover { border-color: var(--border-highlight); }
+    .drop-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
     }
-    .card-id-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
+    .drop-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
     }
-    .item-id {
+    .delay-pill {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11.5px;
       font-weight: 700;
-      padding: 2px 7px;
+      padding: 3px 8px;
       border-radius: 5px;
       background: var(--bg-inset);
       border: 1px solid var(--border);
-      color: var(--text-dim);
     }
-    .item-title {
-      font-size: 15.5px;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.2px;
-    }
-    .countdown-pill {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: var(--bg-inset);
-      border: 1px solid var(--border);
-    }
-    .countdown-pill.danger {
+    .delay-pill.danger {
       background: var(--danger-bg);
       color: var(--danger);
       border-color: var(--danger-border);
     }
-    .countdown-pill.warning {
+    .delay-pill.warning {
       background: var(--warning-bg);
       color: var(--warning);
       border-color: var(--warning-border);
     }
 
     /* DoD Chips */
-    .dod-container {
-      margin: 12px 0 10px;
+    .dod-box {
       background: var(--bg-inset);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 12px;
+      padding: 10px 12px;
+      margin-top: 8px;
     }
-    .dod-title {
+    .dod-title-lbl {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       color: var(--text-dim);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       display: block;
     }
-    .dod-chip-grid {
+    .dod-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 6px;
     }
     .dod-chip {
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 12px;
+      padding: 5px 8px;
+      border-radius: 5px;
+      font-size: 11.5px;
       font-family: 'JetBrains Mono', monospace;
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--border);
       color: var(--text-muted);
     }
-    .dod-chip.chip-done {
-      background: var(--success-bg);
-      border-color: var(--success-border);
-      color: var(--success);
-      text-decoration: line-through;
-    }
-    .chip-checkbox {
-      width: 14px; height: 14px; border-radius: 3px;
+    .chip-sq {
+      width: 13px; height: 13px; border-radius: 3px;
       border: 1px solid var(--border); display: inline-flex;
-      align-items: center; justify-content: center; font-size: 10px;
+      align-items: center; justify-content: center; font-size: 9px;
       background: var(--bg-card); flex-shrink: 0;
     }
-    .chip-done .chip-checkbox {
-      background: var(--success); color: #fff; border-color: var(--success);
+
+    /* Collapsed Archive */
+    details.legacy-archive {
+      margin-top: 36px;
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+    }
+    details.legacy-archive summary {
+      cursor: pointer;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dim);
+      outline: none;
+    }
+    details.legacy-archive summary:hover {
+      color: var(--text-muted);
     }
 
     footer {
-      margin-top: 50px;
-      padding-top: 20px;
+      margin-top: 48px;
+      padding-top: 18px;
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
@@ -394,8 +329,6 @@
       font-size: 12px;
       color: var(--text-dim);
     }
-
-    .hidden-view { display: none !important; }
   </style>
 </head>
 <body>
@@ -406,587 +339,387 @@
     <div class="top-bar">
       <div class="sys-badge">
         <span class="live-dot"></span>
-        <span>PLANOS STUDIO // PROMISE RADAR</span>
+        <span>PLANOS STUDIO // RELEASE SLATE</span>
       </div>
       <div class="controls-group">
-        <span id="liveClock" class="clock-badge">2026-10-25 15:00:00 (GMT+8)</span>
-        <button id="themeToggle" class="action-btn" onclick="toggleTheme()">☀️ 淺色</button>
+        <span id="liveClock" class="clock-badge">2026-10-25 15:10:00 (GMT+8)</span>
+        <button id="themeToggle" class="theme-btn" onclick="toggleTheme()">☀️ 淺色</button>
       </div>
     </div>
 
-    <!-- Dual-Mode Switcher Tabs -->
-    <div class="view-switcher-bar">
-      <button id="tabKeynote" class="view-tab-btn active" onclick="switchView('keynote')">
-        🚀 科技大廠定檔發表會 (Product Launch Slate)
-      </button>
-      <button id="tabEng" class="view-tab-btn" onclick="switchView('eng')">
-        ⚡ 全庫工程雷達 (Engineering Operations)
-      </button>
-    </div>
-
-    <!-- ======================================================== -->
-    <!-- VIEW 1: PRODUCT LAUNCH SLATE (科技大廠承諾定檔發布會)      -->
-    <!-- ======================================================== -->
-    <div id="viewKeynote">
-      
-      <!-- Keynote Hero Feature Drop -->
-      <div class="keynote-hero">
-        <div class="keynote-badge">🪐 NEXT KEYNOTE DROP · 旗艦定檔交付</div>
-        <div class="keynote-title">🎙️ 10/26 Podcast Ep.01 錄音與剪輯</div>
-        <div class="keynote-desc">
-          公開定檔白紙黑字公證。不論是 Podcast、開源工具還是硬核筆記，定檔時間一到，全世界共同驗收交付。
-        </div>
-
-        <div class="keynote-countdown-row">
-          <div class="countdown-timer">
-            <span class="timer-val" id="keynoteCountdown">10/26 21:00</span>
-            <span class="timer-lbl">定檔上映時間</span>
-          </div>
-          <div>
-            <span class="slippage-indicator slippage-on-time">🟢 ON TRACK · 定檔倒數中</span>
-          </div>
-        </div>
+    <!-- Hero Card (Next Drop) -->
+    <div class="hero-card">
+      <div class="hero-pill">🪐 NEXT KEYNOTE DROP · 定檔首映</div>
+      <div class="hero-title">10/26 21:00 應用力學 Ch12 p.45~p.78 精華筆記與錯題解析 PDF 上線</div>
+      <div class="hero-desc">
+        真實世界實體交付。時間到了由少數人與未來的自己共同公證，絕無任何口頭粉飾。
       </div>
 
-      <!-- Keynote Metrics Bar -->
-      <div class="keynote-stats">
-        <div class="k-stat-box">
-          <div class="k-stat-num" style="color: #10b981;">100.0%</div>
-          <div class="k-stat-lbl">承諾兌現率 (Pledges Kept)</div>
+      <div class="hero-timer-bar">
+        <div>
+          <span class="hero-timer-val">2026-10-26 21:00</span>
+          <span class="hero-timer-lbl">定檔上映時間</span>
         </div>
-        <div class="k-stat-box">
-          <div class="k-stat-num" style="color: #38bdf8;">6 案</div>
-          <div class="k-stat-lbl">定檔發行列車 (Upcoming)</div>
-        </div>
-        <div class="k-stat-box">
-          <div class="k-stat-num" style="color: var(--success);">
-            +0 天
-          </div>
-          <div class="k-stat-lbl">延期赤字 (Slippage)</div>
-        </div>
-        <div class="k-stat-box">
-          <div class="k-stat-num" style="color: #ffffff;">16 案</div>
-          <div class="k-stat-lbl">已交付作品庫 (Shipped)</div>
-        </div>
-      </div>
-
-      <!-- Upcoming Product Drops Section -->
-      <div style="margin-bottom: 36px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
-          <h2 style="font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
-            📅 近期發行檔期表 (Confirmed Release Lineup)
-          </h2>
-          <span style="font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">
-            SSOT: GitHub Projects v2
-          </span>
-        </div>
-        <div class="commitment-card">
-          <div class="card-top">
-            <div class="card-id-title">
-              <span class="item-id">TASK</span>
-              <span class="item-title">🎙️ 10/26 Podcast Ep.01 錄音與剪輯</span>
-            </div>
-            <div>
-              <span class="countdown-pill warning">⏳ 剩 1 天定檔</span>
-            </div>
-          </div>
-
-          <div class="dod-container">
-            <span class="dod-title">🎯 交付規格 (Product Specs / DoD)</span>
-            <div class="dod-empty">無特定及格線標準</div>
-          </div>
-        </div>
-        <div class="commitment-card">
-          <div class="card-top">
-            <div class="card-id-title">
-              <span class="item-id">PUB-26-001</span>
-              <span class="item-title">10/26 21:00 應用力學 Ch12 p.45~p.78 精華筆記與錯題解析 PDF 上線</span>
-            </div>
-            <div>
-              <span class="countdown-pill warning">⏳ 剩 1 天定檔</span>
-            </div>
-          </div>
-
-          <div class="dod-container">
-            <span class="dod-title">🎯 交付規格 (Product Specs / DoD)</span>
-            <div class="dod-chip-grid">
-              <div class="dod-chip chip-pending"><span class="chip-checkbox"></span><span class="chip-label">p.45-60 觀念精華整理</span></div>
-              <div class="dod-chip chip-pending"><span class="chip-checkbox"></span><span class="chip-label">p.61-78 錯題解析與盲點標註</span></div>
-              <div class="dod-chip chip-pending"><span class="chip-checkbox"></span><span class="chip-label">輸出向量排版 PDF 並上傳公開</span></div>
-            </div>
-          </div>
-        </div>
-        <div class="commitment-card">
-          <div class="card-top">
-            <div class="card-id-title">
-              <span class="item-id">TASK</span>
-              <span class="item-title">🤖 11/05 OCW Bot 自動評分模組上線</span>
-            </div>
-            <div>
-              <span class="countdown-pill warning">⏳ 剩 11 天</span>
-            </div>
-          </div>
-
-          <div class="dod-container">
-            <span class="dod-title">🎯 交付規格 (Product Specs / DoD)</span>
-            <div class="dod-empty">無特定及格線標準</div>
-          </div>
-        </div>
-        <div class="commitment-card">
-          <div class="card-top">
-            <div class="card-id-title">
-              <span class="item-id">TASK</span>
-              <span class="item-title">🛠️ 11/15 PlanOS v2.5 雙軌正式版發布</span>
-            </div>
-            <div>
-              <span class="countdown-pill warning">⏳ 剩 21 天</span>
-            </div>
-          </div>
-
-          <div class="dod-container">
-            <span class="dod-title">🎯 交付規格 (Product Specs / DoD)</span>
-            <div class="dod-empty">無特定及格線標準</div>
-          </div>
-        </div>
-        <div class="commitment-card">
-          <div class="card-top">
-            <div class="card-id-title">
-              <span class="item-id">STAT-001</span>
-              <span class="item-title">12/08 跨領域 Report 1</span>
-            </div>
-            <div>
-              <span class="countdown-pill warning">⏳ 剩 44 天</span>
-            </div>
-          </div>
-
-          <div class="dod-container">
-            <span class="dod-title">🎯 交付規格 (Product Specs / DoD)</span>
-            <div class="dod-empty">無特定及格線標準</div>
-          </div>
-        </div>
-        <div class="commitment-card">
-          <div class="card-top">
-            <div class="card-id-title">
-              <span class="item-id">STAT-002</span>
-              <span class="item-title">12/15 跨領域 Report 2</span>
-            </div>
-            <div>
-              <span class="countdown-pill warning">⏳ 剩 51 天</span>
-            </div>
-          </div>
-
-          <div class="dod-container">
-            <span class="dod-title">🎯 交付規格 (Product Specs / DoD)</span>
-            <div class="dod-empty">無特定及格線標準</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Shipped Products Section -->
-      <div style="margin-bottom: 36px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
-          <h2 style="font-size: 18px; font-weight: 800; display: flex; align-items: center; gap: 8px;">
-            🏆 歷史已交付產品庫 (Shipped Product Vault)
-          </h2>
-          <span style="font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">
-            16 項真實交付
-          </span>
-        </div>
-        <div class="commitment-card" style="border-left: 3px solid var(--success);">
-          <div class="card-top">
-            <div class="card-id-title">
-              <span class="item-id">MATH-001</span>
-              <span class="item-title">10/20 工數 Midterm</span>
-            </div>
-            <div>
-              <span class="countdown-pill" style="color: var(--success);">✓ 準時交付封卷</span>
-            </div>
-          </div>
-          <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 6px;">
-            如期履約：通過客觀及格線，已完工封卷。
-          </div>
-        </div>
-        <div class="commitment-card" style="border-left: 3px solid var(--success);">
-          <div class="card-top">
-            <div class="card-id-title">
-              <span class="item-id">TH-001</span>
-              <span class="item-title">10/21 熱力 Midterm</span>
-            </div>
-            <div>
-              <span class="countdown-pill" style="color: var(--success);">✓ 準時交付封卷</span>
-            </div>
-          </div>
-          <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 6px;">
-            如期履約：通過客觀及格線，已完工封卷。
-          </div>
-        </div>
-        <div class="commitment-card" style="border-left: 3px solid var(--success);">
-          <div class="card-top">
-            <div class="card-id-title">
-              <span class="item-id">EE-001</span>
-              <span class="item-title">10/19 電工 Q5</span>
-            </div>
-            <div>
-              <span class="countdown-pill" style="color: var(--success);">✓ 準時交付封卷</span>
-            </div>
-          </div>
-          <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 6px;">
-            如期履約：通過客觀及格線，已完工封卷。
-          </div>
-        </div>
-        <div class="commitment-card" style="border-left: 3px solid var(--success);">
-          <div class="card-top">
-            <div class="card-id-title">
-              <span class="item-id">EE-002</span>
-              <span class="item-title">10/21 電工 Q6</span>
-            </div>
-            <div>
-              <span class="countdown-pill" style="color: var(--success);">✓ 準時交付封卷</span>
-            </div>
-          </div>
-          <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 6px;">
-            如期履約：通過客觀及格線，已完工封卷。
-          </div>
-        </div>
-        <div class="commitment-card" style="border-left: 3px solid var(--success);">
-          <div class="card-top">
-            <div class="card-id-title">
-              <span class="item-id">EE-004</span>
-              <span class="item-title">09/14 電工 Q1</span>
-            </div>
-            <div>
-              <span class="countdown-pill" style="color: var(--success);">✓ 準時交付封卷</span>
-            </div>
-          </div>
-          <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 6px;">
-            如期履約：通過客觀及格線，已完工封卷。
-          </div>
-        </div>
-        <div class="commitment-card" style="border-left: 3px solid var(--success);">
-          <div class="card-top">
-            <div class="card-id-title">
-              <span class="item-id">EE-005</span>
-              <span class="item-title">09/21 電工 Q2</span>
-            </div>
-            <div>
-              <span class="countdown-pill" style="color: var(--success);">✓ 準時交付封卷</span>
-            </div>
-          </div>
-          <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 6px;">
-            如期履約：通過客觀及格線，已完工封卷。
-          </div>
+        <div>
+          <span class="delay-pill warning">⏳ 定檔倒數推進中</span>
         </div>
       </div>
     </div>
 
-    <!-- ======================================================== -->
-    <!-- VIEW 2: ENGINEERING RADAR (全庫工程雷達 - 保留完整視圖)     -->
-    <!-- ======================================================== -->
-    <div id="viewEng" class="hidden-view">
-      
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
-        <h2 style="font-size: 18px; font-weight: 800;">⚡ 全庫工程雷達 (50 筆作戰工單完整視圖)</h2>
-        <span style="font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">
-          start-date &lt;= @today &lt;= deadline
+    <!-- Metrics Bar -->
+    <div class="metrics-bar">
+      <div class="metric-card">
+        <div class="metric-num" style="color: #10b981;">100.0%</div>
+        <div class="metric-lbl">承諾兌現率</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num" style="color: #38bdf8;">4 案</div>
+        <div class="metric-lbl">定檔發行列車</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num" style="color: var(--success);">
+          +0 天
+        </div>
+        <div class="metric-lbl">延期赤字 (Slippage)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num" style="color: #ffffff;">2 案</div>
+        <div class="metric-lbl">已交付作品庫</div>
+      </div>
+    </div>
+
+    <!-- Section: Active Drops -->
+    <div style="margin-bottom: 32px;">
+      <div class="section-header">
+        <h2>📅 近期定檔發行表 (Confirmed Lineup)</h2>
+        <span style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">
+          SSOT: LAUNCH_SLATE.md
         </span>
       </div>
-      <div class="commitment-card">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">PUB-26-001</span>
-            <span class="item-title">10/26 21:00 應用力學 Ch12 p.45~p.78 精華筆記與錯題解析 PDF 上線</span>
-          </div>
-          <div>
-            <span class="countdown-pill warning">剩 1 天定檔</span>
-          </div>
+      <div class="drop-card">
+        <div class="drop-top">
+          <div class="drop-title">10/26 21:00 應用力學 Ch12 p.45~p.78 精華筆記與錯題解析 PDF 上線</div>
+          <div><span class="delay-pill warning">⏳ 剩 1 天 5 時</span></div>
         </div>
-        <div class="dod-container">
-          <span class="dod-title">🎯 DoD 驗收及格標準</span>
-          <div class="dod-chip-grid">
-              <div class="dod-chip chip-pending"><span class="chip-checkbox"></span><span class="chip-label">p.45-60 觀念精華整理</span></div>
-              <div class="dod-chip chip-pending"><span class="chip-checkbox"></span><span class="chip-label">p.61-78 錯題解析與盲點標註</span></div>
-              <div class="dod-chip chip-pending"><span class="chip-checkbox"></span><span class="chip-label">輸出向量排版 PDF 並上傳公開</span></div>
+                  <div class="dod-box">
+            <span class="dod-title-lbl">🎯 交付規格 (Product Specs / DoD)</span>
+            <div class="dod-grid">
+              <div class="dod-chip">
+                <span class="chip-sq"></span>
+                <span>p.45-60 觀念精華整理</span>
+              </div>
+              <div class="dod-chip">
+                <span class="chip-sq"></span>
+                <span>p.61-78 錯題解析與盲點標註</span>
+              </div>
+              <div class="dod-chip">
+                <span class="chip-sq"></span>
+                <span>輸出向量排版 PDF 並上傳公開</span>
+              </div>
             </div>
+          </div>
+      </div>
+      <div class="drop-card">
+        <div class="drop-top">
+          <div class="drop-title">10/27 12:00 🎙️ Podcast Ep.01 錄音與剪輯</div>
+          <div><span class="delay-pill warning">⏳ 剩 1 天 20 時</span></div>
+        </div>
+                  <div class="dod-box">
+            <span class="dod-title-lbl">🎯 交付規格 (Product Specs / DoD)</span>
+            <div class="dod-grid">
+              <div class="dod-chip">
+                <span class="chip-sq"></span>
+                <span>完成 45 分鐘錄音</span>
+              </div>
+              <div class="dod-chip">
+                <span class="chip-sq"></span>
+                <span>AU 降噪與剪輯後製</span>
+              </div>
+              <div class="dod-chip">
+                <span class="chip-sq"></span>
+                <span>輸出 MP3 與發行封面</span>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="drop-card">
+        <div class="drop-top">
+          <div class="drop-title">11/05 00:00 🤖 OCW Bot 自動評分模組上線</div>
+          <div><span class="delay-pill warning">⏳ 定檔剩 10 天</span></div>
+        </div>
+                  <div class="dod-box">
+            <span class="dod-title-lbl">🎯 交付規格 (Product Specs / DoD)</span>
+            <div class="dod-grid">
+              <div class="dod-chip">
+                <span class="chip-sq"></span>
+                <span>完成評分核心演算法</span>
+              </div>
+              <div class="dod-chip">
+                <span class="chip-sq"></span>
+                <span>跑通 3 個單元測試</span>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="drop-card">
+        <div class="drop-top">
+          <div class="drop-title">11/15 00:00 🛠️ PlanOS v2.5 雙軌正式版發布</div>
+          <div><span class="delay-pill warning">⏳ 定檔剩 20 天</span></div>
+        </div>
+                  <div class="dod-box">
+            <span class="dod-title-lbl">🎯 交付規格 (Product Specs / DoD)</span>
+            <div class="dod-grid">
+              <div class="dod-chip">
+                <span class="chip-sq"></span>
+                <span>完成雙軌版本控制規範</span>
+              </div>
+              <div class="dod-chip">
+                <span class="chip-sq"></span>
+                <span>產出正式 Release Tag</span>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- Section: Shipped Drops -->
+    <div style="margin-bottom: 32px;">
+      <div class="section-header">
+        <h2>🏆 歷史已交付作品庫 (Shipped Drops)</h2>
+        <span style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">
+          2 案封卷
+        </span>
+      </div>
+      <div class="drop-card" style="border-left: 3px solid var(--success);">
+        <div class="drop-top">
+          <div class="drop-title">2026-10-24 🏛️ 萬物演進四階協議與 LifeOS 三大不變量法典</div>
+          <div><span class="delay-pill" style="color: var(--success);">✓ 已交付</span></div>
+        </div>
+        <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 4px;">
+          完整入法並開源至 PlanOS-HQ 倉庫
         </div>
       </div>
-      <div class="commitment-card">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">DYN-001</span>
-            <span class="item-title">10/30 應力 Midterm 1</span>
-          </div>
-          <div>
-            <span class="countdown-pill normal">剩 5 天</span>
-          </div>
+      <div class="drop-card" style="border-left: 3px solid var(--success);">
+        <div class="drop-top">
+          <div class="drop-title">2026-10-15 🚄 鐵道部會單件流派工演算法 v1.0</div>
+          <div><span class="delay-pill" style="color: var(--success);">✓ 已交付</span></div>
         </div>
-        <div class="dod-container">
-          <span class="dod-title">🎯 DoD 驗收及格標準</span>
-          <div class="dod-chip-grid">
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.1 Ch12</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.2 Ch13</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.3 Ch14</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.4 Review</span>
-          </div>
-        </div>
-        </div>
-      </div>
-      <div class="commitment-card">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">EE-008</span>
-            <span class="item-title">10/28 電工 Q7</span>
-          </div>
-          <div>
-            <span class="countdown-pill warning">剩 3 天定檔</span>
-          </div>
-        </div>
-        <div class="dod-container">
-          <span class="dod-title">🎯 DoD 驗收及格標準</span>
-          <div class="dod-chip-grid">
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.1 14.1</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.2 14.2</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.3 14.3</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.4 14.4</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.5 14.5</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.6 14.6</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.7 Review</span>
-          </div>
-        </div>
-        </div>
-      </div>
-      <div class="commitment-card">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">PROB-001</span>
-            <span class="item-title">10/29 機統 Midterm</span>
-          </div>
-          <div>
-            <span class="countdown-pill normal">剩 4 天</span>
-          </div>
-        </div>
-        <div class="dod-container">
-          <span class="dod-title">🎯 DoD 驗收及格標準</span>
-          <div class="dod-chip-grid">
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.1 Ch5</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.2 Ch6</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.3 Ch1-4 Review</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.4 All Review</span>
-          </div>
-        </div>
-        </div>
-      </div>
-      <div class="commitment-card">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">PSY-001</span>
-            <span class="item-title">10/30 普心 Midterm</span>
-          </div>
-          <div>
-            <span class="countdown-pill normal">剩 5 天</span>
-          </div>
-        </div>
-        <div class="dod-container">
-          <span class="dod-title">🎯 DoD 驗收及格標準</span>
-          <div class="dod-chip-grid">
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.1 Ch1</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.2 Ch2</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.3 Ch3</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.4 Ch4</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.5 Review</span>
-          </div>
-        </div>
-        </div>
-      </div>
-      <div class="commitment-card">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">LOGIC-001</span>
-            <span class="item-title">11/02 邏輯 Midterm</span>
-          </div>
-          <div>
-            <span class="countdown-pill normal">剩 8 天</span>
-          </div>
-        </div>
-        <div class="dod-container">
-          <span class="dod-title">🎯 DoD 驗收及格標準</span>
-          <div class="dod-chip-grid">
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.1 Ch1</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.2 Ch2</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.3 Ch3</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.4 Ch4</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.5 Ch5</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.6 Ch6</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.7 Ch7</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.8 Ch8</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.9 Review</span>
-          </div>
-        </div>
-        </div>
-      </div>
-      <div class="commitment-card">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">ACC-005</span>
-            <span class="item-title">11/04 會計 Q4</span>
-          </div>
-          <div>
-            <span class="countdown-pill normal">剩 10 天</span>
-          </div>
-        </div>
-        <div class="dod-container">
-          <span class="dod-title">🎯 DoD 驗收及格標準</span>
-          <div class="dod-empty">無特定及格線標準</div>
-        </div>
-      </div>
-      <div class="commitment-card">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">TASK</span>
-            <span class="item-title">🤖 11/05 OCW Bot 自動評分模組上線</span>
-          </div>
-          <div>
-            <span class="countdown-pill normal">剩 11 天</span>
-          </div>
-        </div>
-        <div class="dod-container">
-          <span class="dod-title">🎯 DoD 驗收及格標準</span>
-          <div class="dod-empty">無特定及格線標準</div>
-        </div>
-      </div>
-      <div class="commitment-card">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">TASK</span>
-            <span class="item-title">🎙️ 10/26 Podcast Ep.01 錄音與剪輯</span>
-          </div>
-          <div>
-            <span class="countdown-pill warning">剩 1 天定檔</span>
-          </div>
-        </div>
-        <div class="dod-container">
-          <span class="dod-title">🎯 DoD 驗收及格標準</span>
-          <div class="dod-empty">無特定及格線標準</div>
-        </div>
-      </div>
-      <div class="commitment-card">
-        <div class="card-top">
-          <div class="card-id-title">
-            <span class="item-id">PE-002</span>
-            <span class="item-title">11/02 桌球 Midterm</span>
-          </div>
-          <div>
-            <span class="countdown-pill normal">剩 8 天</span>
-          </div>
-        </div>
-        <div class="dod-container">
-          <span class="dod-title">🎯 DoD 驗收及格標準</span>
-          <div class="dod-chip-grid">
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.1 Part 1</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.2 Part 2</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.3 Part 3</span>
-          </div>
-          <div class="dod-chip chip-pending">
-            <span class="chip-checkbox"></span>
-            <span class="chip-label">M0.4 Review</span>
-          </div>
-        </div>
+        <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 4px;">
+          演算法跑通並部署至排程控制台
         </div>
       </div>
     </div>
+
+    <!-- Hidden Collapsed Legacy Internal Archive -->
+    <details class="legacy-archive">
+      <summary>📦 點擊展開檢視內部日常作戰工單 (50 案 · 預設隱藏)</summary>
+      <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 6px;">
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[DYN-001] 10/30 應力 Midterm 1</span>
+          <span>Todo</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[MATH-001] 10/20 工數 Midterm</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[TH-001] 10/21 熱力 Midterm</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[EE-001] 10/19 電工 Q5</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[PROB-001] 10/29 機統 Midterm</span>
+          <span>Todo</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[PSY-001] 10/30 普心 Midterm</span>
+          <span>Todo</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[LOGIC-001] 11/02 邏輯 Midterm</span>
+          <span>Todo</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[EE-002] 10/21 電工 Q6</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[EE-004] 09/14 電工 Q1</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[EE-005] 09/21 電工 Q2</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[ACC-001] 09/23 會計 Q1</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[MATH-002] 09/29 工數 Q1</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[EE-006] 09/30 電工 Q3</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[ACC-002] 09/30 會計 Q2</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[ACC-003] 10/07 會計 Q3</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[TH-002] 10/07 熱力 Q1</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[PROB-002] 10/08 機統 Q1</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[EE-007] 10/12 電工 Q4</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[ACC-004] 10/12 會計 Midterm 1</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[MATH-003] 10/13 工數 Q2</span>
+          <span>Done</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[EE-008] 10/28 電工 Q7</span>
+          <span>Todo</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[PE-002] 11/02 桌球 Midterm</span>
+          <span>Todo</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[ACC-005] 11/04 會計 Q4</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[ACC-006] 11/11 會計 Q5</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[TH-003] 11/11 熱力 Q2</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[ACC-007] 11/16 會計 Midterm 2</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[MATH-004] 11/17 工數 Q3</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[DYN-002] 11/20 應力 Midterm 2</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[PE-003] 11/23 桌球 Test 1</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[PROB-003] 11/26 機統 Q2</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[PE-004] 11/30 桌球 Test 2</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[ACC-008] 12/02 會計 Q6</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[TH-004] 12/02 熱力 Q3</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[PE-005] 12/07 桌球 Test 3</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[STAT-001] 12/08 跨領域 Report 1</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[PE-006] 12/14 桌球 Test 4</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[MATH-005] 12/15 工數 Q4</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[STAT-002] 12/15 跨領域 Report 2</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[ACC-009] 12/16 會計 Q7</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[DYN-003] 12/18 應力 Final</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[PSY-002] 12/18 普心 Final</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[EE-009] 12/21 電工 Final</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[LOGIC-002] 12/21 邏輯 Final</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[ACC-010] 12/21 會計 Final</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[MATH-006] 12/22 工數 Final</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[TH-005] 12/23 熱力 Final</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[PROB-004] 12/24 機統 Final</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[TICKET] 🎙️ 10/26 Podcast Ep.01 錄音與剪輯</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[TICKET] 🤖 11/05 OCW Bot 自動評分模組上線</span>
+          <span>Backlog</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+          <span>[TICKET] 🛠️ 11/15 PlanOS v2.5 雙軌正式版發布</span>
+          <span>Backlog</span>
+        </div>
+      </div>
+    </details>
 
     <!-- Footer -->
     <footer>
-      <div>PlanOS Studio · The Public Delivery Slate</div>
+      <div>PlanOS Studio · SSOT: LAUNCH_SLATE.md</div>
       <div>
         <a href="v2.1_legacy.html" style="color: var(--accent); text-decoration: none;">v2.1 歷史版本</a> ·
         <a href="https://github.com/PlanOS-HQ/PlanOS_v2" target="_blank" style="color: var(--accent); text-decoration: none;">GitHub 組織</a>
@@ -996,25 +729,6 @@
   </div>
 
   <script>
-    function switchView(mode) {
-      const vKeynote = document.getElementById('viewKeynote');
-      const vEng = document.getElementById('viewEng');
-      const tKeynote = document.getElementById('tabKeynote');
-      const tEng = document.getElementById('tabEng');
-
-      if (mode === 'keynote') {
-        vKeynote.classList.remove('hidden-view');
-        vEng.classList.add('hidden-view');
-        tKeynote.classList.add('active');
-        tEng.classList.remove('active');
-      } else {
-        vKeynote.classList.add('hidden-view');
-        vEng.classList.remove('hidden-view');
-        tKeynote.classList.remove('active');
-        tEng.classList.add('active');
-      }
-    }
-
     function initTheme() {
       const savedTheme = localStorage.getItem('planos_theme');
       const btn = document.getElementById('themeToggle');
