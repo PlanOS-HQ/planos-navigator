@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PlanOS 出品發布雷達 · 科技產品發布會 (v2.5)</title>
+  <title>PlanOS 扁平發布雷達 · 定檔卡片庫 (v2.5)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #07090e;
@@ -71,7 +71,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       padding-bottom: 14px;
       border-bottom: 1px solid var(--border);
     }
@@ -107,93 +107,27 @@
       font-size: 12px; font-weight: 600; cursor: pointer;
     }
 
-    /* Hero Keynote Card */
-    .hero-card {
-      background: linear-gradient(145deg, #0f1626, #090e18);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      border-radius: 16px;
-      padding: 24px 28px;
-      margin-bottom: 24px;
-      box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
-    }
-    body.light-theme .hero-card {
-      background: linear-gradient(145deg, #ffffff, #f0f9ff);
-      border-color: #bae6fd;
-    }
-    .hero-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 800;
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      padding: 3px 8px;
-      border-radius: 4px;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-    }
-    .hero-title {
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: -0.4px;
-      margin-bottom: 6px;
-      line-height: 1.35;
-    }
-    .hero-desc {
-      color: var(--text-muted);
-      font-size: 13.5px;
-      margin-bottom: 18px;
-    }
-
-    .hero-timer-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-      background: var(--bg-inset);
-      border: 1px solid var(--border);
-      padding: 12px 18px;
-      border-radius: 10px;
-    }
-    .hero-timer-val {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 20px;
-      font-weight: 800;
-      color: #38bdf8;
-    }
-    .hero-timer-lbl {
-      font-size: 11px;
-      color: var(--text-dim);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-left: 8px;
-    }
-
-    /* Metrics Bar */
-    .metrics-bar {
+    /* Metrics Strip */
+    .metrics-strip {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
       gap: 10px;
-      margin-bottom: 28px;
+      margin-bottom: 20px;
     }
-    .metric-card {
+    .m-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
+      border-radius: 8px;
+      padding: 10px 14px;
     }
-    .metric-num {
+    .m-num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 800;
+      line-height: 1.2;
       margin-bottom: 2px;
     }
-    .metric-lbl {
+    .m-lbl {
       font-size: 11px;
       color: var(--text-dim);
       font-weight: 700;
@@ -201,31 +135,93 @@
       letter-spacing: 0.5px;
     }
 
-    /* Section Header */
-    .section-header {
+    /* Toolbar: Filter & Sort */
+    .toolbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 14px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 20px;
     }
-    .section-header h2 {
-      font-size: 16px;
-      font-weight: 800;
+    .filter-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
     }
-
-    /* Drop Card */
-    .drop-card {
+    .f-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+    .f-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .f-btn.active {
+      background: var(--bg-card);
+      border-color: var(--border);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .sort-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sort-select {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 18px;
-      margin-bottom: 12px;
-      transition: all 0.2s ease;
+      color: var(--text);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
     }
-    .drop-card:hover { border-color: var(--border-highlight); }
-    .drop-top {
+
+    /* Unified Flat Card */
+    .cards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .flat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      transition: border-color 0.15s ease;
+      position: relative;
+    }
+    .flat-card:hover {
+      border-color: var(--border-highlight);
+    }
+    .flat-card.card-delayed {
+      border-left: 3px solid var(--danger);
+    }
+    .flat-card.card-done {
+      border-left: 3px solid var(--success);
+    }
+    .flat-card.card-in_progress {
+      border-left: 3px solid var(--accent);
+    }
+
+    /* Card Top Line */
+    .c-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -233,79 +229,127 @@
       margin-bottom: 10px;
       flex-wrap: wrap;
     }
-    .drop-title {
+    .c-id-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .c-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .c-title {
       font-size: 15px;
       font-weight: 700;
       color: var(--text);
+      letter-spacing: -0.2px;
     }
-    .delay-pill {
+
+    /* Countdown / Delay Badges */
+    .c-badge {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       padding: 3px 8px;
-      border-radius: 5px;
+      border-radius: 4px;
       background: var(--bg-inset);
       border: 1px solid var(--border);
+      white-space: nowrap;
     }
-    .delay-pill.danger {
+    .c-badge.delayed {
       background: var(--danger-bg);
       color: var(--danger);
       border-color: var(--danger-border);
     }
-    .delay-pill.warning {
+    .c-badge.urgent {
       background: var(--warning-bg);
       color: var(--warning);
       border-color: var(--warning-border);
     }
+    .c-badge.done {
+      color: var(--success);
+      border-color: var(--success-border);
+    }
 
-    /* DoD Chips */
-    .dod-box {
+    /* Card Meta Data Grid */
+    .c-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
       background: var(--bg-inset);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      margin-top: 8px;
+      padding: 8px 12px;
+      border-radius: 6px;
     }
-    .dod-title-lbl {
+    .c-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .c-meta-lbl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .c-meta-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* Phase Mini Progress Bar */
+    .phase-bar-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mini-track {
+      width: 40px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .mini-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* DoD Line */
+    .c-dod {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .c-dod-lbl {
       font-family: 'JetBrains Mono', monospace;
       font-size: 10.5px;
       font-weight: 700;
       color: var(--text-dim);
-      text-transform: uppercase;
-      margin-bottom: 6px;
-      display: block;
-    }
-    .dod-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-      gap: 6px;
-    }
-    .dod-chip {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 5px 8px;
-      border-radius: 5px;
-      font-size: 11.5px;
-      font-family: 'JetBrains Mono', monospace;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-    }
-    .chip-sq {
-      width: 13px; height: 13px; border-radius: 3px;
-      border: 1px solid var(--border); display: inline-flex;
-      align-items: center; justify-content: center; font-size: 9px;
-      background: var(--bg-card); flex-shrink: 0;
+      flex-shrink: 0;
     }
 
-    /* Collapsed Archive */
+    /* Bottom Legacy Collapsible */
     details.legacy-archive {
       margin-top: 36px;
       background: var(--bg-inset);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 16px;
+      border-radius: 8px;
+      padding: 10px 14px;
     }
     details.legacy-archive summary {
       cursor: pointer;
@@ -314,9 +358,6 @@
       font-weight: 700;
       color: var(--text-dim);
       outline: none;
-    }
-    details.legacy-archive summary:hover {
-      color: var(--text-muted);
     }
 
     footer {
@@ -339,378 +380,463 @@
     <div class="top-bar">
       <div class="sys-badge">
         <span class="live-dot"></span>
-        <span>PLANOS STUDIO // RELEASE SLATE</span>
+        <span>PLANOS PLEDGE RADAR // FLAT EDITION</span>
       </div>
       <div class="controls-group">
-        <span id="liveClock" class="clock-badge">2026-10-25 15:10:00 (GMT+8)</span>
+        <span id="liveClock" class="clock-badge">2026-10-25 15:15:00 (GMT+8)</span>
         <button id="themeToggle" class="theme-btn" onclick="toggleTheme()">☀️ 淺色</button>
       </div>
     </div>
 
-    <!-- Hero Card (Next Drop) -->
-    <div class="hero-card">
-      <div class="hero-pill">🪐 NEXT KEYNOTE DROP · 定檔首映</div>
-      <div class="hero-title">10/26 21:00 應用力學 Ch12 p.45~p.78 精華筆記與錯題解析 PDF 上線</div>
-      <div class="hero-desc">
-        真實世界實體交付。時間到了由少數人與未來的自己共同公證，絕無任何口頭粉飾。
+    <!-- Metrics Strip -->
+    <div class="metrics-strip">
+      <div class="m-card">
+        <div class="m-num" style="color: #10b981;">100.0%</div>
+        <div class="m-lbl">承諾兌現率</div>
       </div>
-
-      <div class="hero-timer-bar">
-        <div>
-          <span class="hero-timer-val">2026-10-26 21:00</span>
-          <span class="hero-timer-lbl">定檔上映時間</span>
-        </div>
-        <div>
-          <span class="delay-pill warning">⏳ 定檔倒數推進中</span>
-        </div>
+      <div class="m-card">
+        <div class="m-num" style="color: #38bdf8;">4 案</div>
+        <div class="m-lbl">推進中 (In Progress)</div>
       </div>
-    </div>
-
-    <!-- Metrics Bar -->
-    <div class="metrics-bar">
-      <div class="metric-card">
-        <div class="metric-num" style="color: #10b981;">100.0%</div>
-        <div class="metric-lbl">承諾兌現率</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-num" style="color: #38bdf8;">4 案</div>
-        <div class="metric-lbl">定檔發行列車</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-num" style="color: var(--success);">
+      <div class="m-card">
+        <div class="m-num" style="color: var(--success);">
           +0 天
         </div>
-        <div class="metric-lbl">延期赤字 (Slippage)</div>
+        <div class="m-lbl">延期赤字 (Slippage)</div>
       </div>
-      <div class="metric-card">
-        <div class="metric-num" style="color: #ffffff;">2 案</div>
-        <div class="metric-lbl">已交付作品庫</div>
-      </div>
-    </div>
-
-    <!-- Section: Active Drops -->
-    <div style="margin-bottom: 32px;">
-      <div class="section-header">
-        <h2>📅 近期定檔發行表 (Confirmed Lineup)</h2>
-        <span style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">
-          SSOT: LAUNCH_SLATE.md
-        </span>
-      </div>
-      <div class="drop-card">
-        <div class="drop-top">
-          <div class="drop-title">10/26 21:00 應用力學 Ch12 p.45~p.78 精華筆記與錯題解析 PDF 上線</div>
-          <div><span class="delay-pill warning">⏳ 剩 1 天 5 時</span></div>
-        </div>
-                  <div class="dod-box">
-            <span class="dod-title-lbl">🎯 交付規格 (Product Specs / DoD)</span>
-            <div class="dod-grid">
-              <div class="dod-chip">
-                <span class="chip-sq"></span>
-                <span>p.45-60 觀念精華整理</span>
-              </div>
-              <div class="dod-chip">
-                <span class="chip-sq"></span>
-                <span>p.61-78 錯題解析與盲點標註</span>
-              </div>
-              <div class="dod-chip">
-                <span class="chip-sq"></span>
-                <span>輸出向量排版 PDF 並上傳公開</span>
-              </div>
-            </div>
-          </div>
-      </div>
-      <div class="drop-card">
-        <div class="drop-top">
-          <div class="drop-title">10/27 12:00 🎙️ Podcast Ep.01 錄音與剪輯</div>
-          <div><span class="delay-pill warning">⏳ 剩 1 天 20 時</span></div>
-        </div>
-                  <div class="dod-box">
-            <span class="dod-title-lbl">🎯 交付規格 (Product Specs / DoD)</span>
-            <div class="dod-grid">
-              <div class="dod-chip">
-                <span class="chip-sq"></span>
-                <span>完成 45 分鐘錄音</span>
-              </div>
-              <div class="dod-chip">
-                <span class="chip-sq"></span>
-                <span>AU 降噪與剪輯後製</span>
-              </div>
-              <div class="dod-chip">
-                <span class="chip-sq"></span>
-                <span>輸出 MP3 與發行封面</span>
-              </div>
-            </div>
-          </div>
-      </div>
-      <div class="drop-card">
-        <div class="drop-top">
-          <div class="drop-title">11/05 00:00 🤖 OCW Bot 自動評分模組上線</div>
-          <div><span class="delay-pill warning">⏳ 定檔剩 10 天</span></div>
-        </div>
-                  <div class="dod-box">
-            <span class="dod-title-lbl">🎯 交付規格 (Product Specs / DoD)</span>
-            <div class="dod-grid">
-              <div class="dod-chip">
-                <span class="chip-sq"></span>
-                <span>完成評分核心演算法</span>
-              </div>
-              <div class="dod-chip">
-                <span class="chip-sq"></span>
-                <span>跑通 3 個單元測試</span>
-              </div>
-            </div>
-          </div>
-      </div>
-      <div class="drop-card">
-        <div class="drop-top">
-          <div class="drop-title">11/15 00:00 🛠️ PlanOS v2.5 雙軌正式版發布</div>
-          <div><span class="delay-pill warning">⏳ 定檔剩 20 天</span></div>
-        </div>
-                  <div class="dod-box">
-            <span class="dod-title-lbl">🎯 交付規格 (Product Specs / DoD)</span>
-            <div class="dod-grid">
-              <div class="dod-chip">
-                <span class="chip-sq"></span>
-                <span>完成雙軌版本控制規範</span>
-              </div>
-              <div class="dod-chip">
-                <span class="chip-sq"></span>
-                <span>產出正式 Release Tag</span>
-              </div>
-            </div>
-          </div>
+      <div class="m-card">
+        <div class="m-num" style="color: #ffffff;">2 案</div>
+        <div class="m-lbl">已兌現 (Done)</div>
       </div>
     </div>
 
-    <!-- Section: Shipped Drops -->
-    <div style="margin-bottom: 32px;">
-      <div class="section-header">
-        <h2>🏆 歷史已交付作品庫 (Shipped Drops)</h2>
-        <span style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">
-          2 案封卷
-        </span>
+    <!-- Toolbar: Filter & Sort -->
+    <div class="toolbar">
+      <div class="filter-group">
+        <button class="f-btn active" onclick="filterCards('all', this)">全部 (6)</button>
+        <button class="f-btn" onclick="filterCards('in_progress', this)">進行中 (4)</button>
+        <button class="f-btn" onclick="filterCards('delayed', this)">🚨 延期中 (0)</button>
+        <button class="f-btn" onclick="filterCards('done', this)">🟢 已完成 (2)</button>
       </div>
-      <div class="drop-card" style="border-left: 3px solid var(--success);">
-        <div class="drop-top">
-          <div class="drop-title">2026-10-24 🏛️ 萬物演進四階協議與 LifeOS 三大不變量法典</div>
-          <div><span class="delay-pill" style="color: var(--success);">✓ 已交付</span></div>
+      <div class="sort-group">
+        <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">排序:</span>
+        <select class="sort-select" onchange="sortCards(this.value)">
+          <option value="time-asc">📅 定檔時間 (最近在先)</option>
+          <option value="time-desc">📅 定檔時間 (最遠在先)</option>
+          <option value="delay-desc">🚨 延期天數 (最多在先)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Flat Cards List -->
+    <div class="cards-list" id="cardsContainer">
+      <div class="flat-card card-in_progress" data-status="in_progress" data-ts="1793019600" data-delay="0">
+        <div class="c-top">
+          <div class="c-id-title">
+            <span class="c-id">PUB-26-001</span>
+            <span class="c-title">應用力學 Ch12 p.45~p.78 精華筆記與錯題解析 PDF 上線</span>
+          </div>
+          <div>
+            <span class="c-badge warning">⏳ 剩 1 天 5 小時</span>
+          </div>
         </div>
-        <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 4px;">
-          完整入法並開源至 PlanOS-HQ 倉庫
+
+        <div class="c-meta">
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📅 定檔時間:</span>
+            <span class="c-meta-val">2026-10-26 21:00</span>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📊 階段:</span>
+            <div class="phase-bar-wrap">
+              <span class="c-meta-val">M0.3 封裝 · 75%</span>
+              <div class="mini-track"><div class="mini-fill" style="width: 75%;"></div></div>
+            </div>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">🏷️ 狀態:</span>
+            <span class="c-meta-val" style="color: var(--accent);">進行中</span>
+          </div>
+        </div>
+
+        <div class="c-dod">
+          <span class="c-dod-lbl">🎯 驗收標準 (DoD):</span>
+          <span>p.45-60 觀念精華整理 · p.61-78 錯題解析與盲點標註 · 輸出向量排版 PDF 並上傳公開</span>
         </div>
       </div>
-      <div class="drop-card" style="border-left: 3px solid var(--success);">
-        <div class="drop-top">
-          <div class="drop-title">2026-10-15 🚄 鐵道部會單件流派工演算法 v1.0</div>
-          <div><span class="delay-pill" style="color: var(--success);">✓ 已交付</span></div>
+      <div class="flat-card card-in_progress" data-status="in_progress" data-ts="1793073600" data-delay="0">
+        <div class="c-top">
+          <div class="c-id-title">
+            <span class="c-id">POD-26-001</span>
+            <span class="c-title">🎙️ Podcast Ep.01 錄音與剪輯後製</span>
+          </div>
+          <div>
+            <span class="c-badge warning">⏳ 剩 1 天 20 小時</span>
+          </div>
         </div>
-        <div style="font-size: 12.5px; color: var(--text-muted); margin-top: 4px;">
-          演算法跑通並部署至排程控制台
+
+        <div class="c-meta">
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📅 定檔時間:</span>
+            <span class="c-meta-val">2026-10-27 12:00</span>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📊 階段:</span>
+            <div class="phase-bar-wrap">
+              <span class="c-meta-val">M0.2 錄製 · 40%</span>
+              <div class="mini-track"><div class="mini-fill" style="width: 40%;"></div></div>
+            </div>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">🏷️ 狀態:</span>
+            <span class="c-meta-val" style="color: var(--accent);">進行中</span>
+          </div>
+        </div>
+
+        <div class="c-dod">
+          <span class="c-dod-lbl">🎯 驗收標準 (DoD):</span>
+          <span>完成 45 分鐘錄音 · AU 降噪與剪輯後製 · 輸出 MP3 與發行封面</span>
+        </div>
+      </div>
+      <div class="flat-card card-in_progress" data-status="in_progress" data-ts="1793808000" data-delay="0">
+        <div class="c-top">
+          <div class="c-id-title">
+            <span class="c-id">BOT-26-001</span>
+            <span class="c-title">🤖 OCW Bot 自動評分模組上線</span>
+          </div>
+          <div>
+            <span class="c-badge normal">剩 10 天</span>
+          </div>
+        </div>
+
+        <div class="c-meta">
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📅 定檔時間:</span>
+            <span class="c-meta-val">2026-11-05 00:00</span>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📊 階段:</span>
+            <div class="phase-bar-wrap">
+              <span class="c-meta-val">M0.1 原型 · 25%</span>
+              <div class="mini-track"><div class="mini-fill" style="width: 25%;"></div></div>
+            </div>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">🏷️ 狀態:</span>
+            <span class="c-meta-val" style="color: var(--accent);">進行中</span>
+          </div>
+        </div>
+
+        <div class="c-dod">
+          <span class="c-dod-lbl">🎯 驗收標準 (DoD):</span>
+          <span>完成評分核心演算法 · 跑通 3 個單元測試案例</span>
+        </div>
+      </div>
+      <div class="flat-card card-in_progress" data-status="in_progress" data-ts="1794672000" data-delay="0">
+        <div class="c-top">
+          <div class="c-id-title">
+            <span class="c-id">SYS-26-001</span>
+            <span class="c-title">🛠️ PlanOS v2.5 雙軌架構正式版發布</span>
+          </div>
+          <div>
+            <span class="c-badge normal">剩 20 天</span>
+          </div>
+        </div>
+
+        <div class="c-meta">
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📅 定檔時間:</span>
+            <span class="c-meta-val">2026-11-15 00:00</span>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📊 階段:</span>
+            <div class="phase-bar-wrap">
+              <span class="c-meta-val">M0.2 核心 · 60%</span>
+              <div class="mini-track"><div class="mini-fill" style="width: 60%;"></div></div>
+            </div>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">🏷️ 狀態:</span>
+            <span class="c-meta-val" style="color: var(--accent);">進行中</span>
+          </div>
+        </div>
+
+        <div class="c-dod">
+          <span class="c-dod-lbl">🎯 驗收標準 (DoD):</span>
+          <span>完成雙軌版本控制法典 · 產出正式 Annotated Release Tag</span>
+        </div>
+      </div>
+      <div class="flat-card card-done" data-status="done" data-ts="1792843200" data-delay="0">
+        <div class="c-top">
+          <div class="c-id-title">
+            <span class="c-id">LAW-26-001</span>
+            <span class="c-title">🏛️ 萬物演進四階協議與 LifeOS 三大不變量法典入法</span>
+          </div>
+          <div>
+            <span class="c-badge done">✓ 已完成交付</span>
+          </div>
+        </div>
+
+        <div class="c-meta">
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📅 定檔時間:</span>
+            <span class="c-meta-val">2026-10-24 20:00</span>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📊 階段:</span>
+            <div class="phase-bar-wrap">
+              <span class="c-meta-val">M1.0 發布 · 100%</span>
+              <div class="mini-track"><div class="mini-fill" style="width: 100%;"></div></div>
+            </div>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">🏷️ 狀態:</span>
+            <span class="c-meta-val" style="color: var(--success);">已完成</span>
+          </div>
+        </div>
+
+        <div class="c-dod">
+          <span class="c-dod-lbl">🎯 驗收標準 (DoD):</span>
+          <span>完整寫入 AGENTS.md · 部署雙向 Issue Templates · 生效 RFC-26-018 與 019</span>
+        </div>
+      </div>
+      <div class="flat-card card-done" data-status="done" data-ts="1792058400" data-delay="0">
+        <div class="c-top">
+          <div class="c-id-title">
+            <span class="c-id">OPS-26-001</span>
+            <span class="c-title">🚄 鐵道部會單件流派工演算法 v1.0 實裝</span>
+          </div>
+          <div>
+            <span class="c-badge done">✓ 已完成交付</span>
+          </div>
+        </div>
+
+        <div class="c-meta">
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📅 定檔時間:</span>
+            <span class="c-meta-val">2026-10-15 18:00</span>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📊 階段:</span>
+            <div class="phase-bar-wrap">
+              <span class="c-meta-val">M1.0 發布 · 100%</span>
+              <div class="mini-track"><div class="mini-fill" style="width: 100%;"></div></div>
+            </div>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">🏷️ 狀態:</span>
+            <span class="c-meta-val" style="color: var(--success);">已完成</span>
+          </div>
+        </div>
+
+        <div class="c-dod">
+          <span class="c-dod-lbl">🎯 驗收標準 (DoD):</span>
+          <span>完成 Train Dispatcher 演算法 · 部署至 115-1 排程總控台</span>
         </div>
       </div>
     </div>
 
     <!-- Hidden Collapsed Legacy Internal Archive -->
     <details class="legacy-archive">
-      <summary>📦 點擊展開檢視內部日常作戰工單 (50 案 · 預設隱藏)</summary>
-      <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 6px;">
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+      <summary>📦 內部日常作戰工單存檔 (50 案 · 預設隱藏)</summary>
+      <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 6px;">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[DYN-001] 10/30 應力 Midterm 1</span>
           <span>Todo</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[MATH-001] 10/20 工數 Midterm</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[TH-001] 10/21 熱力 Midterm</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-001] 10/19 電工 Q5</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PROB-001] 10/29 機統 Midterm</span>
           <span>Todo</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PSY-001] 10/30 普心 Midterm</span>
           <span>Todo</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[LOGIC-001] 11/02 邏輯 Midterm</span>
           <span>Todo</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-002] 10/21 電工 Q6</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-004] 09/14 電工 Q1</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-005] 09/21 電工 Q2</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-001] 09/23 會計 Q1</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[MATH-002] 09/29 工數 Q1</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-006] 09/30 電工 Q3</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-002] 09/30 會計 Q2</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-003] 10/07 會計 Q3</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[TH-002] 10/07 熱力 Q1</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PROB-002] 10/08 機統 Q1</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-007] 10/12 電工 Q4</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-004] 10/12 會計 Midterm 1</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[MATH-003] 10/13 工數 Q2</span>
           <span>Done</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-008] 10/28 電工 Q7</span>
           <span>Todo</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PE-002] 11/02 桌球 Midterm</span>
           <span>Todo</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-005] 11/04 會計 Q4</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-006] 11/11 會計 Q5</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[TH-003] 11/11 熱力 Q2</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-007] 11/16 會計 Midterm 2</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[MATH-004] 11/17 工數 Q3</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[DYN-002] 11/20 應力 Midterm 2</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PE-003] 11/23 桌球 Test 1</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PROB-003] 11/26 機統 Q2</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PE-004] 11/30 桌球 Test 2</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-008] 12/02 會計 Q6</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[TH-004] 12/02 熱力 Q3</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PE-005] 12/07 桌球 Test 3</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[STAT-001] 12/08 跨領域 Report 1</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PE-006] 12/14 桌球 Test 4</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[MATH-005] 12/15 工數 Q4</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[STAT-002] 12/15 跨領域 Report 2</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-009] 12/16 會計 Q7</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[DYN-003] 12/18 應力 Final</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PSY-002] 12/18 普心 Final</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-009] 12/21 電工 Final</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[LOGIC-002] 12/21 邏輯 Final</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-010] 12/21 會計 Final</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[MATH-006] 12/22 工數 Final</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[TH-005] 12/23 熱力 Final</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PROB-004] 12/24 機統 Final</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[TICKET] 🎙️ 10/26 Podcast Ep.01 錄音與剪輯</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[TICKET] 🤖 11/05 OCW Bot 自動評分模組上線</span>
           <span>Backlog</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[TICKET] 🛠️ 11/15 PlanOS v2.5 雙軌正式版發布</span>
           <span>Backlog</span>
         </div>
@@ -729,6 +855,39 @@
   </div>
 
   <script>
+    // Realtime Client-side Filter
+    function filterCards(status, btn) {
+      document.querySelectorAll('.filter-group .f-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.flat-card').forEach(card => {
+        if (status === 'all' || card.dataset.status === status) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Realtime Client-side Sort
+    function sortCards(mode) {
+      const container = document.getElementById('cardsContainer');
+      const cards = Array.from(container.querySelectorAll('.flat-card'));
+
+      cards.sort((a, b) => {
+        const tsA = parseInt(a.dataset.ts, 10);
+        const tsB = parseInt(b.dataset.ts, 10);
+        const delayA = parseInt(a.dataset.delay, 10);
+        const delayB = parseInt(b.dataset.delay, 10);
+
+        if (mode === 'time-asc') return tsA - tsB;
+        if (mode === 'time-desc') return tsB - tsA;
+        if (mode === 'delay-desc') return delayB - delayA;
+        return 0;
+      });
+
+      cards.forEach(c => container.appendChild(c));
+    }
+
     function initTheme() {
       const savedTheme = localStorage.getItem('planos_theme');
       const btn = document.getElementById('themeToggle');
