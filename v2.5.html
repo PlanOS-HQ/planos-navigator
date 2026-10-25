@@ -729,7 +729,7 @@
         </div>
         <div class="kpi-card">
           <div class="val" id="kpiExecuting" style="color: var(--c-executing);">1</div>
-          <div class="lbl">攻堅推進 Executing</div>
+          <div class="lbl">In Progress</div>
         </div>
         <div class="kpi-card">
           <div class="val" id="kpiPlanned" style="color: var(--c-planned);">0</div>
@@ -753,7 +753,7 @@
         <span class="tab-count" id="countAll">4</span>
       </button>
       <button class="tab-btn" data-filter="executing" onclick="filterTable('executing', this)">
-        <span>🚀 執行中 Executing</span>
+        <span>🚀 In Progress</span>
         <span class="tab-count" id="countExecuting">1</span>
       </button>
       <button class="tab-btn" data-filter="planned" onclick="filterTable('planned', this)">
@@ -802,7 +802,7 @@
               <td class="col-status">
                 <span class="status-pill badge-executing">
                   <span class="status-icon">🚀</span>
-                  <span>Executing</span>
+                  <span>In Progress</span>
                 </span>
               </td>
               <td class="col-progress">
@@ -932,7 +932,7 @@
             "id": "PVTI_lADOFJ2zN84BoFq2zhDVcx4",
             "track": "Projects",
             "title": "應用力學 Ch12 核心精華筆記與題解手稿上線",
-            "status": "Executing",
+            "status": "In Progress",
             "progress": 80,
             "deadline": "2026-10-25 21:00",
             "iso_deadline": "2026-10-25T21:00:00+08:00",
@@ -975,14 +975,15 @@
 ];
 
     const STATUS_CONFIG = {
-      Executing: { label: "Executing", filterKey: "executing", colorVar: "var(--c-executing)", badgeClass: "badge-executing", icon: "🚀" },
-      Planned:   { label: "Planned",   filterKey: "planned",   colorVar: "var(--c-planned)",   badgeClass: "badge-planned",   icon: "📅" },
-      Review:    { label: "Review",    filterKey: "review",    colorVar: "var(--c-review)",    badgeClass: "badge-review",    icon: "🔍" },
-      Planning:  { label: "Planning",  filterKey: "planning",  colorVar: "var(--c-planning)",  badgeClass: "badge-planning",  icon: "💡" },
-      Publish:   { label: "Publish",   filterKey: "publish",   colorVar: "var(--c-published)", badgeClass: "badge-publish",   icon: "✨" },
-      Published: { label: "Publish",   filterKey: "publish",   colorVar: "var(--c-published)", badgeClass: "badge-publish",   icon: "✨" },
-      Done:      { label: "Publish",   filterKey: "publish",   colorVar: "var(--c-published)", badgeClass: "badge-publish",   icon: "✨" },
-      Canceled:  { label: "Canceled",  filterKey: "canceled",  colorVar: "var(--c-canceled)",  badgeClass: "badge-canceled",  icon: "⚪" }
+      "In Progress": { label: "In Progress", filterKey: "executing", colorVar: "var(--c-executing)", badgeClass: "badge-executing", icon: "🚀" },
+      Executing:     { label: "In Progress", filterKey: "executing", colorVar: "var(--c-executing)", badgeClass: "badge-executing", icon: "🚀" },
+      Planned:       { label: "Planned",     filterKey: "planned",   colorVar: "var(--c-planned)",   badgeClass: "badge-planned",   icon: "📅" },
+      Review:        { label: "Review",      filterKey: "review",    colorVar: "var(--c-review)",    badgeClass: "badge-review",    icon: "🔍" },
+      Planning:      { label: "Planning",    filterKey: "planning",  colorVar: "var(--c-planning)",  badgeClass: "badge-planning",  icon: "💡" },
+      Publish:       { label: "Publish",     filterKey: "publish",   colorVar: "var(--c-published)", badgeClass: "badge-publish",   icon: "✨" },
+      Published:     { label: "Publish",     filterKey: "publish",   colorVar: "var(--c-published)", badgeClass: "badge-publish",   icon: "✨" },
+      Done:          { label: "Done",        filterKey: "publish",   colorVar: "var(--c-published)", badgeClass: "badge-publish",   icon: "✨" },
+      Canceled:      { label: "Canceled",    filterKey: "canceled",  colorVar: "var(--c-canceled)",  badgeClass: "badge-canceled",  icon: "⚪" }
     };
 
     const TRACK_CONFIG = {
