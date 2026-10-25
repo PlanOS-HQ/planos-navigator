@@ -3,507 +3,836 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>PlanOS View 14 直連發布看板</title>
+  <title>PlanOS 公開承諾工作台 (Live Commitment Table)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #090c15;
-      --bg-card: #0f1523;
-      --bg-column: #0b101c;
-      --bg-inset: #090d18;
-      --border: rgba(255, 255, 255, 0.08);
-      --border-highlight: rgba(56, 189, 248, 0.35);
+      --bg-main: #090d16;
+      --bg-surface: #0f172a;
+      --bg-card: #131d33;
+      --bg-card-hover: #182440;
+      --border: #1e293b;
+      --border-bright: #334155;
       --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
+      --text-dim: #94a3b8;
+      --text-muted: #64748b;
       --accent: #38bdf8;
-      
+
+      --c-executing: #38bdf8;
+      --c-planned: #a855f7;
+      --c-review: #f59e0b;
       --c-planning: #94a3b8;
-      --c-planned: #38bdf8;
-      --c-executing: #f59e0b;
-      --c-review: #14b8a6;
       --c-published: #10b981;
-      --c-delayed: #ef4444;
+      --c-slip: #f43f5e;
+      --c-slip-bg: rgba(244, 63, 94, 0.12);
+      --c-slip-border: rgba(244, 63, 94, 0.35);
+
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', 'Noto Sans TC', sans-serif;
     }
 
-    body.light-theme {
-      --bg: #f8fafc;
-      --bg-card: #ffffff;
-      --bg-column: #f1f5f9;
-      --bg-inset: #e2e8f0;
+    [data-theme="light"] {
+      --bg-main: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-card: #f1f5f9;
+      --bg-card-hover: #e2e8f0;
       --border: #e2e8f0;
-      --border-highlight: #93c5fd;
+      --border-bright: #cbd5e1;
       --text: #0f172a;
-      --text-muted: #475569;
-      --text-dim: #94a3b8;
+      --text-dim: #475569;
+      --text-muted: #94a3b8;
       --accent: #0284c7;
 
+      --c-executing: #0284c7;
+      --c-planned: #7c3aed;
+      --c-review: #d97706;
       --c-planning: #64748b;
-      --c-planned: #0284c7;
-      --c-executing: #d97706;
-      --c-review: #0d9488;
       --c-published: #059669;
-      --c-delayed: #dc2626;
+      --c-slip: #e11d48;
+      --c-slip-bg: rgba(225, 29, 72, 0.1);
+      --c-slip-border: rgba(225, 29, 72, 0.3);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      background: var(--bg);
+      background: var(--bg-main);
       color: var(--text);
-      font-family: 'Inter', 'Noto Sans TC', sans-serif;
+      font-family: var(--font-sans);
       min-height: 100vh;
-      line-height: 1.5;
-      padding: 20px 16px 60px;
-      transition: background 0.2s ease, color 0.2s ease;
-    }
-    .container { max-width: 1400px; margin: 0 auto; }
-
-    /* Top Bar */
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 20px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--border);
-    }
-    .site-title {
-      font-size: 18px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .live-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--c-published); box-shadow: 0 0 8px var(--c-published);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
-
-    .controls { display: flex; align-items: center; gap: 10px; }
-    .clock-badge {
-      font-family: 'JetBrains Mono', monospace; font-size: 12px;
-      color: var(--text-muted); background: var(--bg-inset);
-      border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px;
-    }
-    .hq-link-badge {
-      background: var(--bg-card); border: 1px solid var(--border);
-      color: var(--accent); padding: 5px 12px; border-radius: 6px;
-      font-size: 12px; font-weight: 600; text-decoration: none;
-      display: inline-flex; align-items: center; gap: 6px;
-      transition: border-color 0.15s ease;
-    }
-    .hq-link-badge:hover {
-      border-color: var(--border-highlight);
-    }
-    .tool-btn {
-      background: var(--bg-card); border: 1px solid var(--border);
-      color: var(--text); padding: 5px 12px; border-radius: 6px;
-      font-size: 12px; font-weight: 600; cursor: pointer;
-    }
-
-    /* Metrics Bar */
-    .metrics-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    .m-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 14px;
-    }
-    .m-num {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
-      font-weight: 800;
-      margin-bottom: 2px;
-    }
-    .m-lbl {
-      font-size: 11px;
-      color: var(--text-dim);
-      font-weight: 600;
-    }
-
-    /* Kanban Board Layout */
-    .kanban-board {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 14px;
-      align-items: start;
-      margin-bottom: 32px;
-    }
-    .kanban-col {
-      background: var(--bg-column);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      min-height: 200px;
+      line-height: 1.5;
+      padding: 0;
     }
-    .col-header {
+
+    .top-bar {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
-    .col-title {
-      font-size: 13px;
+
+    .site-title {
       font-weight: 700;
+      font-size: 15px;
       display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .live-dot {
+      width: 9px;
+      height: 9px;
+      background: var(--c-executing);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--c-executing);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hq-link-badge {
+      display: inline-flex;
       align-items: center;
       gap: 6px;
-    }
-    .col-count {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      background: var(--bg-inset);
-      border: 1px solid var(--border);
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: var(--text-dim);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
     }
 
-    /* Flat Card */
-    .flat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      transition: all 0.15s ease;
-    }
-    .flat-card:hover {
-      border-color: var(--border-highlight);
+    .hq-link-badge:hover {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: var(--accent);
       transform: translateY(-1px);
     }
-    .flat-card.stage-Executing { border-left: 3px solid var(--c-executing); }
-    .flat-card.stage-Planned { border-left: 3px solid var(--c-planned); }
-    .flat-card.stage-Review { border-left: 3px solid var(--c-review); }
-    .flat-card.stage-Planning { border-left: 3px solid var(--c-planning); }
-    .flat-card.stage-Published { border-left: 3px solid var(--c-published); }
-    .flat-card.is-delayed { border-left: 3px solid var(--c-delayed) !important; }
 
-    .c-title {
-      font-size: 14.5px;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.4;
+    .clock-badge {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 8px;
     }
-    .c-badge-row {
+
+    .tool-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tool-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-bright);
+    }
+
+    .container {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      flex: 1;
+    }
+
+    /* Header Banner */
+    .dashboard-header {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
       flex-wrap: wrap;
-      background: var(--bg-inset);
-      border: 1px solid var(--border);
-      padding: 5px 8px;
-      border-radius: 6px;
-      font-size: 11.5px;
+      gap: 16px;
     }
-    .c-target-date {
+
+    .header-text h1 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
+    }
+
+    .header-text p {
       color: var(--text-dim);
-      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
     }
-    .live-countdown {
-      font-family: 'JetBrains Mono', monospace;
+
+    .kpi-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-align: center;
+      min-width: 80px;
+    }
+
+    .kpi-card .val {
+      font-family: var(--font-mono);
+      font-size: 18px;
       font-weight: 700;
     }
-    .live-countdown.is-delayed { color: var(--c-delayed) !important; }
-    .live-countdown.is-published { color: var(--c-published); }
 
-    .c-desc {
+    .kpi-card .lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Filter Tabs */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .tab-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      background: var(--bg-card);
+      color: var(--text);
+    }
+
+    .tab-btn.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .tab-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      background: var(--bg-card);
+      padding: 1px 6px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    /* Table Container */
+    .table-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .commitment-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .commitment-table th {
+      background: var(--bg-card);
+      color: var(--text-dim);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .commitment-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .table-row {
+      transition: background 0.15s ease;
+    }
+
+    .table-row:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .table-row:last-child td {
+      border-bottom: none;
+    }
+
+    /* Column: Title */
+    .col-title {
+      min-width: 280px;
+      max-width: 480px;
+    }
+
+    .title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .row-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.2px;
+    }
+
+    .row-desc {
       font-size: 12px;
       color: var(--text-muted);
       line-height: 1.4;
     }
 
-    footer {
-      margin-top: 48px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
+    /* Column: Status */
+    .col-status {
+      width: 140px;
+      white-space: nowrap;
+    }
+
+    .status-pill {
+      display: inline-flex;
       align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
       font-size: 12px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      letter-spacing: -0.2px;
+    }
+
+    .status-icon {
+      font-size: 13px;
+    }
+
+    /* Column: Progress (數字) */
+    .col-progress {
+      width: 180px;
+      white-space: nowrap;
+    }
+
+    .progress-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .progress-num {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-main);
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    /* Column: Deadline / Publish Time */
+    .col-deadline {
+      width: 220px;
+      white-space: nowrap;
+    }
+
+    .deadline-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .deadline-date {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .countdown-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: var(--bg-card);
       color: var(--text-dim);
+      border: 1px solid var(--border);
+      width: fit-content;
+    }
+
+    .countdown-badge.urgent {
+      color: var(--c-executing);
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    .countdown-badge.slipping {
+      color: var(--c-slip);
+      background: var(--c-slip-bg);
+      border-color: var(--c-slip-border);
+      animation: pulse-slip 1.5s infinite;
+    }
+
+    .countdown-badge.done {
+      color: var(--c-published);
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    @keyframes pulse-slip {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: var(--bg-surface);
+    }
+
+    @media (max-width: 768px) {
+      .top-bar {
+        padding: 12px 16px;
+      }
+      .site-title span:last-child {
+        display: none;
+      }
+      .site-title::after {
+        content: "承諾工作台";
+      }
+      .container {
+        padding: 16px;
+      }
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .kpi-row {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .kpi-card {
+        flex: 1;
+        min-width: 0;
+        padding: 6px 8px;
+      }
+      .kpi-card .val {
+        font-size: 15px;
+      }
+      .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .commitment-table th, .commitment-table td {
+        padding: 12px 14px;
+      }
+      .col-title {
+        min-width: 200px;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <div class="site-title">
+      <span class="live-dot"></span>
+      <span>PlanOS 公開承諾工作台 (Live View 14)</span>
+    </div>
+    <div class="controls">
+      <a href="https://github.com/orgs/PlanOS-HQ/projects/1/views/14" target="_blank" class="hq-link-badge">
+        <span>⚡ 總部 View 14 表格</span>
+        <span>↗</span>
+      </a>
+      <span id="liveClock" class="clock-badge">2026-10-25 16:55:00 (GMT+8)</span>
+      <button id="themeToggle" class="tool-btn" onclick="toggleTheme()">☀️ 淺色</button>
+    </div>
+  </header>
+
   <div class="container">
-    
-    <!-- Top Bar -->
-    <div class="top-bar">
-      <div class="site-title">
-        <span class="live-dot"></span>
-        <span>PlanOS 發布看板 (1:1 直連 View 14)</span>
+    <!-- Header Banner -->
+    <div class="dashboard-header">
+      <div class="header-text">
+        <h1>公開承諾發布工作台 (Public Commitment Table)</h1>
+        <p>1:1 直連 GitHub Project 1 · View 14 表格 · 徹底解耦 · 聚焦狀態、進度與發布時間</p>
       </div>
-      <div class="controls">
-        <a href="https://github.com/orgs/PlanOS-HQ/projects/1/views/14" target="_blank" class="hq-link-badge">
-          <span>⚡ GitHub View 14 總部看板</span>
-          <span>↗</span>
-        </a>
-        <span id="liveClock" class="clock-badge">2026-10-25 16:45:00 (GMT+8)</span>
-        <button id="themeToggle" class="tool-btn" onclick="toggleTheme()">☀️ 淺色</button>
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="val" style="color: var(--text);">4</div>
+          <div class="lbl">總承諾</div>
+        </div>
+        <div class="kpi-card">
+          <div class="val" style="color: var(--c-executing);">1</div>
+          <div class="lbl">攻堅中</div>
+        </div>
+        <div class="kpi-card">
+          <div class="val" style="color: var(--c-planning);">3</div>
+          <div class="lbl">探索中</div>
+        </div>
+        <div class="kpi-card">
+          <div class="val" style="color: var(--c-published);">0</div>
+          <div class="lbl">已交付</div>
+        </div>
       </div>
     </div>
 
-    <!-- Metrics Bar -->
-    <div class="metrics-bar">
-      <div class="m-card">
-        <div class="m-num" style="color: var(--c-executing);">1 案</div>
-        <div class="m-lbl">🚀 攻堅中</div>
-      </div>
-      <div class="m-card">
-        <div class="m-num" style="color: var(--c-planned);">0 案</div>
-        <div class="m-lbl">📅 已定檔</div>
-      </div>
-      <div class="m-card">
-        <div class="m-num" style="color: var(--c-review);">0 案</div>
-        <div class="m-lbl">🔍 驗收中</div>
-      </div>
-      <div class="m-card">
-        <div class="m-num" id="metricDelayed" style="color: var(--c-delayed);">0 案</div>
-        <div class="m-lbl">🚨 延期項</div>
-      </div>
-      <div class="m-card">
-        <div class="m-num" style="color: var(--c-published);">0 案</div>
-        <div class="m-lbl">✨ 已交付</div>
-      </div>
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <button class="tab-btn active" onclick="filterTable('all', this)">全部 <span class="tab-count">4</span></button>
+      <button class="tab-btn" onclick="filterTable('executing', this)">🚀 攻堅中 <span class="tab-count">1</span></button>
+      <button class="tab-btn" onclick="filterTable('planned', this)">📅 已定檔 <span class="tab-count">0</span></button>
+      <button class="tab-btn" onclick="filterTable('planning', this)">💡 探索中 <span class="tab-count">3</span></button>
+      <button class="tab-btn" onclick="filterTable('published', this)">✨ 已交付 <span class="tab-count">0</span></button>
     </div>
 
-    <!-- Pure Kanban Board (1:1 Synced with View 14 Board) -->
-    <div class="kanban-board">
-      <div class="kanban-col">
-        <div class="col-header">
-          <div class="col-title" style="color: var(--c-executing);">🚀 攻堅中 (In Progress)</div>
-          <div class="col-count">1</div>
-        </div>
-        <div class="flat-card stage-Executing" 
-             data-stage="Executing" 
-             data-target="2026-10-25T21:00:00+08:00" 
-             data-ts="1792933200">
-          <div class="c-title">應用力學 Ch12 核心精華筆記與題解手稿上線</div>
-          <div class="c-badge-row">
-            <span class="c-target-date">📅 2026-10-25</span>
-            <span class="live-countdown" data-role="countdown">計算中...</span>
-          </div>
-          <div class="c-desc">今晚 21:00 前完成 PDF 排版並公開上線。</div>
-        </div>
-      </div>
-      <div class="kanban-col">
-        <div class="col-header">
-          <div class="col-title" style="color: var(--c-planned);">📅 已定檔 (Todo)</div>
-          <div class="col-count">0</div>
-        </div>
-      </div>
-      <div class="kanban-col">
-        <div class="col-header">
-          <div class="col-title" style="color: var(--c-review);">🔍 驗收中 (Stuck/Review)</div>
-          <div class="col-count">0</div>
-        </div>
-      </div>
-      <div class="kanban-col">
-        <div class="col-header">
-          <div class="col-title" style="color: var(--c-planning);">💡 探索中 (Backlog)</div>
-          <div class="col-count">5</div>
-        </div>
-        <div class="flat-card stage-Planning" 
-             data-stage="Planning" 
-             data-target="2026-12-08T21:00:00+08:00" 
-             data-ts="1796734800">
-          <div class="c-title">12/08 跨領域 Report 1</div>
-          <div class="c-badge-row">
-            <span class="c-target-date">📅 2026-12-08</span>
-            <span class="live-countdown" data-role="countdown">計算中...</span>
-          </div>
-          
-        </div>
-        <div class="flat-card stage-Planning" 
-             data-stage="Planning" 
-             data-target="2026-12-15T21:00:00+08:00" 
-             data-ts="1797339600">
-          <div class="c-title">12/15 跨領域 Report 2</div>
-          <div class="c-badge-row">
-            <span class="c-target-date">📅 2026-12-15</span>
-            <span class="live-countdown" data-role="countdown">計算中...</span>
-          </div>
-          
-        </div>
-        <div class="flat-card stage-Planning" 
-             data-stage="Planning" 
-             data-target="2026-10-26T21:00:00+08:00" 
-             data-ts="1793019600">
-          <div class="c-title">🎙️ 10/26 Podcast Ep.01 錄音與剪輯</div>
-          <div class="c-badge-row">
-            <span class="c-target-date">📅 2026-10-26</span>
-            <span class="live-countdown" data-role="countdown">計算中...</span>
-          </div>
-          
-        </div>
-        <div class="flat-card stage-Planning" 
-             data-stage="Planning" 
-             data-target="2026-11-05T21:00:00+08:00" 
-             data-ts="1793883600">
-          <div class="c-title">🤖 11/05 OCW Bot 自動評分模組上線</div>
-          <div class="c-badge-row">
-            <span class="c-target-date">📅 2026-11-05</span>
-            <span class="live-countdown" data-role="countdown">計算中...</span>
-          </div>
-          
-        </div>
-        <div class="flat-card stage-Planning" 
-             data-stage="Planning" 
-             data-target="2026-11-15T21:00:00+08:00" 
-             data-ts="1794747600">
-          <div class="c-title">🛠️ 11/15 PlanOS v2.5 雙軌正式版發布</div>
-          <div class="c-badge-row">
-            <span class="c-target-date">📅 2026-11-15</span>
-            <span class="live-countdown" data-role="countdown">計算中...</span>
-          </div>
-          
-        </div>
-      </div>
-      <div class="kanban-col">
-        <div class="col-header">
-          <div class="col-title" style="color: var(--c-published);">✨ 已交付 (Done)</div>
-          <div class="col-count">0</div>
-        </div>
-      </div>
+    <!-- Main Commitment Table -->
+    <div class="table-container">
+      <table class="commitment-table">
+        <thead>
+          <tr>
+            <th>公開承諾事項</th>
+            <th>狀態</th>
+            <th>進度 (數字)</th>
+            <th>發布時間</th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="table-row stage-executing" data-stage="executing" data-target="2026-10-25T23:59:59+08:00" data-ts="1792943999">
+          <!-- 承諾事項 (Title) -->
+          <td class="col-title">
+            <div class="title-wrap">
+              <span class="row-title">應用力學 Ch12 核心精華筆記與題解手稿上線</span>
+              <div class="row-desc">今晚 21:00 前完成 PDF 排版並公開上線。</div>
+            </div>
+          </td>
 
+          <!-- 狀態 (Status) -->
+          <td class="col-status">
+            <span class="status-pill" style="color: #38bdf8; background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.35);">
+              <span class="status-icon">🚀</span>
+              <span>攻堅中</span>
+            </span>
+          </td>
+
+          <!-- 進度 (Progress - 數字) -->
+          <td class="col-progress">
+            <div class="progress-wrap">
+              <div class="progress-num" style="color: var(--c-executing);">80%</div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 80%; background: var(--c-executing);"></div>
+              </div>
+            </div>
+          </td>
+
+          <!-- 發布時間 (Publish Time) -->
+          <td class="col-deadline">
+            <div class="deadline-wrap">
+              <div class="deadline-date">📅 2026-10-25</div>
+              <div class="countdown-badge" data-role="countdown">計算中...</div>
+            </div>
+          </td>
+        </tr>
+        <tr class="table-row stage-planning" data-stage="planning" data-target="2026-10-26T23:59:59+08:00" data-ts="1793030399">
+          <!-- 承諾事項 (Title) -->
+          <td class="col-title">
+            <div class="title-wrap">
+              <span class="row-title">🎙️ 10/26 Podcast Ep.01 錄音與剪輯</span>
+              
+            </div>
+          </td>
+
+          <!-- 狀態 (Status) -->
+          <td class="col-status">
+            <span class="status-pill" style="color: #94a3b8; background: rgba(148, 163, 184, 0.12); border-color: rgba(148, 163, 184, 0.35);">
+              <span class="status-icon">💡</span>
+              <span>探索中</span>
+            </span>
+          </td>
+
+          <!-- 進度 (Progress - 數字) -->
+          <td class="col-progress">
+            <div class="progress-wrap">
+              <div class="progress-num" style="color: var(--text-muted);">0%</div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 0%; background: var(--text-muted);"></div>
+              </div>
+            </div>
+          </td>
+
+          <!-- 發布時間 (Publish Time) -->
+          <td class="col-deadline">
+            <div class="deadline-wrap">
+              <div class="deadline-date">📅 2026-10-26</div>
+              <div class="countdown-badge" data-role="countdown">計算中...</div>
+            </div>
+          </td>
+        </tr>
+        <tr class="table-row stage-planning" data-stage="planning" data-target="2026-11-05T23:59:59+08:00" data-ts="1793894399">
+          <!-- 承諾事項 (Title) -->
+          <td class="col-title">
+            <div class="title-wrap">
+              <span class="row-title">🤖 11/05 OCW Bot 自動評分模組上線</span>
+              
+            </div>
+          </td>
+
+          <!-- 狀態 (Status) -->
+          <td class="col-status">
+            <span class="status-pill" style="color: #94a3b8; background: rgba(148, 163, 184, 0.12); border-color: rgba(148, 163, 184, 0.35);">
+              <span class="status-icon">💡</span>
+              <span>探索中</span>
+            </span>
+          </td>
+
+          <!-- 進度 (Progress - 數字) -->
+          <td class="col-progress">
+            <div class="progress-wrap">
+              <div class="progress-num" style="color: var(--text-muted);">0%</div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 0%; background: var(--text-muted);"></div>
+              </div>
+            </div>
+          </td>
+
+          <!-- 發布時間 (Publish Time) -->
+          <td class="col-deadline">
+            <div class="deadline-wrap">
+              <div class="deadline-date">📅 2026-11-05</div>
+              <div class="countdown-badge" data-role="countdown">計算中...</div>
+            </div>
+          </td>
+        </tr>
+        <tr class="table-row stage-planning" data-stage="planning" data-target="2026-11-15T23:59:59+08:00" data-ts="1794758399">
+          <!-- 承諾事項 (Title) -->
+          <td class="col-title">
+            <div class="title-wrap">
+              <span class="row-title">🛠️ 11/15 PlanOS v2.5 雙軌正式版發布</span>
+              
+            </div>
+          </td>
+
+          <!-- 狀態 (Status) -->
+          <td class="col-status">
+            <span class="status-pill" style="color: #94a3b8; background: rgba(148, 163, 184, 0.12); border-color: rgba(148, 163, 184, 0.35);">
+              <span class="status-icon">💡</span>
+              <span>探索中</span>
+            </span>
+          </td>
+
+          <!-- 進度 (Progress - 數字) -->
+          <td class="col-progress">
+            <div class="progress-wrap">
+              <div class="progress-num" style="color: var(--text-muted);">0%</div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 0%; background: var(--text-muted);"></div>
+              </div>
+            </div>
+          </td>
+
+          <!-- 發布時間 (Publish Time) -->
+          <td class="col-deadline">
+            <div class="deadline-wrap">
+              <div class="deadline-date">📅 2026-11-15</div>
+              <div class="countdown-badge" data-role="countdown">計算中...</div>
+            </div>
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
     </div>
-
-    <!-- Footer -->
-    <footer>
-      <div>資料來源：<a href="https://github.com/orgs/PlanOS-HQ/projects/1/views/14" target="_blank" style="color: var(--accent); text-decoration: none;">GitHub Project 1 · View 14 (Board)</a> · 零 Markdown 打字負擔</div>
-      <div>
-        <a href="https://github.com/orgs/PlanOS-HQ/projects/1/views/14" target="_blank" style="color: var(--accent); text-decoration: none;">編輯總部看板</a> ·
-        <a href="https://github.com/PlanOS-HQ/PlanOS_v2" target="_blank" style="color: var(--accent); text-decoration: none;">GitHub 組織</a>
-      </div>
-    </footer>
-
   </div>
 
+  <!-- Footer -->
+  <footer>
+    <div>工作台來源：<a href="https://github.com/orgs/PlanOS-HQ/projects/1/views/14" target="_blank" style="color: var(--accent); text-decoration: none;">GitHub Project 1 · View 14 (Table Layout)</a> · 徹底解耦 · 零分數運算</div>
+    <div>
+      <a href="https://github.com/orgs/PlanOS-HQ/projects/1/views/14" target="_blank" style="color: var(--accent); text-decoration: none;">總部編輯承諾表格</a> ·
+      <a href="https://github.com/PlanOS-HQ/PlanOS_v2" target="_blank" style="color: var(--accent); text-decoration: none;">GitHub 組織</a>
+    </div>
+  </footer>
+
   <script>
-    function updateCountdowns() {
-      const now = new Date();
-      let delayedCount = 0;
+    // Theme Toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const btn = document.getElementById('themeToggle');
+      if (html.getAttribute('data-theme') === 'light') {
+        html.removeAttribute('data-theme');
+        btn.textContent = '☀️ 淺色';
+        localStorage.setItem('planos-theme', 'dark');
+      } else {
+        html.setAttribute('data-theme', 'light');
+        btn.textContent = '🌙 深色';
+        localStorage.setItem('planos-theme', 'light');
+      }
+    }
+    if (localStorage.getItem('planos-theme') === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.getElementById('themeToggle').textContent = '🌙 深色';
+    }
 
-      document.querySelectorAll('.flat-card').forEach(card => {
-        const stage = card.dataset.stage;
-        const targetAttr = card.dataset.target;
-        const timeEl = card.querySelector('[data-role="countdown"]');
-        if (!timeEl) return;
+    // Filter Table
+    function filterTable(stage, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
 
-        if (stage === 'Published') {
-          timeEl.innerText = '已如約交付';
-          timeEl.className = 'live-countdown is-published';
-          card.classList.remove('is-delayed');
-          return;
-        }
-
-        if (!targetAttr || targetAttr === '待定') {
-          timeEl.innerText = '時間待定';
-          timeEl.className = 'live-countdown';
-          card.classList.remove('is-delayed');
-          return;
-        }
-
-        const targetDate = new Date(targetAttr);
-        if (isNaN(targetDate.getTime())) {
-          timeEl.innerText = '時間待校準';
-          return;
-        }
-
-        const diff = targetDate.getTime() - now.getTime();
-
-        if (diff > 0) {
-          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-          timeEl.innerText = `倒數 ${days} 天 ${hours} 小時 ${minutes} 分 ${seconds} 秒`;
-          timeEl.className = 'live-countdown';
-          card.classList.remove('is-delayed');
+      const rows = document.querySelectorAll('.table-row');
+      rows.forEach(r => {
+        if (stage === 'all' || r.getAttribute('data-stage') === stage) {
+          r.style.display = '';
         } else {
-          delayedCount++;
-          const absDiff = Math.abs(diff);
-          const days = Math.floor(absDiff / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((absDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((absDiff % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((absDiff % (1000 * 60)) / 1000);
-
-          timeEl.innerText = `已延期 ${days} 天 ${hours} 小時 ${minutes} 分 ${seconds} 秒`;
-          timeEl.className = 'live-countdown is-delayed';
-          card.classList.add('is-delayed');
+          r.style.display = 'none';
         }
       });
-
-      const metricDelayed = document.getElementById('metricDelayed');
-      if (metricDelayed) metricDelayed.innerText = `${delayedCount} 案`;
     }
 
-    function initTheme() {
-      const savedTheme = localStorage.getItem('planos_theme');
-      const btn = document.getElementById('themeToggle');
-      if (savedTheme === 'light') {
-        document.body.classList.add('light-theme');
-        if (btn) btn.innerHTML = '🌙 深色';
-      } else {
-        document.body.classList.remove('light-theme');
-        if (btn) btn.innerHTML = '☀️ 淺色';
-      }
-    }
-
-    function toggleTheme() {
-      const isLight = document.body.classList.toggle('light-theme');
-      const btn = document.getElementById('themeToggle');
-      if (isLight) {
-        localStorage.setItem('planos_theme', 'light');
-        if (btn) btn.innerHTML = '🌙 深色';
-      } else {
-        localStorage.setItem('planos_theme', 'dark');
-        if (btn) btn.innerHTML = '☀️ 淺色';
-      }
-    }
-
-    function updateClock() {
+    // Realtime Clock & Dynamic Countdowns
+    function updateTimers() {
       const now = new Date();
-      const options = {
-        timeZone: 'Asia/Taipei',
-        year: 'numeric', month: '2-digit', day: '2-digit',
-        hour: '2-digit', minute: '2-digit', second: '2-digit',
-        hour12: false
-      };
-      const parts = new Intl.DateTimeFormat('zh-TW', options).formatToParts(now);
-      const map = {};
-      parts.forEach(p => map[p.type] = p.value);
-      const el = document.getElementById('liveClock');
-      if (el) el.innerText = `${map.year}-${map.month}-${map.day} ${map.hour}:${map.minute}:${map.second} (GMT+8)`;
+      
+      // Update top live clock
+      const pad = n => String(n).padStart(2, '0');
+      const yyyy = now.getFullYear();
+      const mm = pad(now.getMonth() + 1);
+      const dd = pad(now.getDate());
+      const hh = pad(now.getHours());
+      const min = pad(now.getMinutes());
+      const ss = pad(now.getSeconds());
+      const clockEl = document.getElementById('liveClock');
+      if (clockEl) {
+        clockEl.textContent = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss} (GMT+8)`;
+      }
+
+      // Update rows countdown
+      const rows = document.querySelectorAll('.table-row');
+      rows.forEach(r => {
+        const targetStr = r.getAttribute('data-target');
+        const stage = r.getAttribute('data-stage');
+        const badge = r.querySelector('[data-role="countdown"]');
+        if (!badge) return;
+
+        if (stage === 'published') {
+          badge.textContent = '✅ 已如期交付';
+          badge.className = 'countdown-badge done';
+          return;
+        }
+
+        if (!targetStr) {
+          badge.textContent = '待定發布檔期';
+          badge.className = 'countdown-badge';
+          return;
+        }
+
+        const target = new Date(targetStr);
+        const diffMs = target - now;
+
+        if (diffMs > 0) {
+          const totalSecs = Math.floor(diffMs / 1000);
+          const days = Math.floor(totalSecs / 86400);
+          const hours = Math.floor((totalSecs % 86400) / 3600);
+          const minutes = Math.floor((totalSecs % 3600) / 60);
+          const seconds = totalSecs % 60;
+
+          if (days === 0) {
+            badge.textContent = `今晚 · 剩餘 ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+            badge.className = 'countdown-badge urgent';
+          } else {
+            badge.textContent = `倒數 ${days} 天 ${pad(hours)} 時 ${pad(minutes)} 分`;
+            badge.className = 'countdown-badge';
+          }
+        } else {
+          const overdueSecs = Math.floor(Math.abs(diffMs) / 1000);
+          const days = Math.floor(overdueSecs / 86400);
+          const hours = Math.floor((overdueSecs % 86400) / 3600);
+          const minutes = Math.floor((overdueSecs % 3600) / 60);
+          const seconds = overdueSecs % 60;
+
+          if (days === 0) {
+            badge.textContent = `⚠️ 逾期 +${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+          } else {
+            badge.textContent = `⚠️ 逾期 +${days}天 ${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+          }
+          badge.className = 'countdown-badge slipping';
+        }
+      });
     }
 
-    setInterval(updateClock, 1000);
-    setInterval(updateCountdowns, 1000);
-    updateClock();
-    updateCountdowns();
-    initTheme();
+    setInterval(updateTimers, 1000);
+    updateTimers();
   </script>
 </body>
 </html>
