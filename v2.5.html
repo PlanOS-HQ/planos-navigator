@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>公開承諾與進度發布台</title>
+  <title>公開承諾與成果發布台 · PlanOS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -19,15 +19,35 @@
       --text-muted: #94a3b8;
       --text-dim: #64748b;
       --accent: #38bdf8;
-      --danger: #f43f5e;
-      --danger-bg: rgba(244, 63, 94, 0.12);
-      --danger-border: rgba(244, 63, 94, 0.35);
-      --success: #10b981;
-      --success-bg: rgba(16, 185, 129, 0.12);
-      --success-border: rgba(16, 185, 129, 0.35);
-      --warning: #f59e0b;
-      --warning-bg: rgba(245, 158, 11, 0.12);
-      --warning-border: rgba(245, 158, 11, 0.35);
+      
+      /* Semantic Palette */
+      --c-planning: #94a3b8;
+      --c-planning-bg: rgba(148, 163, 184, 0.12);
+      --c-planning-border: rgba(148, 163, 184, 0.3);
+
+      --c-planned: #38bdf8;
+      --c-planned-bg: rgba(56, 189, 248, 0.12);
+      --c-planned-border: rgba(56, 189, 248, 0.3);
+
+      --c-executing: #f59e0b;
+      --c-executing-bg: rgba(245, 158, 11, 0.12);
+      --c-executing-border: rgba(245, 158, 11, 0.3);
+
+      --c-review: #14b8a6;
+      --c-review-bg: rgba(20, 184, 166, 0.12);
+      --c-review-border: rgba(20, 184, 166, 0.3);
+
+      --c-published: #10b981;
+      --c-published-bg: rgba(16, 185, 129, 0.12);
+      --c-published-border: rgba(16, 185, 129, 0.3);
+
+      --c-canceled: #64748b;
+      --c-canceled-bg: rgba(100, 116, 139, 0.12);
+      --c-canceled-border: rgba(100, 116, 139, 0.3);
+
+      --c-delayed: #ef4444;
+      --c-delayed-bg: rgba(239, 68, 68, 0.12);
+      --c-delayed-border: rgba(239, 68, 68, 0.35);
     }
 
     body.light-theme {
@@ -41,15 +61,34 @@
       --text-muted: #475569;
       --text-dim: #94a3b8;
       --accent: #0284c7;
-      --danger: #e11d48;
-      --danger-bg: #fff1f2;
-      --danger-border: #fecdd3;
-      --success: #059669;
-      --success-bg: #ecfdf5;
-      --success-border: #a7f3d0;
-      --warning: #d97706;
-      --warning-bg: #fffbeb;
-      --warning-border: #fde68a;
+
+      --c-planning: #64748b;
+      --c-planning-bg: #f1f5f9;
+      --c-planning-border: #cbd5e1;
+
+      --c-planned: #0284c7;
+      --c-planned-bg: #f0f9ff;
+      --c-planned-border: #bae6fd;
+
+      --c-executing: #d97706;
+      --c-executing-bg: #fffbeb;
+      --c-executing-border: #fde68a;
+
+      --c-review: #0d9488;
+      --c-review-bg: #f0fdfa;
+      --c-review-border: #99f6e4;
+
+      --c-published: #059669;
+      --c-published-bg: #ecfdf5;
+      --c-published-border: #a7f3d0;
+
+      --c-canceled: #64748b;
+      --c-canceled-bg: #f8fafc;
+      --c-canceled-border: #e2e8f0;
+
+      --c-delayed: #dc2626;
+      --c-delayed-bg: #fef2f2;
+      --c-delayed-border: #fecaca;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -62,7 +101,7 @@
       padding: 24px 16px 60px;
       transition: background 0.2s ease, color 0.2s ease;
     }
-    .container { max-width: 880px; margin: 0 auto; }
+    .container { max-width: 900px; margin: 0 auto; }
 
     /* Top Bar */
     .top-bar {
@@ -85,7 +124,7 @@
     }
     .live-dot {
       width: 7px; height: 7px; border-radius: 50%;
-      background: #10b981; box-shadow: 0 0 8px #10b981;
+      background: var(--c-published); box-shadow: 0 0 8px var(--c-published);
       animation: pulse 2s infinite;
     }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
@@ -202,15 +241,15 @@
     .flat-card:hover {
       border-color: var(--border-highlight);
     }
-    .flat-card.card-delayed {
-      border-left: 3px solid var(--danger);
-    }
-    .flat-card.card-done {
-      border-left: 3px solid var(--success);
-    }
-    .flat-card.card-in_progress {
-      border-left: 3px solid var(--accent);
-    }
+    
+    /* Stage accent borders */
+    .flat-card.stage-Planning { border-left: 3px solid var(--c-planning); }
+    .flat-card.stage-Planned { border-left: 3px solid var(--c-planned); }
+    .flat-card.stage-Executing { border-left: 3px solid var(--c-executing); }
+    .flat-card.stage-Review { border-left: 3px solid var(--c-review); }
+    .flat-card.stage-Published { border-left: 3px solid var(--c-published); }
+    .flat-card.stage-Canceled { border-left: 3px solid var(--c-canceled); opacity: 0.7; }
+    .flat-card.is-delayed { border-left: 3px solid var(--c-delayed) !important; }
 
     /* Card Layout */
     .c-top {
@@ -222,40 +261,91 @@
       flex-wrap: wrap;
     }
     .c-title {
-      font-size: 16px;
+      font-size: 15.5px;
       font-weight: 700;
       color: var(--text);
       letter-spacing: -0.2px;
     }
-    .c-badge {
+    .flat-card.stage-Canceled .c-title {
+      text-decoration: line-through;
+      color: var(--text-dim);
+    }
+
+    /* Stage Badges */
+    .stage-badge {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       padding: 3px 8px;
       border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-Planning { background: var(--c-planning-bg); color: var(--c-planning); border: 1px solid var(--c-planning-border); }
+    .badge-Planned { background: var(--c-planned-bg); color: var(--c-planned); border: 1px solid var(--c-planned-border); }
+    .badge-Executing { background: var(--c-executing-bg); color: var(--c-executing); border: 1px solid var(--c-executing-border); }
+    .badge-Review { background: var(--c-review-bg); color: var(--c-review); border: 1px solid var(--c-review-border); }
+    .badge-Published { background: var(--c-published-bg); color: var(--c-published); border: 1px solid var(--c-published-border); }
+    .badge-Canceled { background: var(--c-canceled-bg); color: var(--c-canceled); border: 1px solid var(--c-canceled-border); }
+
+    /* Abstract Progress Rail (Hardware finish) */
+    .rail-wrap {
+      margin-bottom: 14px;
+    }
+    .progress-rail {
+      width: 100%;
+      height: 5px;
       background: var(--bg-inset);
       border: 1px solid var(--border);
-      white-space: nowrap;
+      border-radius: 4px;
+      overflow: hidden;
     }
-    .c-badge.delayed {
-      background: var(--danger-bg);
-      color: var(--danger);
-      border-color: var(--danger-border);
+    .progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s ease;
     }
-    .c-badge.urgent {
-      background: var(--warning-bg);
-      color: var(--warning);
-      border-color: var(--warning-border);
+    .fill-Planning { background: var(--c-planning); }
+    .fill-Planned { background: var(--c-planned); }
+    .fill-Executing { background: var(--c-executing); }
+    .fill-Review { background: var(--c-review); }
+    .fill-Published { background: var(--c-published); }
+    .fill-Canceled { background: var(--c-canceled); }
+
+    /* Abstract Milestone Chips */
+    .milestones-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
     }
-    .c-badge.done {
-      color: var(--success);
-      border-color: var(--success-border);
+    .m-chip {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-dim);
+    }
+    .m-chip.done {
+      color: var(--text-muted);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+    .m-chip.done .icon {
+      color: var(--c-published);
+      font-weight: bold;
+    }
+    .m-chip:not(.done) .icon {
+      color: var(--text-dim);
     }
 
-    /* Metadata Row */
+    /* Metadata Bar */
     .c-meta {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 8px;
       font-size: 12.5px;
       color: var(--text-muted);
@@ -272,29 +362,25 @@
     }
     .c-meta-lbl {
       color: var(--text-dim);
+      font-size: 11.5px;
     }
     .c-meta-val {
       font-weight: 600;
       color: var(--text);
     }
-
-    /* Mini Progress Bar */
-    .progress-inline {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    .live-time-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
     }
-    .mini-track {
-      width: 44px;
-      height: 5px;
-      background: var(--border);
-      border-radius: 3px;
-      overflow: hidden;
+    .live-time-val.is-delayed {
+      color: var(--c-delayed) !important;
+      font-weight: 700;
     }
-    .mini-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 3px;
+    .live-time-val.is-published {
+      color: var(--c-published);
+    }
+    .live-time-val.is-canceled {
+      color: var(--c-canceled);
     }
 
     /* Content Description */
@@ -310,6 +396,7 @@
       color: var(--text-dim);
       font-weight: 700;
       flex-shrink: 0;
+      font-size: 12px;
     }
 
     /* Collapsed Legacy Archive */
@@ -348,10 +435,10 @@
     <div class="top-bar">
       <div class="site-title">
         <span class="live-dot"></span>
-        <span>公開承諾與進度發布台</span>
+        <span>公開承諾與成果發布台</span>
       </div>
       <div class="controls">
-        <span id="liveClock" class="clock-badge">2026-10-25 15:20:00 (GMT+8)</span>
+        <span id="liveClock" class="clock-badge">2026-10-25 15:30:00 (GMT+8)</span>
         <button id="themeToggle" class="theme-btn" onclick="toggleTheme()">☀️ 淺色</button>
       </div>
     </div>
@@ -359,236 +446,341 @@
     <!-- Metrics Bar -->
     <div class="metrics-bar">
       <div class="m-card">
-        <div class="m-num" style="color: #10b981;">100.0%</div>
-        <div class="m-lbl">準時達成率</div>
+        <div class="m-num" id="metricExecuting" style="color: var(--c-executing);">2 項</div>
+        <div class="m-lbl">攻堅施工中</div>
       </div>
       <div class="m-card">
-        <div class="m-num" style="color: #38bdf8;">4 項</div>
-        <div class="m-lbl">進行中目標</div>
+        <div class="m-num" id="metricPlanned" style="color: var(--c-planned);">1 項</div>
+        <div class="m-lbl">已定檔排程</div>
       </div>
       <div class="m-card">
-        <div class="m-num" style="color: var(--success);">
-          +0 天
-        </div>
-        <div class="m-lbl">累計延後天數</div>
+        <div class="m-num" id="metricDelayed" style="color: var(--c-delayed);">0 項</div>
+        <div class="m-lbl">目前延期項</div>
       </div>
       <div class="m-card">
-        <div class="m-num" style="color: #ffffff;">2 項</div>
-        <div class="m-lbl">已順利完成</div>
+        <div class="m-num" id="metricPublished" style="color: var(--c-published);">2 項</div>
+        <div class="m-lbl">已如約交付</div>
       </div>
     </div>
 
     <!-- Toolbar: Filter & Sort -->
     <div class="toolbar">
       <div class="filter-group">
-        <button class="f-btn active" onclick="filterCards('all', this)">全部 (6)</button>
-        <button class="f-btn" onclick="filterCards('in_progress', this)">進行中 (4)</button>
-        <button class="f-btn" onclick="filterCards('delayed', this)">🚨 已延期 (0)</button>
-        <button class="f-btn" onclick="filterCards('done', this)">🟢 已完成 (2)</button>
+        <button class="f-btn active" onclick="filterCards('all', this)">全部 (8)</button>
+        <button class="f-btn" onclick="filterCards('Executing', this)">攻堅中 (2)</button>
+        <button class="f-btn" onclick="filterCards('Planned', this)">已定檔 (1)</button>
+        <button class="f-btn" onclick="filterCards('Review', this)">驗收中 (1)</button>
+        <button class="f-btn" onclick="filterCards('delayed', this)">已延期 (<span id="delayedTabCount">0</span>)</button>
+        <button class="f-btn" onclick="filterCards('Planning', this)">探索中 (1)</button>
+        <button class="f-btn" onclick="filterCards('Published', this)">已交付 (2)</button>
+        <button class="f-btn" onclick="filterCards('Canceled', this)">已取消 (1)</button>
       </div>
       <div class="sort-group">
         <span style="font-size: 12px; color: var(--text-dim);">排序:</span>
         <select class="sort-select" onchange="sortCards(this.value)">
-          <option value="time-asc">📅 預計時間 (最近在先)</option>
-          <option value="time-desc">📅 預計時間 (最遠在先)</option>
-          <option value="delay-desc">🚨 延後天數 (最多在先)</option>
+          <option value="time-asc">📅 目標時間 (最近在先)</option>
+          <option value="time-desc">📅 目標時間 (最遠在先)</option>
+          <option value="delay-desc">🚨 延期時間 (最多在先)</option>
+          <option value="stage-order">🏷️ 階段順序 (流程先後)</option>
         </select>
       </div>
     </div>
 
     <!-- Standard Flat Cards List -->
     <div class="cards-list" id="cardsContainer">
-      <div class="flat-card card-in_progress" data-status="in_progress" data-ts="1793019600" data-delay="0">
+      <div class="flat-card stage-Executing" 
+           data-stage="Executing" 
+           data-target="2026-10-26T21:00:00+08:00" 
+           data-ts="1793019600" 
+           data-delay="0">
         <div class="c-top">
           <div class="c-title">應用力學 Ch12 p.45~p.78 精華筆記與錯題解析 PDF 上線</div>
           <div>
-            <span class="c-badge warning">⏳ 剩 1 天 5 小時</span>
+            <span class="stage-badge badge-Executing">Executing</span>
           </div>
+        </div>
+
+        <!-- Abstract Progress Rail -->
+        <div class="rail-wrap">
+          <div class="progress-rail">
+            <div class="progress-fill fill-Executing" style="width: 50%;"></div>
+          </div>
+          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>p.45-60 核心觀念推導整理</span><span class="m-chip done"><span class="icon">✓</span>p.61-78 精選歷屆大題詳解</span><span class="m-chip "><span class="icon">○</span>繪製向量受力圖與盲點標註</span><span class="m-chip "><span class="icon">○</span>輸出排版 PDF 並上傳公開</span></div>
         </div>
 
         <div class="c-meta">
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 預計發布:</span>
+            <span class="c-meta-lbl">📅 目標定檔:</span>
             <span class="c-meta-val">2026-10-26 21:00</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📊 目前進度:</span>
-            <div class="progress-inline">
-              <span class="c-meta-val">75%</span>
-              <div class="mini-track"><div class="mini-fill" style="width: 75%;"></div></div>
-            </div>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">🏷️ 目前狀態:</span>
-            <span class="c-meta-val" style="color: var(--accent);">進行中</span>
+            <span class="c-meta-lbl">⏳ 時間狀態:</span>
+            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
           </div>
         </div>
 
         <div class="c-content">
-          <span class="c-content-lbl">📝 承諾內容:</span>
-          <span>p.45-60 觀念精華整理、p.61-78 錯題解析與盲點標註、輸出向量排版 PDF 並上傳公開</span>
+          <span class="c-content-lbl">📝 承諾交付:</span>
+          <span>完整整理力學必考觀念、盲點解析與題解手稿，輸出向量排版 PDF。</span>
         </div>
       </div>
-      <div class="flat-card card-in_progress" data-status="in_progress" data-ts="1793073600" data-delay="0">
+      <div class="flat-card stage-Review" 
+           data-stage="Review" 
+           data-target="2026-10-27T12:00:00+08:00" 
+           data-ts="1793073600" 
+           data-delay="0">
         <div class="c-top">
-          <div class="c-title">🎙️ Podcast 第一集：錄音與剪輯後製</div>
+          <div class="c-title">🎙️ Podcast 第一集：新世代個人作業系統的興起</div>
           <div>
-            <span class="c-badge warning">⏳ 剩 1 天 20 小時</span>
+            <span class="stage-badge badge-Review">Review</span>
           </div>
+        </div>
+
+        <!-- Abstract Progress Rail -->
+        <div class="rail-wrap">
+          <div class="progress-rail">
+            <div class="progress-fill fill-Review" style="width: 67%;"></div>
+          </div>
+          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>主題切角與大綱擬定</span><span class="m-chip done"><span class="icon">✓</span>深度訪綱設計與對焦</span><span class="m-chip done"><span class="icon">✓</span>45 分鐘音訊錄製完成</span><span class="m-chip done"><span class="icon">✓</span>降噪與粗剪</span><span class="m-chip "><span class="icon">○</span>母帶母帶混音與最後試聽</span><span class="m-chip "><span class="icon">○</span>封面圖輸出與串流平台上架</span></div>
         </div>
 
         <div class="c-meta">
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 預計發布:</span>
+            <span class="c-meta-lbl">📅 目標定檔:</span>
             <span class="c-meta-val">2026-10-27 12:00</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📊 目前進度:</span>
-            <div class="progress-inline">
-              <span class="c-meta-val">40%</span>
-              <div class="mini-track"><div class="mini-fill" style="width: 40%;"></div></div>
-            </div>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">🏷️ 目前狀態:</span>
-            <span class="c-meta-val" style="color: var(--accent);">進行中</span>
+            <span class="c-meta-lbl">⏳ 時間狀態:</span>
+            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
           </div>
         </div>
 
         <div class="c-content">
-          <span class="c-content-lbl">📝 承諾內容:</span>
-          <span>完成 45 分鐘音訊錄製、降噪剪輯後製、輸出 MP3 與封面並發布到串流平台</span>
+          <span class="c-content-lbl">📝 承諾交付:</span>
+          <span>探討個人知識庫與自動化代理的結合，完成音訊錄製剪輯與多平台上架。</span>
         </div>
       </div>
-      <div class="flat-card card-in_progress" data-status="in_progress" data-ts="1793808000" data-delay="0">
+      <div class="flat-card stage-Planned" 
+           data-stage="Planned" 
+           data-target="2026-11-05T00:00:00+08:00" 
+           data-ts="1793808000" 
+           data-delay="0">
         <div class="c-top">
-          <div class="c-title">🤖 線上課程自動評分工具上線</div>
+          <div class="c-title">🤖 線上課程自動評分工具</div>
           <div>
-            <span class="c-badge normal">剩 10 天</span>
+            <span class="stage-badge badge-Planned">Planned</span>
           </div>
+        </div>
+
+        <!-- Abstract Progress Rail -->
+        <div class="rail-wrap">
+          <div class="progress-rail">
+            <div class="progress-fill fill-Planned" style="width: 25%;"></div>
+          </div>
+          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>需求確認與輸入資料格式規格化</span><span class="m-chip "><span class="icon">○</span>評分核心演算法撰寫</span><span class="m-chip "><span class="icon">○</span>邊界案例壓力測試</span><span class="m-chip "><span class="icon">○</span>提供同學試用與操作文件</span></div>
         </div>
 
         <div class="c-meta">
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 預計發布:</span>
+            <span class="c-meta-lbl">📅 目標定檔:</span>
             <span class="c-meta-val">2026-11-05 00:00</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📊 目前進度:</span>
-            <div class="progress-inline">
-              <span class="c-meta-val">25%</span>
-              <div class="mini-track"><div class="mini-fill" style="width: 25%;"></div></div>
-            </div>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">🏷️ 目前狀態:</span>
-            <span class="c-meta-val" style="color: var(--accent);">進行中</span>
+            <span class="c-meta-lbl">⏳ 時間狀態:</span>
+            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
           </div>
         </div>
 
         <div class="c-content">
-          <span class="c-content-lbl">📝 承諾內容:</span>
-          <span>完成評分核心演算法、通過測試並提供給同學試用</span>
+          <span class="c-content-lbl">📝 承諾交付:</span>
+          <span>開發自動化腳本，針對作業格式進行規則檢查與評分統計。</span>
         </div>
       </div>
-      <div class="flat-card card-in_progress" data-status="in_progress" data-ts="1794672000" data-delay="0">
+      <div class="flat-card stage-Planning" 
+           data-stage="Planning" 
+           data-target="" 
+           data-ts="9999999999" 
+           data-delay="0">
+        <div class="c-top">
+          <div class="c-title">💡 跨裝置實時剪貼簿同步工具 (跨 Mac/Win/iOS)</div>
+          <div>
+            <span class="stage-badge badge-Planning">Planning</span>
+          </div>
+        </div>
+
+        <!-- Abstract Progress Rail -->
+        <div class="rail-wrap">
+          <div class="progress-rail">
+            <div class="progress-fill fill-Planning" style="width: 0%;"></div>
+          </div>
+          <div class="milestones-chips"><span class="m-chip "><span class="icon">○</span>評估端到端加密協定可行性</span><span class="m-chip "><span class="icon">○</span>測試本地區域網廣播延遲</span></div>
+        </div>
+
+        <div class="c-meta">
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📅 目標定檔:</span>
+            <span class="c-meta-val">待定</span>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">⏳ 時間狀態:</span>
+            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
+          </div>
+        </div>
+
+        <div class="c-content">
+          <span class="c-content-lbl">📝 承諾交付:</span>
+          <span>探索基於區域網的高速加密剪貼簿同步架構，評估開發成本與實用性。</span>
+        </div>
+      </div>
+      <div class="flat-card stage-Executing" 
+           data-stage="Executing" 
+           data-target="2026-11-15T00:00:00+08:00" 
+           data-ts="1794672000" 
+           data-delay="0">
         <div class="c-top">
           <div class="c-title">🛠️ 個人作業系統 PlanOS v2.5 正式版發布</div>
           <div>
-            <span class="c-badge normal">剩 20 天</span>
+            <span class="stage-badge badge-Executing">Executing</span>
           </div>
+        </div>
+
+        <!-- Abstract Progress Rail -->
+        <div class="rail-wrap">
+          <div class="progress-rail">
+            <div class="progress-fill fill-Executing" style="width: 50%;"></div>
+          </div>
+          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>重構看板架構為 5 態模型</span><span class="m-chip done"><span class="icon">✓</span>實裝 JavaScript 即時跳動時鐘</span><span class="m-chip "><span class="icon">○</span>完善 SOP 法規與使用手冊</span><span class="m-chip "><span class="icon">○</span>封裝發布正式開源安裝包</span></div>
         </div>
 
         <div class="c-meta">
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 預計發布:</span>
+            <span class="c-meta-lbl">📅 目標定檔:</span>
             <span class="c-meta-val">2026-11-15 00:00</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📊 目前進度:</span>
-            <div class="progress-inline">
-              <span class="c-meta-val">60%</span>
-              <div class="mini-track"><div class="mini-fill" style="width: 60%;"></div></div>
-            </div>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">🏷️ 目前狀態:</span>
-            <span class="c-meta-val" style="color: var(--accent);">進行中</span>
+            <span class="c-meta-lbl">⏳ 時間狀態:</span>
+            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
           </div>
         </div>
 
         <div class="c-content">
-          <span class="c-content-lbl">📝 承諾內容:</span>
-          <span>完成使用手冊與法規整理、產出開源安裝檔</span>
+          <span class="c-content-lbl">📝 承諾交付:</span>
+          <span>完成公開承諾看板上線、雙軌版本機制整合，並提供完整開源安裝包。</span>
         </div>
       </div>
-      <div class="flat-card card-done" data-status="done" data-ts="1792843200" data-delay="0">
+      <div class="flat-card stage-Published" 
+           data-stage="Published" 
+           data-target="2026-10-24T20:00:00+08:00" 
+           data-ts="1792843200" 
+           data-delay="0">
         <div class="c-top">
           <div class="c-title">萬物演進四階體系與防內耗工作法則入法</div>
           <div>
-            <span class="c-badge done">✓ 已順利完成</span>
+            <span class="stage-badge badge-Published">Published</span>
           </div>
+        </div>
+
+        <!-- Abstract Progress Rail -->
+        <div class="rail-wrap">
+          <div class="progress-rail">
+            <div class="progress-fill fill-Published" style="width: 100%;"></div>
+          </div>
+          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>法案草案起草與辯論</span><span class="m-chip done"><span class="icon">✓</span>修正退回意見與倒敘答辯</span><span class="m-chip done"><span class="icon">✓</span>元首正式簽核入法</span></div>
         </div>
 
         <div class="c-meta">
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 預計發布:</span>
+            <span class="c-meta-lbl">📅 目標定檔:</span>
             <span class="c-meta-val">2026-10-24 20:00</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📊 目前進度:</span>
-            <div class="progress-inline">
-              <span class="c-meta-val">100%</span>
-              <div class="mini-track"><div class="mini-fill" style="width: 100%;"></div></div>
-            </div>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">🏷️ 目前狀態:</span>
-            <span class="c-meta-val" style="color: var(--success);">已完成</span>
+            <span class="c-meta-lbl">⏳ 時間狀態:</span>
+            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
           </div>
         </div>
 
         <div class="c-content">
-          <span class="c-content-lbl">📝 承諾內容:</span>
-          <span>完成系統行為規範修訂，並公開至 GitHub 組織</span>
+          <span class="c-content-lbl">📝 承諾交付:</span>
+          <span>完成系統行為規範修訂，並公開至 GitHub 組織。</span>
         </div>
       </div>
-      <div class="flat-card card-done" data-status="done" data-ts="1792058400" data-delay="0">
+      <div class="flat-card stage-Published" 
+           data-stage="Published" 
+           data-target="2026-10-15T18:00:00+08:00" 
+           data-ts="1792058400" 
+           data-delay="0">
         <div class="c-top">
           <div class="c-title">鐵道排班與時間管理演算法實裝</div>
           <div>
-            <span class="c-badge done">✓ 已順利完成</span>
+            <span class="stage-badge badge-Published">Published</span>
           </div>
+        </div>
+
+        <!-- Abstract Progress Rail -->
+        <div class="rail-wrap">
+          <div class="progress-rail">
+            <div class="progress-fill fill-Published" style="width: 100%;"></div>
+          </div>
+          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>演算法原型驗證</span><span class="m-chip done"><span class="icon">✓</span>日程衝突檢測邏輯實裝</span><span class="m-chip done"><span class="icon">✓</span>整合進營運長每日主控台</span></div>
         </div>
 
         <div class="c-meta">
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 預計發布:</span>
+            <span class="c-meta-lbl">📅 目標定檔:</span>
             <span class="c-meta-val">2026-10-15 18:00</span>
           </div>
           <div class="c-meta-item">
-            <span class="c-meta-lbl">📊 目前進度:</span>
-            <div class="progress-inline">
-              <span class="c-meta-val">100%</span>
-              <div class="mini-track"><div class="mini-fill" style="width: 100%;"></div></div>
-            </div>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">🏷️ 目前狀態:</span>
-            <span class="c-meta-val" style="color: var(--success);">已完成</span>
+            <span class="c-meta-lbl">⏳ 時間狀態:</span>
+            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
           </div>
         </div>
 
         <div class="c-content">
-          <span class="c-content-lbl">📝 承諾內容:</span>
-          <span>完成時間塊排班演算法，並整合進日常主控台</span>
+          <span class="c-content-lbl">📝 承諾交付:</span>
+          <span>完成時間塊排班演算法，並整合進日常主控台。</span>
+        </div>
+      </div>
+      <div class="flat-card stage-Canceled" 
+           data-stage="Canceled" 
+           data-target="2026-10-20T18:00:00+08:00" 
+           data-ts="1792490400" 
+           data-delay="0">
+        <div class="c-top">
+          <div class="c-title">全自動網頁爬蟲與每日新聞摘要機器人</div>
+          <div>
+            <span class="stage-badge badge-Canceled">Canceled</span>
+          </div>
+        </div>
+
+        <!-- Abstract Progress Rail -->
+        <div class="rail-wrap">
+          <div class="progress-rail">
+            <div class="progress-fill fill-Canceled" style="width: 100%;"></div>
+          </div>
+          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>初步架構可行性評估</span></div>
+        </div>
+
+        <div class="c-meta">
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📅 目標定檔:</span>
+            <span class="c-meta-val">2026-10-20 18:00</span>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">⏳ 時間狀態:</span>
+            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
+          </div>
+        </div>
+
+        <div class="c-content">
+          <span class="c-content-lbl">📝 承諾交付:</span>
+          <span>經評估現有 RSS 與開源工具已可完全替代，邊際效益過低，戰略止損取消研發。</span>
         </div>
       </div>
     </div>
 
     <!-- Hidden Collapsed Legacy Archive -->
     <details class="legacy-archive">
-      <summary>📦 過去內部作業紀錄存檔 (50 案 · 預設隱藏)</summary>
+      <summary>📦 過去內部作業紀錄存檔 (50 案 · 預設折疊)</summary>
       <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 6px;">
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[DYN-001] 10/30 應力 Midterm 1</span>
@@ -805,17 +997,108 @@
   </div>
 
   <script>
+    // Live Dynamic Countdown & Overdue Logic
+    function updateCountdowns() {
+      const now = new Date();
+      let delayedCount = 0;
+
+      document.querySelectorAll('.flat-card').forEach(card => {
+        const stage = card.dataset.stage;
+        const targetAttr = card.dataset.target;
+        const timeEl = card.querySelector('[data-role="countdown"]');
+        if (!timeEl) return;
+
+        if (stage === 'Published') {
+          timeEl.innerText = '已如約發布';
+          timeEl.className = 'c-meta-val live-time-val is-published';
+          card.classList.remove('is-delayed');
+          card.dataset.delay = '0';
+          return;
+        }
+
+        if (stage === 'Canceled') {
+          timeEl.innerText = '已正式取消';
+          timeEl.className = 'c-meta-val live-time-val is-canceled';
+          card.classList.remove('is-delayed');
+          card.dataset.delay = '0';
+          return;
+        }
+
+        if (!targetAttr || targetAttr === '待定') {
+          timeEl.innerText = '目標時間待定';
+          timeEl.className = 'c-meta-val live-time-val';
+          card.classList.remove('is-delayed');
+          card.dataset.delay = '0';
+          return;
+        }
+
+        const targetDate = new Date(targetAttr);
+        if (isNaN(targetDate.getTime())) {
+          timeEl.innerText = '時間格式待校準';
+          return;
+        }
+
+        const diff = targetDate.getTime() - now.getTime();
+
+        if (diff > 0) {
+          // On track, counting down
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+          timeEl.innerText = `倒數 ${days} 天 ${hours} 小時 ${minutes} 分 ${seconds} 秒`;
+          timeEl.className = 'c-meta-val live-time-val';
+          card.classList.remove('is-delayed');
+          card.dataset.delay = '0';
+        } else {
+          // Overdue / Delayed / Slippage
+          delayedCount++;
+          const absDiff = Math.abs(diff);
+          const days = Math.floor(absDiff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((absDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((absDiff % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((absDiff % (1000 * 60)) / 1000);
+
+          timeEl.innerText = `已延期 ${days} 天 ${hours} 小時 ${minutes} 分 ${seconds} 秒`;
+          timeEl.className = 'c-meta-val live-time-val is-delayed';
+          card.classList.add('is-delayed');
+          // delay seconds for precise sorting
+          card.dataset.delay = Math.floor(absDiff / 1000);
+        }
+      });
+
+      // Update delayed counter badge in metrics & toolbar
+      const metricDelayed = document.getElementById('metricDelayed');
+      if (metricDelayed) metricDelayed.innerText = `${delayedCount} 項`;
+      const tabDelayed = document.getElementById('delayedTabCount');
+      if (tabDelayed) tabDelayed.innerText = delayedCount;
+    }
+
     function filterCards(status, btn) {
       document.querySelectorAll('.filter-group .f-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       document.querySelectorAll('.flat-card').forEach(card => {
-        if (status === 'all' || card.dataset.status === status) {
+        if (status === 'all') {
+          card.style.display = '';
+        } else if (status === 'delayed') {
+          card.style.display = card.classList.contains('is-delayed') ? '' : 'none';
+        } else if (card.dataset.stage === status) {
           card.style.display = '';
         } else {
           card.style.display = 'none';
         }
       });
     }
+
+    const STAGE_ORDER_MAP = {
+      'Planning': 1,
+      'Planned': 2,
+      'Executing': 3,
+      'Review': 4,
+      'Published': 5,
+      'Canceled': 6
+    };
 
     function sortCards(mode) {
       const container = document.getElementById('cardsContainer');
@@ -826,10 +1109,13 @@
         const tsB = parseInt(b.dataset.ts, 10);
         const delayA = parseInt(a.dataset.delay, 10);
         const delayB = parseInt(b.dataset.delay, 10);
+        const stageA = STAGE_ORDER_MAP[a.dataset.stage] || 99;
+        const stageB = STAGE_ORDER_MAP[b.dataset.stage] || 99;
 
         if (mode === 'time-asc') return tsA - tsB;
         if (mode === 'time-desc') return tsB - tsA;
         if (mode === 'delay-desc') return delayB - delayA;
+        if (mode === 'stage-order') return stageA - stageB;
         return 0;
       });
 
@@ -874,8 +1160,11 @@
       const el = document.getElementById('liveClock');
       if (el) el.innerText = `${map.year}-${map.month}-${map.day} ${map.hour}:${map.minute}:${map.second} (GMT+8)`;
     }
+
     setInterval(updateClock, 1000);
+    setInterval(updateCountdowns, 1000);
     updateClock();
+    updateCountdowns();
     initTheme();
   </script>
 </body>
