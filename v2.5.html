@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>PlanOS 執行雷達 · 誠信審計台 (v2.5)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f17;
+      --bg-card: #111726;
+      --bg-card-hover: #172033;
+      --bg-inset: #0e1320;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-highlight: rgba(255, 255, 255, 0.18);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent: #38bdf8;
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      --glass-blur: 8px;
+      --track-bg: rgba(255, 255, 255, 0.06);
+      --pill-bg: rgba(255, 255, 255, 0.06);
+      --tag-bg: rgba(255, 255, 255, 0.04);
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.12);
+      --danger-border: rgba(239, 68, 68, 0.35);
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.12);
+      --success-border: rgba(16, 185, 129, 0.35);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245, 158, 11, 0.12);
+      --warning-border: rgba(245, 158, 11, 0.35);
+      --killed: #64748b;
+      --killed-bg: rgba(100, 116, 139, 0.12);
+      --killed-border: rgba(100, 116, 139, 0.35);
+    }
+
+    body.light-theme {
+      --bg: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-hover: #f1f5f9;
+      --bg-inset: #f1f5f9;
+      --border: #e2e8f0;
+      --border-highlight: #cbd5e1;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #94a3b8;
+      --accent: #0284c7;
+      --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      --glass-blur: 0px;
+      --track-bg: #e2e8f0;
+      --pill-bg: #f1f5f9;
+      --tag-bg: #f1f5f9;
+      --danger: #dc2626;
+      --danger-bg: rgba(220, 38, 38, 0.08);
+      --danger-border: #fca5a5;
+      --success: #059669;
+      --success-bg: rgba(5, 150, 105, 0.08);
+      --success-border: #86efac;
+      --warning: #d97706;
+      --warning-bg: rgba(217, 119, 6, 0.08);
+      --warning-border: #fcd34d;
+      --killed: #475569;
+      --killed-bg: #f1f5f9;
+      --killed-border: #cbd5e1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+      padding: 24px 16px 60px;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sys-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .sys-badge .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .clock-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .action-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .action-btn:hover {
+      border-color: var(--border-highlight);
+      background: var(--bg-card-hover);
+      color: var(--accent);
+    }
+
+    /* Hero */
+    .hero-title {
+      margin-bottom: 24px;
+    }
+
+    .hero-title h1 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .version-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .stat-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-box:hover {
+      border-color: var(--border-highlight);
+      transform: translateY(-1px);
+    }
+
+    .stat-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .stat-lbl {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Sections */
+    .section-container {
+      margin-bottom: 32px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.2px;
+    }
+
+    .badge-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 9999px;
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    /* Filter Pills */
+    .filter-pills-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 14px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .pill-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .pill-btn:hover {
+      border-color: var(--border-highlight);
+      color: var(--text);
+    }
+
+    .pill-btn.active {
+      background: var(--tag-bg);
+      border-color: var(--border-highlight);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Cards */
+    .commitment-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .commitment-card:hover {
+      border-color: var(--border-highlight);
+      box-shadow: var(--card-shadow);
+    }
+
+    .commitment-card.card-stuck {
+      border-left: 4px solid var(--warning);
+      background: rgba(245, 158, 11, 0.03);
+    }
+
+    .commitment-card.card-shipped {
+      border-left: 4px solid var(--success);
+    }
+
+    .commitment-card.card-missed {
+      border-left: 4px solid var(--danger);
+      background: rgba(239, 68, 68, 0.03);
+    }
+
+    .commitment-card.card-killed {
+      border-left: 4px solid var(--killed);
+      opacity: 0.85;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .card-id-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .item-id {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+
+    .item-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .card-meta-tags {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .status-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .badge-progress {
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .badge-stuck {
+      background: var(--warning-bg);
+      color: var(--warning);
+      border: 1px solid var(--warning-border);
+    }
+
+    .badge-shipped {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid var(--success-border);
+    }
+
+    .badge-missed {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid var(--danger-border);
+    }
+
+    .badge-killed {
+      background: var(--killed-bg);
+      color: var(--killed);
+      border: 1px solid var(--killed-border);
+    }
+
+    .countdown-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+    }
+
+    .countdown-pill.warning {
+      color: var(--warning);
+      border-color: var(--warning-border);
+    }
+
+    .countdown-pill.danger {
+      color: var(--danger);
+      border-color: var(--danger-border);
+    }
+
+    .card-dod-box {
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .dod-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Progress Track */
+    .progress-bar-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 6px;
+      background: var(--track-bg);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 0.3s ease;
+      background: var(--accent);
+    }
+
+    .progress-percent {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 38px;
+      text-align: right;
+    }
+
+    /* Stuck alert banner */
+    .stuck-alert {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      color: var(--warning);
+      font-size: 12.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Post-Mortem Box */
+    .post-mortem-box {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .post-mortem-box.box-missed {
+      background: var(--danger-bg);
+      border: 1px solid var(--danger-border);
+      color: var(--text);
+    }
+
+    .post-mortem-box.box-shipped {
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      color: var(--text);
+    }
+
+    .post-mortem-box.box-killed {
+      background: var(--killed-bg);
+      border: 1px solid var(--killed-border);
+      color: var(--text);
+    }
+
+    .post-mortem-header {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .post-mortem-header.header-missed {
+      color: var(--danger);
+    }
+
+    .post-mortem-header.header-shipped {
+      color: var(--success);
+    }
+
+    .post-mortem-header.header-killed {
+      color: var(--killed);
+    }
+
+    footer {
+      margin-top: 48px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      color: var(--text-dim);
+      font-size: 12px;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 16px 12px 50px;
+      }
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .hero-title h1 {
+        font-size: 22px;
+      }
+      .card-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="sys-badge">
+        <span class="live-dot"></span>
+        <span>OPERATOR // DE-IDENTIFIED</span>
+      </div>
+      <div class="controls-group">
+        <span id="liveClock" class="clock-badge">2026-10-25 13:25:00 (GMT+8)</span>
+        <a href="v2.1_legacy.html" class="action-btn">📜 v2.1 舊版</a>
+        <button id="themeToggle" class="action-btn" onclick="toggleTheme()">☀️ 淺色</button>
+      </div>
+    </div>
+
+    <!-- Hero Title -->
+    <div class="hero-title">
+      <h1>PlanOS 執行雷達 · 誠信審計台 <span class="version-tag">v2.5</span></h1>
+      <div class="hero-subtitle">
+        <span>去識別化公開公證中 (Public Audit Ledger)</span>
+        <span>·</span>
+        <span>不開空頭支票，只專注客觀驗收與真實履約。</span>
+      </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-box">
+        <div class="stat-num" style="color: #f59e0b;">66.7%</div>
+        <div class="stat-lbl">歷史履約率</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" style="color: #38bdf8;">2</div>
+        <div class="stat-lbl">攻堅推進 (WIP)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" style="color: var(--warning);">1</div>
+        <div class="stat-lbl">外部卡阻 (Stuck)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" style="color: var(--success);">2</div>
+        <div class="stat-lbl">準時履約 (Shipped)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" style="color: var(--danger);">1</div>
+        <div class="stat-lbl">跳票打臉 (Missed)</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num" style="color: var(--killed);">1</div>
+        <div class="stat-lbl">理性停損 (Killed)</div>
+      </div>
+    </div>
+
+    <!-- Section 1: Active Commitments -->
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-title">
+          <span>⚔️ 當前立案軍令狀 (Active Commitments)</span>
+          <span class="badge-count">3 案</span>
+        </div>
+      </div>
+      <div class="commitment-card ">
+        <div class="card-top">
+          <div class="card-id-title">
+            <span class="item-id">W-26-001</span>
+            <span class="item-title">打通 Google Calendar 與 PlanOS Kanban 雙向時間槽管線</span>
+          </div>
+          <div class="card-meta-tags">
+            <span class="status-badge badge-progress">⚡ 攻堅中</span>
+            <span class="countdown-pill warning">剩 3 天 ⏳</span>
+            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-10-28</span>
+          </div>
+        </div>
+
+        <div class="card-dod-box">
+          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
+          <div>完成本機腳本測試，日曆時間塊能依據工單優先級單向導出，且不發生時間重疊衝突。</div>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-track">
+            <div class="progress-fill" style="width: 65%; "></div>
+          </div>
+          <div class="progress-percent" style="">65%</div>
+        </div>
+        
+      </div>
+      <div class="commitment-card ">
+        <div class="card-top">
+          <div class="card-id-title">
+            <span class="item-id">W-26-002</span>
+            <span class="item-title">重構 PlanOS Navigator 前端架構至 v2.5 誠信審計看板</span>
+          </div>
+          <div class="card-meta-tags">
+            <span class="status-badge badge-progress">⚡ 攻堅中</span>
+            <span class="countdown-pill warning">今日到期 ⚡</span>
+            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-10-25</span>
+          </div>
+        </div>
+
+        <div class="card-dod-box">
+          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
+          <div>產出去識別化、具備跳票打臉審判與歷史履約統計之即時靜態 Web 看板，相容日夜間模式與手機 RWD。</div>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-track">
+            <div class="progress-fill" style="width: 85%; "></div>
+          </div>
+          <div class="progress-percent" style="">85%</div>
+        </div>
+        
+      </div>
+      <div class="commitment-card card-stuck">
+        <div class="card-top">
+          <div class="card-id-title">
+            <span class="item-id">W-26-003</span>
+            <span class="item-title">外部 API 連線與 GitHub Projects 狀態自動回填測試</span>
+          </div>
+          <div class="card-meta-tags">
+            <span class="status-badge badge-stuck">🚧 外部卡阻</span>
+            <span class="countdown-pill warning">剩 2 天 ⏳</span>
+            <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-10-27</span>
+          </div>
+        </div>
+
+        <div class="card-dod-box">
+          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
+          <div>透過 CLI 讀取 Projects v2 狀態並自動回填至本地 Markdown YAML。</div>
+        </div>
+
+        <div class="progress-bar-container">
+          <div class="progress-track">
+            <div class="progress-fill" style="width: 30%; background: var(--warning);"></div>
+          </div>
+          <div class="progress-percent" style="color: var(--warning);">30%</div>
+        </div>
+        <div class="stuck-alert">
+          <span>⚠️ <strong>卡關原因</strong>：等待 GitHub CLI 權限授權 (project scope) 以解除遠端 API 呼叫限制。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Court of Verdicts -->
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-title">
+          <span>⚖️ 歷史審判法庭 (The Court of Verdicts)</span>
+          <span class="badge-count">4 案結案</span>
+        </div>
+      </div>
+
+      <div class="filter-pills-bar">
+        <button class="pill-btn active" onclick="filterVerdicts('all', this)">全部 (4)</button>
+        <button class="pill-btn" onclick="filterVerdicts('shipped', this)">🟢 準時履約 (2)</button>
+        <button class="pill-btn" onclick="filterVerdicts('missed', this)">🔴 跳票打臉 (1)</button>
+        <button class="pill-btn" onclick="filterVerdicts('killed', this)">⚪ 理性停損 (1)</button>
+      </div>
+      
+      <div class="verdicts-list">
+        <div class="commitment-card card-shipped verdict-item" data-category="shipped">
+          <div class="card-top">
+            <div class="card-id-title">
+              <span class="item-id">V-26-001</span>
+              <span class="item-title">建立 PlanOS 全自動化 Nightly Checkpoint 工作流</span>
+            </div>
+            <div class="card-meta-tags">
+              <span class="status-badge badge-shipped">🟢 順利履約</span>
+              <span class="countdown-pill" style="color: var(--success);">準時交付 (+0天)</span>
+              <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">結案: 2026-10-13</span>
+            </div>
+          </div>
+
+          <div class="card-dod-box" style="margin-bottom: 8px;">
+            <div class="dod-label">原定死線: 2026-10-14 ｜ 承諾 DoD 及格標準</div>
+            <div>完成 SOP-SYS-001，支援日常工作階段一鍵打包 Git Tag 並自動推進 SemVer 版號。</div>
+          </div>
+
+          <div class="post-mortem-box box-shipped">
+            <div class="post-mortem-header header-shipped">
+              <span>🏆 履約證明 (Proof of Work)</span>
+            </div>
+            <div>如期交付。邊界清晰，腳本一次性通過測試，無範疇膨脹 (Scope Creep)。</div>
+          </div>
+        </div>
+        <div class="commitment-card card-missed verdict-item" data-category="missed">
+          <div class="card-top">
+            <div class="card-id-title">
+              <span class="item-id">V-26-002</span>
+              <span class="item-title">三日內一次性重構全站 CSS 樣式與響應式字體系統</span>
+            </div>
+            <div class="card-meta-tags">
+              <span class="status-badge badge-missed">🔴 跳票打臉</span>
+              <span class="countdown-pill danger">超期延宕 +7 天</span>
+              <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">結案: 2026-10-11</span>
+            </div>
+          </div>
+
+          <div class="card-dod-box" style="margin-bottom: 8px;">
+            <div class="dod-label">原定死線: 2026-10-04 ｜ 承諾 DoD 及格標準</div>
+            <div>重寫所有元件之 CSS 變數並全覆蓋 10 個學科模組樣式。</div>
+          </div>
+
+          <div class="post-mortem-box box-missed">
+            <div class="post-mortem-header header-missed">
+              <span>💥 信口開河檢驗 (Post-Mortem)</span>
+            </div>
+            <div>信口開河。嚴重低估跨檔案 CSS 耦合度與行動端適配細節，且前期因工具微調陷入內耗，導致死線前夕倉促補洞，延宕 7 天。</div>
+          </div>
+        </div>
+        <div class="commitment-card card-killed verdict-item" data-category="killed">
+          <div class="card-top">
+            <div class="card-id-title">
+              <span class="item-id">V-26-003</span>
+              <span class="item-title">引入第三方重型資料庫以取代本地純文字 Markdown 結構</span>
+            </div>
+            <div class="card-meta-tags">
+              <span class="status-badge badge-killed">⚪ 理性停損</span>
+              <span class="countdown-pill">戰略撤案</span>
+              <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">結案: 2026-09-20</span>
+            </div>
+          </div>
+
+          <div class="card-dod-box" style="margin-bottom: 8px;">
+            <div class="dod-label">原定死線: 2026-09-25 ｜ 承諾 DoD 及格標準</div>
+            <div>評估並完成 SQLite/PostgreSQL 本地快取層搭建與壓力測試。</div>
+          </div>
+
+          <div class="post-mortem-box box-killed">
+            <div class="post-mortem-header header-killed">
+              <span>🛑 停損覆盤 (Strategic Pivot)</span>
+            </div>
+            <div>戰略停損。經 48 小時 Spike 測試證實嚴重破壞「人本裸奔」哲學，且大幅增加維護複雜度，依據 Stage-Gate 規則主動 Hard Kill 撤案。</div>
+          </div>
+        </div>
+        <div class="commitment-card card-shipped verdict-item" data-category="shipped">
+          <div class="card-top">
+            <div class="card-id-title">
+              <span class="item-id">V-26-004</span>
+              <span class="item-title">鐵道部會火車時刻表與單件流派工演算法實裝</span>
+            </div>
+            <div class="card-meta-tags">
+              <span class="status-badge badge-shipped">🟢 順利履約</span>
+              <span class="countdown-pill" style="color: var(--success);">準時交付 (+0天)</span>
+              <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">結案: 2026-09-15</span>
+            </div>
+          </div>
+
+          <div class="card-dod-box" style="margin-bottom: 8px;">
+            <div class="dod-label">原定死線: 2026-09-15 ｜ 承諾 DoD 及格標準</div>
+            <div>完成 Train Dispatcher 演算法，支援自動依照難易度與時長分配精力時間塊。</div>
+          </div>
+
+          <div class="post-mortem-box box-shipped">
+            <div class="post-mortem-header header-shipped">
+              <span>🏆 履約證明 (Proof of Work)</span>
+            </div>
+            <div>壓線交付。演算法在最後 4 小時完成邊界案例校準，符合 DoD 及格標準。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div>PlanOS Execution Radar v2.5 · Single Source of Truth</div>
+      <div>
+        <a href="v2.1_legacy.html">瀏覽 v2.1 學科舊版</a> · 
+        <a href="https://github.com/PlanOS-HQ/PlanOS_v2" target="_blank" rel="noopener">GitHub 儲存庫</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // Theme Switcher Logic
+    function initTheme() {
+      const savedTheme = localStorage.getItem('planos_theme');
+      const btn = document.getElementById('themeToggle');
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+        if (btn) btn.innerHTML = '🌙 深色';
+      } else {
+        document.body.classList.remove('light-theme');
+        if (btn) btn.innerHTML = '☀️ 淺色';
+      }
+    }
+
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle('light-theme');
+      const btn = document.getElementById('themeToggle');
+      if (isLight) {
+        localStorage.setItem('planos_theme', 'light');
+        if (btn) btn.innerHTML = '🌙 深色';
+      } else {
+        localStorage.setItem('planos_theme', 'dark');
+        if (btn) btn.innerHTML = '☀️ 淺色';
+      }
+    }
+
+    // Verdict Filter Function
+    function filterVerdicts(cat, btn) {
+      document.querySelectorAll('.filter-pills-bar .pill-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.verdict-item').forEach(card => {
+        if (cat === 'all' || card.dataset.category === cat) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Live Clock Function in GMT+8 (Asia/Taipei)
+    function updateClock() {
+      try {
+        const now = new Date();
+        const options = {
+          timeZone: 'Asia/Taipei',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        };
+        const parts = new Intl.DateTimeFormat('zh-TW', options).formatToParts(now);
+        const map = {};
+        parts.forEach(p => map[p.type] = p.value);
+        const timeStr = `${map.year}-${map.month}-${map.day} ${map.hour}:${map.minute}:${map.second} (GMT+8 · 台北時間)`;
+        const el = document.getElementById('liveClock');
+        if (el) el.innerText = timeStr;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    initTheme();
+  </script>
+
+</body>
+</html>
