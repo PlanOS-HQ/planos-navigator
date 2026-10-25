@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>公開承諾發布看板 · PlanOS</title>
+  <title>PlanOS HQ 總部直連發布台 (Live MVP)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -11,7 +11,6 @@
     :root {
       --bg: #090c15;
       --bg-card: #0f1523;
-      --bg-card-hover: #141c2e;
       --bg-column: #0b101c;
       --bg-inset: #090d18;
       --border: rgba(255, 255, 255, 0.08);
@@ -21,20 +20,17 @@
       --text-dim: #64748b;
       --accent: #38bdf8;
       
-      /* Semantic Palette */
       --c-planning: #94a3b8;
       --c-planned: #38bdf8;
       --c-executing: #f59e0b;
       --c-review: #14b8a6;
       --c-published: #10b981;
-      --c-canceled: #64748b;
       --c-delayed: #ef4444;
     }
 
     body.light-theme {
       --bg: #f8fafc;
       --bg-card: #ffffff;
-      --bg-card-hover: #f8fafc;
       --bg-column: #f1f5f9;
       --bg-inset: #e2e8f0;
       --border: #e2e8f0;
@@ -49,7 +45,6 @@
       --c-executing: #d97706;
       --c-review: #0d9488;
       --c-published: #059669;
-      --c-canceled: #64748b;
       --c-delayed: #dc2626;
     }
 
@@ -82,10 +77,9 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      letter-spacing: -0.3px;
     }
     .live-dot {
-      width: 7px; height: 7px; border-radius: 50%;
+      width: 8px; height: 8px; border-radius: 50%;
       background: var(--c-published); box-shadow: 0 0 8px var(--c-published);
       animation: pulse 2s infinite;
     }
@@ -101,7 +95,6 @@
       background: var(--bg-card); border: 1px solid var(--border);
       color: var(--text); padding: 5px 12px; border-radius: 6px;
       font-size: 12px; font-weight: 600; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 4px;
     }
 
     /* Metrics Bar */
@@ -129,69 +122,10 @@
       font-weight: 600;
     }
 
-    /* Toolbar */
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      background: var(--bg-column);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 12px;
-      margin-bottom: 20px;
-    }
-    .filter-group {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .f-btn {
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--text-muted);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .f-btn.active {
-      background: var(--bg-card);
-      border-color: var(--border);
-      color: var(--accent);
-      font-weight: 700;
-    }
-
-    /* View Switcher */
-    .view-switcher {
-      display: flex;
-      background: var(--bg-inset);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 2px;
-    }
-    .v-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-dim);
-      padding: 4px 10px;
-      font-size: 11.5px;
-      font-weight: 600;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .v-btn.active {
-      background: var(--bg-card);
-      color: var(--text);
-    }
-
     /* Kanban Board Layout */
     .kanban-board {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
       gap: 14px;
       align-items: start;
       margin-bottom: 32px;
@@ -212,7 +146,6 @@
       align-items: center;
       padding-bottom: 8px;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 4px;
     }
     .col-title {
       font-size: 13px;
@@ -232,44 +165,33 @@
       color: var(--text-dim);
     }
 
-    /* Flat Card (Zero Progress Bars) */
+    /* Flat Card */
     .flat-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 12px 14px;
-      transition: all 0.15s ease;
-      position: relative;
       display: flex;
       flex-direction: column;
       gap: 8px;
+      transition: border-color 0.15s ease;
     }
     .flat-card:hover {
       border-color: var(--border-highlight);
-      transform: translateY(-1px);
     }
-
-    .flat-card.stage-Planning { border-left: 3px solid var(--c-planning); }
-    .flat-card.stage-Planned { border-left: 3px solid var(--c-planned); }
     .flat-card.stage-Executing { border-left: 3px solid var(--c-executing); }
+    .flat-card.stage-Planned { border-left: 3px solid var(--c-planned); }
     .flat-card.stage-Review { border-left: 3px solid var(--c-review); }
+    .flat-card.stage-Planning { border-left: 3px solid var(--c-planning); }
     .flat-card.stage-Published { border-left: 3px solid var(--c-published); }
-    .flat-card.stage-Canceled { border-left: 3px solid var(--c-canceled); opacity: 0.65; }
     .flat-card.is-delayed { border-left: 3px solid var(--c-delayed) !important; }
 
     .c-title {
       font-size: 14.5px;
       font-weight: 700;
       color: var(--text);
-      letter-spacing: -0.2px;
       line-height: 1.4;
     }
-    .flat-card.stage-Canceled .c-title {
-      text-decoration: line-through;
-      color: var(--text-dim);
-    }
-
-    /* Timers & Badges */
     .c-badge-row {
       display: flex;
       justify-content: space-between;
@@ -278,44 +200,47 @@
       flex-wrap: wrap;
       background: var(--bg-inset);
       border: 1px solid var(--border);
-      padding: 6px 10px;
+      padding: 5px 8px;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 11.5px;
     }
     .c-target-date {
       color: var(--text-dim);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
     }
     .live-countdown {
       font-family: 'JetBrains Mono', monospace;
       font-weight: 700;
-      font-size: 12px;
     }
-    .live-countdown.is-delayed {
-      color: var(--c-delayed) !important;
-    }
-    .live-countdown.is-published {
-      color: var(--c-published);
-    }
-    .live-countdown.is-canceled {
-      color: var(--c-canceled);
-    }
+    .live-countdown.is-delayed { color: var(--c-delayed) !important; }
+    .live-countdown.is-published { color: var(--c-published); }
 
-    .c-desc {
-      font-size: 12.5px;
-      color: var(--text-muted);
-      line-height: 1.45;
-    }
-
-    /* List View Container */
-    .list-view-wrap {
-      display: none;
+    /* DoD Chips (Sub-items) */
+    .dod-box {
+      display: flex;
       flex-direction: column;
-      gap: 10px;
-      max-width: 900px;
-      margin: 0 auto 32px;
+      gap: 4px;
+      margin-top: 4px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border);
     }
+    .dod-item {
+      font-size: 11.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+    }
+    .dod-item.done {
+      color: var(--text-dim);
+      text-decoration: line-through;
+    }
+    .dod-icon {
+      font-size: 10px;
+      font-weight: bold;
+    }
+    .dod-item.done .dod-icon { color: var(--c-published); }
+    .dod-item:not(.done) .dod-icon { color: var(--c-executing); }
 
     /* Collapsed Legacy Archive */
     details.legacy-archive {
@@ -353,10 +278,10 @@
     <div class="top-bar">
       <div class="site-title">
         <span class="live-dot"></span>
-        <span>公開承諾發布看板</span>
+        <span>PlanOS 總部直連發布台 (HQ Project 1)</span>
       </div>
       <div class="controls">
-        <span id="liveClock" class="clock-badge">2026-10-25 16:08:00 (GMT+8)</span>
+        <span id="liveClock" class="clock-badge">2026-10-25 16:30:00 (GMT+8)</span>
         <button id="themeToggle" class="tool-btn" onclick="toggleTheme()">☀️ 淺色</button>
       </div>
     </div>
@@ -364,20 +289,20 @@
     <!-- Metrics Bar -->
     <div class="metrics-bar">
       <div class="m-card">
-        <div class="m-num" style="color: var(--c-executing);">1 案</div>
+        <div class="m-num" style="color: var(--c-executing);">0 案</div>
         <div class="m-lbl">🚀 攻堅中</div>
       </div>
       <div class="m-card">
-        <div class="m-num" style="color: var(--c-planned);">2 案</div>
+        <div class="m-num" style="color: var(--c-planned);">6 案</div>
         <div class="m-lbl">📅 已定檔</div>
       </div>
       <div class="m-card">
-        <div class="m-num" style="color: var(--c-review);">1 案</div>
+        <div class="m-num" style="color: var(--c-review);">0 案</div>
         <div class="m-lbl">🔍 驗收中</div>
       </div>
       <div class="m-card">
         <div class="m-num" id="metricDelayed" style="color: var(--c-delayed);">0 案</div>
-        <div class="m-lbl">🚨 目前延期</div>
+        <div class="m-lbl">🚨 延期項</div>
       </div>
       <div class="m-card">
         <div class="m-num" style="color: var(--c-published);">2 案</div>
@@ -385,478 +310,357 @@
       </div>
     </div>
 
-    <!-- Toolbar -->
-    <div class="toolbar">
-      <div class="filter-group">
-        <button class="f-btn active" onclick="filterCards('all', this)">全部看板 (8)</button>
-        <button class="f-btn" onclick="filterCards('Executing', this)">攻堅中 (1)</button>
-        <button class="f-btn" onclick="filterCards('Planned', this)">已定檔 (2)</button>
-        <button class="f-btn" onclick="filterCards('delayed', this)">已延期 (<span id="delayedTabCount">0</span>)</button>
-        <button class="f-btn" onclick="filterCards('Published', this)">已交付 (2)</button>
-      </div>
-
-      <div class="view-switcher">
-        <button id="btnKanban" class="v-btn active" onclick="switchView('kanban')">📊 看板視圖</button>
-        <button id="btnList" class="v-btn" onclick="switchView('list')">📋 列表視圖</button>
-      </div>
-    </div>
-
-    <!-- 1. Pure Kanban Board Mode -->
-    <div class="kanban-board" id="kanbanBoard">
-      <div class="kanban-col col-Executing" data-stage="Executing">
+    <!-- Pure Kanban Board (Zero Progress Bars) -->
+    <div class="kanban-board">
+      <div class="kanban-col">
         <div class="col-header">
           <div class="col-title" style="color: var(--c-executing);">🚀 攻堅中</div>
-          <div class="col-count">1</div>
-        </div>
-        <div class="flat-card stage-Executing" 
-             data-stage="Executing" 
-             data-target="2026-10-25T21:00:00+08:00" 
-             data-ts="1792933200">
-          <div class="c-title">應用力學 Ch12 核心精華筆記與題解手稿上線</div>
-          <div class="c-badge-row">
-            <span class="c-target-date">📅 2026-10-25 21:00</span>
-            <span class="live-countdown" data-role="countdown">計算中...</span>
-          </div>
-          <div class="c-desc">整理應用力學 Ch12 核心必考觀念、歷屆題解與盲點標註，今晚 21:00 前完成 PDF 排版並公開上線。</div>
+          <div class="col-count">0</div>
         </div>
       </div>
-      <div class="kanban-col col-Planned" data-stage="Planned">
+      <div class="kanban-col">
         <div class="col-header">
           <div class="col-title" style="color: var(--c-planned);">📅 已定檔</div>
-          <div class="col-count">2</div>
+          <div class="col-count">6</div>
+        </div>
+        <div class="flat-card stage-Planned" 
+             data-stage="Planned" 
+             data-target="2026-10-30T21:00:00+08:00" 
+             data-ts="1793365200">
+          <div class="c-title">10/30 應力 Midterm 1</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-10-30</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          <div class="dod-box"><div class="dod-item "><span class="dod-icon">○</span><span>M0.1 Ch12</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.2 Ch13</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.3 Ch14</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.4 Review</span></div></div>
+        </div>
+        <div class="flat-card stage-Planned" 
+             data-stage="Planned" 
+             data-target="2026-10-29T21:00:00+08:00" 
+             data-ts="1793278800">
+          <div class="c-title">10/29 機統 Midterm</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-10-29</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          <div class="dod-box"><div class="dod-item "><span class="dod-icon">○</span><span>M0.1 Ch5</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.2 Ch6</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.3 Ch1-4 Review</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.4 All Review</span></div></div>
+        </div>
+        <div class="flat-card stage-Planned" 
+             data-stage="Planned" 
+             data-target="2026-10-30T21:00:00+08:00" 
+             data-ts="1793365200">
+          <div class="c-title">10/30 普心 Midterm</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-10-30</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          <div class="dod-box"><div class="dod-item "><span class="dod-icon">○</span><span>M0.1 Ch1</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.2 Ch2</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.3 Ch3</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.4 Ch4</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.5 Review</span></div></div>
+        </div>
+        <div class="flat-card stage-Planned" 
+             data-stage="Planned" 
+             data-target="2026-11-02T21:00:00+08:00" 
+             data-ts="1793624400">
+          <div class="c-title">11/02 邏輯 Midterm</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-11-02</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          <div class="dod-box"><div class="dod-item "><span class="dod-icon">○</span><span>M0.1 Ch1</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.2 Ch2</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.3 Ch3</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.4 Ch4</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.5 Ch5</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.6 Ch6</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.7 Ch7</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.8 Ch8</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.9 Review</span></div></div>
         </div>
         <div class="flat-card stage-Planned" 
              data-stage="Planned" 
              data-target="2026-10-28T21:00:00+08:00" 
              data-ts="1793192400">
-          <div class="c-title">應用力學 Ch13 核心精華筆記與題解手稿上線</div>
+          <div class="c-title">10/28 電工 Q7</div>
           <div class="c-badge-row">
-            <span class="c-target-date">📅 2026-10-28 21:00</span>
+            <span class="c-target-date">📅 2026-10-28</span>
             <span class="live-countdown" data-role="countdown">計算中...</span>
           </div>
-          <div class="c-desc">延續 Ch12 筆記規格，於本週三晚間 21:00 前產出 Ch13 向量精華筆記檔。</div>
+          <div class="dod-box"><div class="dod-item "><span class="dod-icon">○</span><span>M0.1 14.1</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.2 14.2</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.3 14.3</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.4 14.4</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.5 14.5</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.6 14.6</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.7 Review</span></div></div>
         </div>
         <div class="flat-card stage-Planned" 
              data-stage="Planned" 
-             data-target="2026-11-05T00:00:00+08:00" 
-             data-ts="1793808000">
-          <div class="c-title">🤖 線上課程自動評分工具</div>
+             data-target="2026-11-02T21:00:00+08:00" 
+             data-ts="1793624400">
+          <div class="c-title">11/02 桌球 Midterm</div>
           <div class="c-badge-row">
-            <span class="c-target-date">📅 2026-11-05 00:00</span>
+            <span class="c-target-date">📅 2026-11-02</span>
             <span class="live-countdown" data-role="countdown">計算中...</span>
           </div>
-          <div class="c-desc">開發自動化作業檢查腳本，提供精確規則評分。</div>
+          <div class="dod-box"><div class="dod-item "><span class="dod-icon">○</span><span>M0.1 Part 1</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.2 Part 2</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.3 Part 3</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.4 Review</span></div></div>
         </div>
       </div>
-      <div class="kanban-col col-Review" data-stage="Review">
+      <div class="kanban-col">
         <div class="col-header">
           <div class="col-title" style="color: var(--c-review);">🔍 驗收中</div>
-          <div class="col-count">1</div>
-        </div>
-        <div class="flat-card stage-Review" 
-             data-stage="Review" 
-             data-target="2026-10-27T12:00:00+08:00" 
-             data-ts="1793073600">
-          <div class="c-title">🎙️ Podcast 第一集試播集音訊上架</div>
-          <div class="c-badge-row">
-            <span class="c-target-date">📅 2026-10-27 12:00</span>
-            <span class="live-countdown" data-role="countdown">計算中...</span>
-          </div>
-          <div class="c-desc">首集試播音訊最後打磨，10/27 中午 12:00 正式推播至串流平台。</div>
+          <div class="col-count">0</div>
         </div>
       </div>
-      <div class="kanban-col col-Planning" data-stage="Planning">
+      <div class="kanban-col">
         <div class="col-header">
           <div class="col-title" style="color: var(--c-planning);">💡 探索中</div>
-          <div class="col-count">1</div>
+          <div class="col-count">7</div>
         </div>
         <div class="flat-card stage-Planning" 
              data-stage="Planning" 
-             data-target="" 
-             data-ts="9999999999">
-          <div class="c-title">💡 跨裝置實時剪貼簿同步工具 (跨 Mac/Win/iOS)</div>
+             data-target="2026-11-20T21:00:00+08:00" 
+             data-ts="1795179600">
+          <div class="c-title">11/20 應力 Midterm 2</div>
           <div class="c-badge-row">
-            <span class="c-target-date">📅 待定</span>
+            <span class="c-target-date">📅 2026-11-20</span>
             <span class="live-countdown" data-role="countdown">計算中...</span>
           </div>
-          <div class="c-desc">探索基於區域網的高速加密剪貼簿同步架構，評估實用性與開發工期。</div>
+          
+        </div>
+        <div class="flat-card stage-Planning" 
+             data-stage="Planning" 
+             data-target="2026-12-08T21:00:00+08:00" 
+             data-ts="1796734800">
+          <div class="c-title">12/08 跨領域 Report 1</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-12-08</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          
+        </div>
+        <div class="flat-card stage-Planning" 
+             data-stage="Planning" 
+             data-target="2026-12-15T21:00:00+08:00" 
+             data-ts="1797339600">
+          <div class="c-title">12/15 跨領域 Report 2</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-12-15</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          
+        </div>
+        <div class="flat-card stage-Planning" 
+             data-stage="Planning" 
+             data-target="2026-12-18T21:00:00+08:00" 
+             data-ts="1797598800">
+          <div class="c-title">12/18 應力 Final</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-12-18</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          
+        </div>
+        <div class="flat-card stage-Planning" 
+             data-stage="Planning" 
+             data-target="2026-10-26T21:00:00+08:00" 
+             data-ts="1793019600">
+          <div class="c-title">🎙️ 10/26 Podcast Ep.01 錄音與剪輯</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-10-26</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          
+        </div>
+        <div class="flat-card stage-Planning" 
+             data-stage="Planning" 
+             data-target="2026-11-05T21:00:00+08:00" 
+             data-ts="1793883600">
+          <div class="c-title">🤖 11/05 OCW Bot 自動評分模組上線</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-11-05</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          
+        </div>
+        <div class="flat-card stage-Planning" 
+             data-stage="Planning" 
+             data-target="2026-11-15T21:00:00+08:00" 
+             data-ts="1794747600">
+          <div class="c-title">🛠️ 11/15 PlanOS v2.5 雙軌正式版發布</div>
+          <div class="c-badge-row">
+            <span class="c-target-date">📅 2026-11-15</span>
+            <span class="live-countdown" data-role="countdown">計算中...</span>
+          </div>
+          
         </div>
       </div>
-      <div class="kanban-col col-Published" data-stage="Published">
+      <div class="kanban-col">
         <div class="col-header">
           <div class="col-title" style="color: var(--c-published);">✨ 已交付</div>
           <div class="col-count">2</div>
         </div>
         <div class="flat-card stage-Published" 
              data-stage="Published" 
-             data-target="2026-10-24T20:00:00+08:00" 
-             data-ts="1792843200">
-          <div class="c-title">萬物演進四階體系與防內耗工作法則入法</div>
+             data-target="2026-10-21T21:00:00+08:00" 
+             data-ts="1792587600">
+          <div class="c-title">10/21 熱力 Midterm</div>
           <div class="c-badge-row">
-            <span class="c-target-date">📅 2026-10-24 20:00</span>
+            <span class="c-target-date">📅 2026-10-21</span>
             <span class="live-countdown" data-role="countdown">計算中...</span>
           </div>
-          <div class="c-desc">完成系統行為規範修訂，並公開至 GitHub 組織。</div>
+          <div class="dod-box"><div class="dod-item done"><span class="dod-icon">✓</span><span>M0.1</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.2</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.3</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.4</span></div></div>
         </div>
         <div class="flat-card stage-Published" 
              data-stage="Published" 
-             data-target="2026-10-15T18:00:00+08:00" 
-             data-ts="1792058400">
-          <div class="c-title">鐵道排班與時間管理演算法實裝</div>
+             data-target="2026-10-21T21:00:00+08:00" 
+             data-ts="1792587600">
+          <div class="c-title">10/21 電工 Q6</div>
           <div class="c-badge-row">
-            <span class="c-target-date">📅 2026-10-15 18:00</span>
+            <span class="c-target-date">📅 2026-10-21</span>
             <span class="live-countdown" data-role="countdown">計算中...</span>
           </div>
-          <div class="c-desc">完成時間塊排班演算法，並整合進日常主控台。</div>
-        </div>
-      </div>
-      <div class="kanban-col col-Canceled" data-stage="Canceled">
-        <div class="col-header">
-          <div class="col-title" style="color: var(--c-canceled);">🛑 已取消</div>
-          <div class="col-count">1</div>
-        </div>
-        <div class="flat-card stage-Canceled" 
-             data-stage="Canceled" 
-             data-target="2026-10-20T18:00:00+08:00" 
-             data-ts="1792490400">
-          <div class="c-title">全自動網頁爬蟲與每日新聞摘要機器人</div>
-          <div class="c-badge-row">
-            <span class="c-target-date">📅 2026-10-20 18:00</span>
-            <span class="live-countdown" data-role="countdown">計算中...</span>
-          </div>
-          <div class="c-desc">經評估現有開源工具已可完全替代，邊際效益過低，戰略止損取消研發。</div>
+          <div class="dod-box"><div class="dod-item "><span class="dod-icon">○</span><span>M0.1</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.2</span></div><div class="dod-item "><span class="dod-icon">○</span><span>M0.3</span></div></div>
         </div>
       </div>
     </div>
 
-    <!-- 2. Minimalist Flat List View Mode (Zero Progress Bars) -->
-    <div class="list-view-wrap" id="listView">
-      <div class="flat-card stage-Executing" 
-           data-stage="Executing" 
-           data-target="2026-10-25T21:00:00+08:00" 
-           data-ts="1792933200">
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-          <div class="c-title">應用力學 Ch12 核心精華筆記與題解手稿上線</div>
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-executing);">Executing</span>
-        </div>
-        <div class="c-badge-row">
-          <span class="c-target-date">📅 2026-10-25 21:00</span>
-          <span class="live-countdown" data-role="countdown">計算中...</span>
-        </div>
-        <div class="c-desc">整理應用力學 Ch12 核心必考觀念、歷屆題解與盲點標註，今晚 21:00 前完成 PDF 排版並公開上線。</div>
-      </div>
-      <div class="flat-card stage-Review" 
-           data-stage="Review" 
-           data-target="2026-10-27T12:00:00+08:00" 
-           data-ts="1793073600">
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-          <div class="c-title">🎙️ Podcast 第一集試播集音訊上架</div>
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-review);">Review</span>
-        </div>
-        <div class="c-badge-row">
-          <span class="c-target-date">📅 2026-10-27 12:00</span>
-          <span class="live-countdown" data-role="countdown">計算中...</span>
-        </div>
-        <div class="c-desc">首集試播音訊最後打磨，10/27 中午 12:00 正式推播至串流平台。</div>
-      </div>
-      <div class="flat-card stage-Planned" 
-           data-stage="Planned" 
-           data-target="2026-10-28T21:00:00+08:00" 
-           data-ts="1793192400">
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-          <div class="c-title">應用力學 Ch13 核心精華筆記與題解手稿上線</div>
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-planned);">Planned</span>
-        </div>
-        <div class="c-badge-row">
-          <span class="c-target-date">📅 2026-10-28 21:00</span>
-          <span class="live-countdown" data-role="countdown">計算中...</span>
-        </div>
-        <div class="c-desc">延續 Ch12 筆記規格，於本週三晚間 21:00 前產出 Ch13 向量精華筆記檔。</div>
-      </div>
-      <div class="flat-card stage-Planned" 
-           data-stage="Planned" 
-           data-target="2026-11-05T00:00:00+08:00" 
-           data-ts="1793808000">
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-          <div class="c-title">🤖 線上課程自動評分工具</div>
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-planned);">Planned</span>
-        </div>
-        <div class="c-badge-row">
-          <span class="c-target-date">📅 2026-11-05 00:00</span>
-          <span class="live-countdown" data-role="countdown">計算中...</span>
-        </div>
-        <div class="c-desc">開發自動化作業檢查腳本，提供精確規則評分。</div>
-      </div>
-      <div class="flat-card stage-Planning" 
-           data-stage="Planning" 
-           data-target="" 
-           data-ts="9999999999">
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-          <div class="c-title">💡 跨裝置實時剪貼簿同步工具 (跨 Mac/Win/iOS)</div>
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-planning);">Planning</span>
-        </div>
-        <div class="c-badge-row">
-          <span class="c-target-date">📅 待定</span>
-          <span class="live-countdown" data-role="countdown">計算中...</span>
-        </div>
-        <div class="c-desc">探索基於區域網的高速加密剪貼簿同步架構，評估實用性與開發工期。</div>
-      </div>
-      <div class="flat-card stage-Published" 
-           data-stage="Published" 
-           data-target="2026-10-24T20:00:00+08:00" 
-           data-ts="1792843200">
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-          <div class="c-title">萬物演進四階體系與防內耗工作法則入法</div>
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-published);">Published</span>
-        </div>
-        <div class="c-badge-row">
-          <span class="c-target-date">📅 2026-10-24 20:00</span>
-          <span class="live-countdown" data-role="countdown">計算中...</span>
-        </div>
-        <div class="c-desc">完成系統行為規範修訂，並公開至 GitHub 組織。</div>
-      </div>
-      <div class="flat-card stage-Published" 
-           data-stage="Published" 
-           data-target="2026-10-15T18:00:00+08:00" 
-           data-ts="1792058400">
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-          <div class="c-title">鐵道排班與時間管理演算法實裝</div>
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-published);">Published</span>
-        </div>
-        <div class="c-badge-row">
-          <span class="c-target-date">📅 2026-10-15 18:00</span>
-          <span class="live-countdown" data-role="countdown">計算中...</span>
-        </div>
-        <div class="c-desc">完成時間塊排班演算法，並整合進日常主控台。</div>
-      </div>
-      <div class="flat-card stage-Canceled" 
-           data-stage="Canceled" 
-           data-target="2026-10-20T18:00:00+08:00" 
-           data-ts="1792490400">
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-          <div class="c-title">全自動網頁爬蟲與每日新聞摘要機器人</div>
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--c-canceled);">Canceled</span>
-        </div>
-        <div class="c-badge-row">
-          <span class="c-target-date">📅 2026-10-20 18:00</span>
-          <span class="live-countdown" data-role="countdown">計算中...</span>
-        </div>
-        <div class="c-desc">經評估現有開源工具已可完全替代，邊際效益過低，戰略止損取消研發。</div>
-      </div>
-    </div>
-
-    <!-- Collapsed Legacy Archive -->
+    <!-- Collapsed Legacy Archive (Reads directly from Project 1 private tasks) -->
     <details class="legacy-archive">
-      <summary>📦 過去內部作業紀錄存檔 (50 案 · 預設折疊)</summary>
+      <summary>📦 總部其餘私密學業與任務 (35 案 · 預設折疊)</summary>
       <div style="margin-top: 12px; display: flex; flex-direction: column; gap: 6px;">
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[DYN-001] 10/30 應力 Midterm 1</span>
-          <span>Todo</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[MATH-001] 10/20 工數 Midterm</span>
-          <span>Done</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[TH-001] 10/21 熱力 Midterm</span>
-          <span>Done</span>
+          <span>Published (2026-10-20)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-001] 10/19 電工 Q5</span>
-          <span>Done</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[PROB-001] 10/29 機統 Midterm</span>
-          <span>Todo</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[PSY-001] 10/30 普心 Midterm</span>
-          <span>Todo</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[LOGIC-001] 11/02 邏輯 Midterm</span>
-          <span>Todo</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[EE-002] 10/21 電工 Q6</span>
-          <span>Done</span>
+          <span>Published (2026-10-19)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-004] 09/14 電工 Q1</span>
-          <span>Done</span>
+          <span>Published (2026-09-14)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-005] 09/21 電工 Q2</span>
-          <span>Done</span>
+          <span>Published (2026-09-21)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-001] 09/23 會計 Q1</span>
-          <span>Done</span>
+          <span>Published (2026-09-23)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[MATH-002] 09/29 工數 Q1</span>
-          <span>Done</span>
+          <span>Published (2026-09-29)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-006] 09/30 電工 Q3</span>
-          <span>Done</span>
+          <span>Published (2026-09-30)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-002] 09/30 會計 Q2</span>
-          <span>Done</span>
+          <span>Published (2026-09-30)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-003] 10/07 會計 Q3</span>
-          <span>Done</span>
+          <span>Published (2026-10-07)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[TH-002] 10/07 熱力 Q1</span>
-          <span>Done</span>
+          <span>Published (2026-10-07)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PROB-002] 10/08 機統 Q1</span>
-          <span>Done</span>
+          <span>Published (2026-10-08)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-007] 10/12 電工 Q4</span>
-          <span>Done</span>
+          <span>Published (2026-10-12)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-004] 10/12 會計 Midterm 1</span>
-          <span>Done</span>
+          <span>Published (2026-10-12)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[MATH-003] 10/13 工數 Q2</span>
-          <span>Done</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[EE-008] 10/28 電工 Q7</span>
-          <span>Todo</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[PE-002] 11/02 桌球 Midterm</span>
-          <span>Todo</span>
+          <span>Published (2026-10-13)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-005] 11/04 會計 Q4</span>
-          <span>Backlog</span>
+          <span>Planning (2026-11-04)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-006] 11/11 會計 Q5</span>
-          <span>Backlog</span>
+          <span>Planning (2026-11-11)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[TH-003] 11/11 熱力 Q2</span>
-          <span>Backlog</span>
+          <span>Planning (2026-11-11)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-007] 11/16 會計 Midterm 2</span>
-          <span>Backlog</span>
+          <span>Planning (2026-11-16)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[MATH-004] 11/17 工數 Q3</span>
-          <span>Backlog</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[DYN-002] 11/20 應力 Midterm 2</span>
-          <span>Backlog</span>
+          <span>Planning (2026-11-17)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PE-003] 11/23 桌球 Test 1</span>
-          <span>Backlog</span>
+          <span>Planning (2026-11-23)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PROB-003] 11/26 機統 Q2</span>
-          <span>Backlog</span>
+          <span>Planning (2026-11-26)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PE-004] 11/30 桌球 Test 2</span>
-          <span>Backlog</span>
+          <span>Planning (2026-11-30)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-008] 12/02 會計 Q6</span>
-          <span>Backlog</span>
+          <span>Planning (2026-12-02)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[TH-004] 12/02 熱力 Q3</span>
-          <span>Backlog</span>
+          <span>Planning (2026-12-02)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PE-005] 12/07 桌球 Test 3</span>
-          <span>Backlog</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[STAT-001] 12/08 跨領域 Report 1</span>
-          <span>Backlog</span>
+          <span>Planning (2026-12-07)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PE-006] 12/14 桌球 Test 4</span>
-          <span>Backlog</span>
+          <span>Planning (2026-12-14)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[MATH-005] 12/15 工數 Q4</span>
-          <span>Backlog</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[STAT-002] 12/15 跨領域 Report 2</span>
-          <span>Backlog</span>
+          <span>Planning (2026-12-15)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-009] 12/16 會計 Q7</span>
-          <span>Backlog</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[DYN-003] 12/18 應力 Final</span>
-          <span>Backlog</span>
+          <span>Planning (2026-12-16)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PSY-002] 12/18 普心 Final</span>
-          <span>Backlog</span>
+          <span>Planning (2026-12-18)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[EE-009] 12/21 電工 Final</span>
-          <span>Backlog</span>
+          <span>Planning (2026-12-21)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[LOGIC-002] 12/21 邏輯 Final</span>
-          <span>Backlog</span>
+          <span>Planning (2026-12-21)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[ACC-010] 12/21 會計 Final</span>
-          <span>Backlog</span>
+          <span>Planning (2026-12-21)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[MATH-006] 12/22 工數 Final</span>
-          <span>Backlog</span>
+          <span>Planning (2026-12-22)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[TH-005] 12/23 熱力 Final</span>
-          <span>Backlog</span>
+          <span>Planning (2026-12-23)</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
           <span>[PROB-004] 12/24 機統 Final</span>
-          <span>Backlog</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[TASK] 🎙️ 10/26 Podcast Ep.01 錄音與剪輯</span>
-          <span>Backlog</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[TASK] 🤖 11/05 OCW Bot 自動評分模組上線</span>
-          <span>Backlog</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11.5px; color: var(--text-dim); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-          <span>[TASK] 🛠️ 11/15 PlanOS v2.5 雙軌正式版發布</span>
-          <span>Backlog</span>
+          <span>Planning (2026-12-24)</span>
         </div>
       </div>
     </details>
 
     <!-- Footer -->
     <footer>
-      <div>公開承諾看板 · 客觀記錄每一次定檔與發布</div>
+      <div>PlanOS 總部直連 MVP · 100% 讀取自 Project 1 · 零手動維護</div>
       <div>
-        <a href="v2.1_legacy.html" style="color: var(--accent); text-decoration: none;">歷史版本</a> ·
+        <a href="https://github.com/orgs/PlanOS-HQ/projects/1" target="_blank" style="color: var(--accent); text-decoration: none;">總部 Project 1 看板</a> ·
         <a href="https://github.com/PlanOS-HQ/PlanOS_v2" target="_blank" style="color: var(--accent); text-decoration: none;">GitHub 組織</a>
       </div>
     </footer>
@@ -864,7 +668,6 @@
   </div>
 
   <script>
-    // Live Dynamic Countdown & Overdue Logic
     function updateCountdowns() {
       const now = new Date();
       let delayedCount = 0;
@@ -878,13 +681,6 @@
         if (stage === 'Published') {
           timeEl.innerText = '已如約交付';
           timeEl.className = 'live-countdown is-published';
-          card.classList.remove('is-delayed');
-          return;
-        }
-
-        if (stage === 'Canceled') {
-          timeEl.innerText = '已取消';
-          timeEl.className = 'live-countdown is-canceled';
           card.classList.remove('is-delayed');
           return;
         }
@@ -905,7 +701,6 @@
         const diff = targetDate.getTime() - now.getTime();
 
         if (diff > 0) {
-          // On track countdown
           const days = Math.floor(diff / (1000 * 60 * 60 * 24));
           const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -915,7 +710,6 @@
           timeEl.className = 'live-countdown';
           card.classList.remove('is-delayed');
         } else {
-          // Overdue / Delayed
           delayedCount++;
           const absDiff = Math.abs(diff);
           const days = Math.floor(absDiff / (1000 * 60 * 60 * 24));
@@ -931,55 +725,6 @@
 
       const metricDelayed = document.getElementById('metricDelayed');
       if (metricDelayed) metricDelayed.innerText = `${delayedCount} 案`;
-      const tabDelayed = document.getElementById('delayedTabCount');
-      if (tabDelayed) tabDelayed.innerText = delayedCount;
-    }
-
-    function switchView(view) {
-      const board = document.getElementById('kanbanBoard');
-      const list = document.getElementById('listView');
-      const btnK = document.getElementById('btnKanban');
-      const btnL = document.getElementById('btnList');
-
-      if (view === 'kanban') {
-        board.style.display = 'grid';
-        list.style.display = 'none';
-        btnK.classList.add('active');
-        btnL.classList.remove('active');
-      } else {
-        board.style.display = 'none';
-        list.style.display = 'flex';
-        btnK.classList.remove('active');
-        btnL.classList.add('active');
-      }
-    }
-
-    function filterCards(status, btn) {
-      document.querySelectorAll('.filter-group .f-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      // Filter in Kanban Board (hide/show entire columns or cards)
-      document.querySelectorAll('.kanban-col').forEach(col => {
-        if (status === 'all') {
-          col.style.display = '';
-        } else if (status === 'delayed') {
-          const hasDelayed = col.querySelector('.flat-card.is-delayed');
-          col.style.display = hasDelayed ? '' : 'none';
-        } else {
-          col.style.display = (col.dataset.stage === status) ? '' : 'none';
-        }
-      });
-
-      // Filter in List View
-      document.querySelectorAll('#listView .flat-card').forEach(card => {
-        if (status === 'all') {
-          card.style.display = '';
-        } else if (status === 'delayed') {
-          card.style.display = card.classList.contains('is-delayed') ? '' : 'none';
-        } else {
-          card.style.display = (card.dataset.stage === status) ? '' : 'none';
-        }
-      });
     }
 
     function initTheme() {
