@@ -6,63 +6,61 @@
   <title>PlanOS 執行雷達 · 誠信審計台 (v2.5)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0b0f17;
-      --bg-card: #111726;
-      --bg-card-hover: #172033;
-      --bg-inset: #0e1320;
-      --border: rgba(255, 255, 255, 0.08);
-      --border-highlight: rgba(255, 255, 255, 0.18);
+      --bg: #090c15;
+      --bg-card: #0f1523;
+      --bg-card-hover: #141c2e;
+      --bg-inset: #090d18;
+      --border: rgba(255, 255, 255, 0.07);
+      --border-highlight: rgba(56, 189, 248, 0.35);
       --text: #f8fafc;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
       --accent: #38bdf8;
-      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-      --glass-blur: 8px;
-      --track-bg: rgba(255, 255, 255, 0.06);
-      --pill-bg: rgba(255, 255, 255, 0.06);
-      --tag-bg: rgba(255, 255, 255, 0.04);
-      --danger: #ef4444;
-      --danger-bg: rgba(239, 68, 68, 0.12);
-      --danger-border: rgba(239, 68, 68, 0.35);
+      --accent-glow: rgba(56, 189, 248, 0.15);
+      --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+      --track-bg: rgba(255, 255, 255, 0.05);
+      --pill-bg: rgba(255, 255, 255, 0.05);
+      --danger: #f43f5e;
+      --danger-bg: rgba(244, 63, 94, 0.1);
+      --danger-border: rgba(244, 63, 94, 0.3);
       --success: #10b981;
-      --success-bg: rgba(16, 185, 129, 0.12);
-      --success-border: rgba(16, 185, 129, 0.35);
+      --success-bg: rgba(16, 185, 129, 0.1);
+      --success-border: rgba(16, 185, 129, 0.3);
       --warning: #f59e0b;
-      --warning-bg: rgba(245, 158, 11, 0.12);
-      --warning-border: rgba(245, 158, 11, 0.35);
+      --warning-bg: rgba(245, 158, 11, 0.1);
+      --warning-border: rgba(245, 158, 11, 0.3);
       --killed: #64748b;
-      --killed-bg: rgba(100, 116, 139, 0.12);
-      --killed-border: rgba(100, 116, 139, 0.35);
+      --killed-bg: rgba(100, 116, 139, 0.1);
+      --killed-border: rgba(100, 116, 139, 0.25);
     }
 
     body.light-theme {
       --bg: #f8fafc;
       --bg-card: #ffffff;
-      --bg-card-hover: #f1f5f9;
+      --bg-card-hover: #f8fafc;
       --bg-inset: #f1f5f9;
       --border: #e2e8f0;
-      --border-highlight: #cbd5e1;
+      --border-highlight: #93c5fd;
       --text: #0f172a;
       --text-muted: #475569;
       --text-dim: #94a3b8;
       --accent: #0284c7;
-      --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      --glass-blur: 0px;
+      --accent-glow: rgba(2, 132, 199, 0.08);
+      --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
       --track-bg: #e2e8f0;
       --pill-bg: #f1f5f9;
-      --tag-bg: #f1f5f9;
-      --danger: #dc2626;
-      --danger-bg: rgba(220, 38, 38, 0.08);
-      --danger-border: #fca5a5;
+      --danger: #e11d48;
+      --danger-bg: #fff1f2;
+      --danger-border: #fecdd3;
       --success: #059669;
-      --success-bg: rgba(5, 150, 105, 0.08);
-      --success-border: #86efac;
+      --success-bg: #ecfdf5;
+      --success-border: #a7f3d0;
       --warning: #d97706;
-      --warning-bg: rgba(217, 119, 6, 0.08);
-      --warning-border: #fcd34d;
+      --warning-bg: #fffbeb;
+      --warning-border: #fde68a;
       --killed: #475569;
       --killed-bg: #f1f5f9;
       --killed-border: #cbd5e1;
@@ -86,7 +84,7 @@
     }
 
     .container {
-      max-width: 980px;
+      max-width: 940px;
       margin: 0 auto;
     }
 
@@ -97,7 +95,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       padding-bottom: 14px;
       border-bottom: 1px solid var(--border);
     }
@@ -106,7 +104,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: var(--tag-bg);
+      background: var(--pill-bg);
       border: 1px solid var(--border);
       padding: 4px 10px;
       border-radius: 6px;
@@ -128,14 +126,13 @@
 
     @keyframes pulse {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+      50% { opacity: 0.35; }
     }
 
     .controls-group {
       display: flex;
       align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
     }
 
     .clock-badge {
@@ -176,29 +173,28 @@
     }
 
     .hero-title h1 {
-      font-size: 26px;
+      font-size: 24px;
       font-weight: 800;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.4px;
       margin-bottom: 6px;
       display: flex;
       align-items: center;
       gap: 10px;
-      flex-wrap: wrap;
     }
 
     .version-tag {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 4px;
-      background: rgba(56, 189, 248, 0.15);
+      background: rgba(56, 189, 248, 0.12);
       color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      border: 1px solid rgba(56, 189, 248, 0.25);
     }
 
     .hero-subtitle {
-      font-size: 14px;
+      font-size: 13.5px;
       color: var(--text-muted);
       display: flex;
       align-items: center;
@@ -211,7 +207,7 @@
       font-size: 11px;
       background: var(--bg-inset);
       border: 1px solid var(--border);
-      padding: 2px 7px;
+      padding: 2px 6px;
       border-radius: 4px;
       color: var(--accent);
     }
@@ -219,19 +215,17 @@
     /* Stats Bar */
     .stats-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
       gap: 10px;
-      margin-bottom: 28px;
+      margin-bottom: 30px;
     }
 
     .stat-box {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
+      border-radius: 10px;
+      padding: 12px 14px;
       transition: transform 0.15s ease, border-color 0.15s ease;
-      position: relative;
-      overflow: hidden;
     }
 
     .stat-box:hover {
@@ -241,21 +235,21 @@
 
     .stat-num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 800;
       line-height: 1.2;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .stat-lbl {
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--text-muted);
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
-    /* Sections */
+    /* Section Header */
     .section-container {
       margin-bottom: 32px;
     }
@@ -270,12 +264,11 @@
     }
 
     .section-title {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 800;
       display: flex;
       align-items: center;
       gap: 8px;
-      letter-spacing: -0.2px;
     }
 
     .badge-count {
@@ -305,7 +298,7 @@
       color: var(--text-muted);
       font-size: 12px;
       font-weight: 600;
-      padding: 5px 12px;
+      padding: 4px 12px;
       border-radius: 9999px;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -319,20 +312,20 @@
     }
 
     .pill-btn.active {
-      background: var(--tag-bg);
+      background: var(--pill-bg);
       border-color: var(--border-highlight);
       color: var(--accent);
       font-weight: 700;
     }
 
-    /* Cards */
+    /* Ultra-Modern Commitment Card */
     .commitment-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 16px 18px;
+      padding: 16px;
       margin-bottom: 12px;
-      transition: all 0.2s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
       position: relative;
     }
 
@@ -341,63 +334,52 @@
       box-shadow: var(--card-shadow);
     }
 
-    .commitment-card.card-stuck {
-      border-left: 4px solid var(--warning);
-      background: rgba(245, 158, 11, 0.03);
+    .commitment-card.card-p0 {
+      border-left: 3px solid var(--danger);
+    }
+
+    .commitment-card.card-p1 {
+      border-left: 3px solid var(--warning);
+    }
+
+    .commitment-card.card-p2 {
+      border-left: 3px solid var(--accent);
     }
 
     .commitment-card.card-shipped {
-      border-left: 4px solid var(--success);
+      border-left: 3px solid var(--success);
     }
 
     .commitment-card.card-missed {
-      border-left: 4px solid var(--danger);
-      background: rgba(239, 68, 68, 0.03);
-    }
-
-    .commitment-card.card-killed {
-      border-left: 4px solid var(--killed);
-      opacity: 0.85;
+      border-left: 3px solid var(--danger);
+      background: rgba(244, 63, 94, 0.02);
     }
 
     .card-top {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
       gap: 12px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
     }
 
     .card-id-title {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
     .item-id {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      font-weight: 800;
+      font-size: 11.5px;
+      font-weight: 700;
       padding: 2px 7px;
-      border-radius: 4px;
+      border-radius: 5px;
       background: var(--bg-inset);
       border: 1px solid var(--border);
       color: var(--text-dim);
-    }
-
-    .item-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .card-meta-tags {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
     }
 
     .priority-pill {
@@ -406,30 +388,44 @@
       font-weight: 800;
       padding: 2px 6px;
       border-radius: 4px;
+      letter-spacing: 0.5px;
     }
 
     .prio-p0 {
-      background: rgba(239, 68, 68, 0.15);
-      color: #ef4444;
-      border: 1px solid rgba(239, 68, 68, 0.35);
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid var(--danger-border);
     }
 
     .prio-p1 {
-      background: rgba(245, 158, 11, 0.15);
-      color: #f59e0b;
-      border: 1px solid rgba(245, 158, 11, 0.35);
+      background: var(--warning-bg);
+      color: var(--warning);
+      border: 1px solid var(--warning-border);
     }
 
     .prio-p2 {
-      background: rgba(56, 189, 248, 0.15);
+      background: rgba(56, 189, 248, 0.12);
       color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.35);
+      border: 1px solid rgba(56, 189, 248, 0.3);
     }
 
     .prio-p3 {
-      background: rgba(148, 163, 184, 0.15);
+      background: rgba(148, 163, 184, 0.1);
       color: #94a3b8;
-      border: 1px solid rgba(148, 163, 184, 0.35);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .item-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.2px;
+    }
+
+    .card-meta-tags {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .score-badge {
@@ -450,25 +446,19 @@
       border-radius: 9999px;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
     }
 
     .badge-progress {
-      background: rgba(56, 189, 248, 0.15);
+      background: rgba(56, 189, 248, 0.12);
       color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      border: 1px solid rgba(56, 189, 248, 0.25);
     }
 
     .badge-todo {
       background: var(--pill-bg);
       color: var(--text-muted);
       border: 1px solid var(--border);
-    }
-
-    .badge-stuck {
-      background: var(--warning-bg);
-      color: var(--warning);
-      border: 1px solid var(--warning-border);
     }
 
     .badge-shipped {
@@ -483,18 +473,12 @@
       border: 1px solid var(--danger-border);
     }
 
-    .badge-killed {
-      background: var(--killed-bg);
-      color: var(--killed);
-      border: 1px solid var(--killed-border);
-    }
-
     .countdown-pill {
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
       font-weight: 700;
       padding: 3px 8px;
-      border-radius: 6px;
+      border-radius: 5px;
       background: var(--bg-inset);
       border: 1px solid var(--border);
     }
@@ -509,38 +493,117 @@
       border-color: var(--danger-border);
     }
 
-    .card-dod-box {
+    /* DoD Modern Chip Architecture */
+    .dod-container {
+      margin: 10px 0 12px;
       background: var(--bg-inset);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 10px 12px;
-      margin-bottom: 12px;
-      font-size: 13px;
+    }
+
+    .dod-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .dod-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dod-chip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 6px;
+    }
+
+    .dod-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 9px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.15s ease;
+    }
+
+    .dod-chip.chip-pending {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .dod-chip.chip-done {
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      color: var(--success);
+    }
+
+    .chip-checkbox {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      background: var(--bg-card);
+      flex-shrink: 0;
+    }
+
+    .chip-done .chip-checkbox {
+      background: var(--success);
+      color: #ffffff;
+      border-color: var(--success);
+    }
+
+    .chip-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chip-done .chip-label {
+      text-decoration: line-through;
+      opacity: 0.75;
+    }
+
+    .dod-plain-text {
+      font-size: 12.5px;
       color: var(--text-muted);
       line-height: 1.5;
     }
 
-    .dod-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      font-size: 11px;
+    .dod-empty {
+      font-size: 12px;
       color: var(--text-dim);
-      margin-bottom: 3px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-style: italic;
     }
 
-    /* Progress Track */
+    /* Modern Progress Track */
     .progress-bar-container {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     .progress-track {
       flex: 1;
-      height: 6px;
+      height: 5px;
       background: var(--track-bg);
       border-radius: 9999px;
       overflow: hidden;
@@ -550,38 +613,24 @@
       height: 100%;
       border-radius: 9999px;
       transition: width 0.3s ease;
-      background: var(--accent);
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
     }
 
     .progress-percent {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       color: var(--accent);
-      min-width: 38px;
+      min-width: 36px;
       text-align: right;
-    }
-
-    /* Stuck alert banner */
-    .stuck-alert {
-      margin-top: 10px;
-      padding: 8px 12px;
-      border-radius: 6px;
-      background: var(--warning-bg);
-      border: 1px solid var(--warning-border);
-      color: var(--warning);
-      font-size: 12.5px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
     /* Post-Mortem Box */
     .post-mortem-box {
-      margin-top: 12px;
-      padding: 10px 12px;
-      border-radius: 8px;
-      font-size: 13px;
+      margin-top: 10px;
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-size: 12.5px;
       line-height: 1.5;
     }
 
@@ -597,21 +646,14 @@
       color: var(--text);
     }
 
-    .post-mortem-box.box-killed {
-      background: var(--killed-bg);
-      border: 1px solid var(--killed-border);
-      color: var(--text);
-    }
-
     .post-mortem-header {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 800;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       display: flex;
       align-items: center;
       gap: 6px;
-      text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
@@ -621,10 +663,6 @@
 
     .post-mortem-header.header-shipped {
       color: var(--success);
-    }
-
-    .post-mortem-header.header-killed {
-      color: var(--killed);
     }
 
     footer {
@@ -653,11 +691,14 @@
         grid-template-columns: repeat(2, 1fr);
       }
       .hero-title h1 {
-        font-size: 22px;
+        font-size: 21px;
       }
       .card-top {
         flex-direction: column;
         align-items: flex-start;
+      }
+      .dod-chip-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -685,7 +726,7 @@
       <div class="hero-subtitle">
         <span>去識別化公開公證中</span>
         <span>·</span>
-        <span class="db-badge">SSOT: GitHub Projects v2 (Live Database)</span>
+        <span class="db-badge">SSOT: GitHub Projects v2</span>
         <span>·</span>
         <span>不開空頭支票，只專注客觀驗收與真實履約。</span>
       </div>
@@ -719,16 +760,16 @@
       </div>
     </div>
 
-    <!-- Section 1: Active Commitments (Filtered to Active Window) -->
+    <!-- Section 1: Active Commitments -->
     <div class="section-container">
       <div class="section-header">
         <div class="section-title">
-          <span>⚔️ 當前窗口作戰軍令狀 (Active Sprint Window)</span>
+          <span>⚔️ 當前作戰窗口軍令狀 (Active Sprint Window)</span>
           <span class="badge-count">9 案鎖定中</span>
         </div>
-        <span style="font-size: 12px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">filter: start-date &lt;= @today &lt;= deadline</span>
+        <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">start-date &lt;= @today &lt;= deadline</span>
       </div>
-      <div class="commitment-card ">
+      <div class="commitment-card card-p0">
         <div class="card-top">
           <div class="card-id-title">
             <span class="item-id">DYN-001</span>
@@ -743,23 +784,39 @@
           </div>
         </div>
 
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>- [ ] M0.1 Ch12
-- [ ] M0.2 Ch13
-- [ ] M0.3 Ch14
-- [ ] M0.4 Review</div>
+        <div class="dod-container">
+          <div class="dod-header-row">
+            <span class="dod-title">🎯 驗收及格標準 (DoD)</span>
+            <span style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">[░░░░░░░░] 0% (0/4)</span>
+          </div>
+          <div class="dod-chip-grid">
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.1 Ch12</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.2 Ch13</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.3 Ch14</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.4 Review</span>
+          </div>
+        </div>
         </div>
 
         <div class="progress-bar-container">
           <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
+            <div class="progress-fill" style="width: 0%;"></div>
           </div>
-          <div class="progress-percent" style="">0%</div>
+          <div class="progress-percent">0%</div>
         </div>
-        
       </div>
-      <div class="commitment-card ">
+      <div class="commitment-card card-p1">
         <div class="card-top">
           <div class="card-id-title">
             <span class="item-id">EE-008</span>
@@ -769,31 +826,56 @@
           <div class="card-meta-tags">
             <span class="score-badge">D+3.20.40</span>
             <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill warning">剩 3 天 ⏳</span>
+            <span class="countdown-pill warning">剩 3 天</span>
             <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-10-28</span>
           </div>
         </div>
 
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>- [ ] M0.1 14.1
-- [ ] M0.2 14.2
-- [ ] M0.3 14.3
-- [ ] M0.4 14.4
-- [ ] M0.5 14.5
-- [ ] M0.6 14.6
-- [ ] M0.7 Review</div>
+        <div class="dod-container">
+          <div class="dod-header-row">
+            <span class="dod-title">🎯 驗收及格標準 (DoD)</span>
+            <span style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">[░░░░░░░░] 0% (0/7)</span>
+          </div>
+          <div class="dod-chip-grid">
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.1 14.1</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.2 14.2</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.3 14.3</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.4 14.4</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.5 14.5</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.6 14.6</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.7 Review</span>
+          </div>
+        </div>
         </div>
 
         <div class="progress-bar-container">
           <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
+            <div class="progress-fill" style="width: 0%;"></div>
           </div>
-          <div class="progress-percent" style="">0%</div>
+          <div class="progress-percent">0%</div>
         </div>
-        
       </div>
-      <div class="commitment-card ">
+      <div class="commitment-card card-p1">
         <div class="card-top">
           <div class="card-id-title">
             <span class="item-id">PROB-001</span>
@@ -808,23 +890,39 @@
           </div>
         </div>
 
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>- [ ] M0.1 Ch5
-- [ ] M0.2 Ch6
-- [ ] M0.3 Ch1-4 Review
-- [ ] M0.4 All Review</div>
+        <div class="dod-container">
+          <div class="dod-header-row">
+            <span class="dod-title">🎯 驗收及格標準 (DoD)</span>
+            <span style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">[░░░░░░░░] 0% (0/4)</span>
+          </div>
+          <div class="dod-chip-grid">
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.1 Ch5</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.2 Ch6</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.3 Ch1-4 Review</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.4 All Review</span>
+          </div>
+        </div>
         </div>
 
         <div class="progress-bar-container">
           <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
+            <div class="progress-fill" style="width: 0%;"></div>
           </div>
-          <div class="progress-percent" style="">0%</div>
+          <div class="progress-percent">0%</div>
         </div>
-        
       </div>
-      <div class="commitment-card ">
+      <div class="commitment-card card-p1">
         <div class="card-top">
           <div class="card-id-title">
             <span class="item-id">PSY-001</span>
@@ -839,24 +937,43 @@
           </div>
         </div>
 
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>- [ ] M0.1 Ch1
-- [ ] M0.2 Ch2
-- [ ] M0.3 Ch3
-- [ ] M0.4 Ch4
-- [ ] M0.5 Review</div>
+        <div class="dod-container">
+          <div class="dod-header-row">
+            <span class="dod-title">🎯 驗收及格標準 (DoD)</span>
+            <span style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">[░░░░░░░░] 0% (0/5)</span>
+          </div>
+          <div class="dod-chip-grid">
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.1 Ch1</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.2 Ch2</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.3 Ch3</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.4 Ch4</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.5 Review</span>
+          </div>
+        </div>
         </div>
 
         <div class="progress-bar-container">
           <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
+            <div class="progress-fill" style="width: 0%;"></div>
           </div>
-          <div class="progress-percent" style="">0%</div>
+          <div class="progress-percent">0%</div>
         </div>
-        
       </div>
-      <div class="commitment-card ">
+      <div class="commitment-card card-p2">
         <div class="card-top">
           <div class="card-id-title">
             <span class="item-id">LOGIC-001</span>
@@ -871,28 +988,59 @@
           </div>
         </div>
 
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>- [ ] M0.1 Ch1
-- [ ] M0.2 Ch2
-- [ ] M0.3 Ch3
-- [ ] M0.4 Ch4
-- [ ] M0.5 Ch5
-- [ ] M0.6 Ch6
-- [ ] M0.7 Ch7
-- [ ] M0.8 Ch8
-- [ ] M0.9 Review</div>
+        <div class="dod-container">
+          <div class="dod-header-row">
+            <span class="dod-title">🎯 驗收及格標準 (DoD)</span>
+            <span style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">[░░░░░░░░] 0% (0/9)</span>
+          </div>
+          <div class="dod-chip-grid">
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.1 Ch1</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.2 Ch2</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.3 Ch3</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.4 Ch4</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.5 Ch5</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.6 Ch6</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.7 Ch7</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.8 Ch8</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.9 Review</span>
+          </div>
+        </div>
         </div>
 
         <div class="progress-bar-container">
           <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
+            <div class="progress-fill" style="width: 0%;"></div>
           </div>
-          <div class="progress-percent" style="">0%</div>
+          <div class="progress-percent">0%</div>
         </div>
-        
       </div>
-      <div class="commitment-card ">
+      <div class="commitment-card card-p2">
         <div class="card-top">
           <div class="card-id-title">
             <span class="item-id">ACC-005</span>
@@ -907,20 +1055,22 @@
           </div>
         </div>
 
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
+        <div class="dod-container">
+          <div class="dod-header-row">
+            <span class="dod-title">🎯 驗收及格標準 (DoD)</span>
+            <span style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">[░░░░░░░░] 0%</span>
+          </div>
+          <div class="dod-empty">無特定及格線標準</div>
         </div>
 
         <div class="progress-bar-container">
           <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
+            <div class="progress-fill" style="width: 0%;"></div>
           </div>
-          <div class="progress-percent" style="">0%</div>
+          <div class="progress-percent">0%</div>
         </div>
-        
       </div>
-      <div class="commitment-card ">
+      <div class="commitment-card card-p2">
         <div class="card-top">
           <div class="card-id-title">
             <span class="item-id">TASK</span>
@@ -935,20 +1085,22 @@
           </div>
         </div>
 
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
+        <div class="dod-container">
+          <div class="dod-header-row">
+            <span class="dod-title">🎯 驗收及格標準 (DoD)</span>
+            <span style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">[░░░░░░░░] 0%</span>
+          </div>
+          <div class="dod-empty">無特定及格線標準</div>
         </div>
 
         <div class="progress-bar-container">
           <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
+            <div class="progress-fill" style="width: 0%;"></div>
           </div>
-          <div class="progress-percent" style="">0%</div>
+          <div class="progress-percent">0%</div>
         </div>
-        
       </div>
-      <div class="commitment-card ">
+      <div class="commitment-card card-p3">
         <div class="card-top">
           <div class="card-id-title">
             <span class="item-id">TASK</span>
@@ -958,25 +1110,27 @@
           <div class="card-meta-tags">
             <span class="score-badge">D+3.20.41</span>
             <span class="status-badge badge-todo">🎯 就緒上膛</span>
-            <span class="countdown-pill warning">剩 1 天 ⏳</span>
+            <span class="countdown-pill warning">剩 1 天</span>
             <span style="font-size: 11.5px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">死線: 2026-10-26</span>
           </div>
         </div>
 
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>無特定及格線說明</div>
+        <div class="dod-container">
+          <div class="dod-header-row">
+            <span class="dod-title">🎯 驗收及格標準 (DoD)</span>
+            <span style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">[░░░░░░░░] 0%</span>
+          </div>
+          <div class="dod-empty">無特定及格線標準</div>
         </div>
 
         <div class="progress-bar-container">
           <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
+            <div class="progress-fill" style="width: 0%;"></div>
           </div>
-          <div class="progress-percent" style="">0%</div>
+          <div class="progress-percent">0%</div>
         </div>
-        
       </div>
-      <div class="commitment-card ">
+      <div class="commitment-card card-p3">
         <div class="card-top">
           <div class="card-id-title">
             <span class="item-id">PE-002</span>
@@ -991,21 +1145,37 @@
           </div>
         </div>
 
-        <div class="card-dod-box">
-          <div class="dod-label">🎯 客觀驗收及格線 (DoD)</div>
-          <div>- [ ] M0.1 Part 1
-- [ ] M0.2 Part 2
-- [ ] M0.3 Part 3
-- [ ] M0.4 Review</div>
+        <div class="dod-container">
+          <div class="dod-header-row">
+            <span class="dod-title">🎯 驗收及格標準 (DoD)</span>
+            <span style="font-size: 11px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">[░░░░░░░░] 0% (0/4)</span>
+          </div>
+          <div class="dod-chip-grid">
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.1 Part 1</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.2 Part 2</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.3 Part 3</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.4 Review</span>
+          </div>
+        </div>
         </div>
 
         <div class="progress-bar-container">
           <div class="progress-track">
-            <div class="progress-fill" style="width: 0%; "></div>
+            <div class="progress-fill" style="width: 0%;"></div>
           </div>
-          <div class="progress-percent" style="">0%</div>
+          <div class="progress-percent">0%</div>
         </div>
-        
       </div>
     </div>
 
@@ -1040,9 +1210,24 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-10-20 ｜ 承諾 DoD 及格標準</div>
-            <div>- **學科**：MATH 工程數學 (20%) · - **考試時間**：10/20 (二) 09:10-12:10 · - **狀態**：完試封卷</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-10-20 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-chip-grid">
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">**學科**：MATH 工程數學 (20%)</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">**考試時間**：10/20 (二) 09:10-12:10</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">**狀態**：完試封卷</span>
+          </div>
+        </div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1066,12 +1251,28 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-10-21 ｜ 承諾 DoD 及格標準</div>
-            <div>- [x] M0.1
-- [ ] M0.2
-- [ ] M0.3
-- [ ] M0.4</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-10-21 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-chip-grid">
+          <div class="dod-chip chip-done">
+            <span class="chip-checkbox">✓</span>
+            <span class="chip-label">M0.1</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.2</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.3</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.4</span>
+          </div>
+        </div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1095,9 +1296,24 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-10-19 ｜ 承諾 DoD 及格標準</div>
-            <div>- **學科**：EE 電工學 (15%) · - **考試時間**：10/19 (一) 09:10-12:10 · - **狀態**：5.3 完試結案</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-10-19 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-chip-grid">
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">**學科**：EE 電工學 (15%)</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">**考試時間**：10/19 (一) 09:10-12:10</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">**狀態**：5.3 完試結案</span>
+          </div>
+        </div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1121,11 +1337,24 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-10-21 ｜ 承諾 DoD 及格標準</div>
-            <div>- [ ] M0.1
-- [ ] M0.2
-- [ ] M0.3</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-10-21 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-chip-grid">
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.1</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.2</span>
+          </div>
+          <div class="dod-chip chip-pending">
+            <span class="chip-checkbox"></span>
+            <span class="chip-label">M0.3</span>
+          </div>
+        </div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1149,9 +1378,11 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-09-14 ｜ 承諾 DoD 及格標準</div>
-            <div>無特定及格線說明</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-09-14 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-empty">無特定及格線標準</div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1175,9 +1406,11 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-09-21 ｜ 承諾 DoD 及格標準</div>
-            <div>無特定及格線說明</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-09-21 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-empty">無特定及格線標準</div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1201,9 +1434,11 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-09-23 ｜ 承諾 DoD 及格標準</div>
-            <div>無特定及格線說明</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-09-23 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-empty">無特定及格線標準</div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1227,9 +1462,11 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-09-29 ｜ 承諾 DoD 及格標準</div>
-            <div>無特定及格線說明</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-09-29 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-empty">無特定及格線標準</div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1253,9 +1490,11 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-09-30 ｜ 承諾 DoD 及格標準</div>
-            <div>無特定及格線說明</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-09-30 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-empty">無特定及格線標準</div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1279,9 +1518,11 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-09-30 ｜ 承諾 DoD 及格標準</div>
-            <div>無特定及格線說明</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-09-30 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-empty">無特定及格線標準</div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1305,9 +1546,11 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-10-07 ｜ 承諾 DoD 及格標準</div>
-            <div>無特定及格線說明</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-10-07 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-empty">無特定及格線標準</div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1331,9 +1574,11 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-10-07 ｜ 承諾 DoD 及格標準</div>
-            <div>無特定及格線說明</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-10-07 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-empty">無特定及格線標準</div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1357,9 +1602,11 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-10-08 ｜ 承諾 DoD 及格標準</div>
-            <div>無特定及格線說明</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-10-08 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-empty">無特定及格線標準</div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1383,9 +1630,11 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-10-12 ｜ 承諾 DoD 及格標準</div>
-            <div>無特定及格線說明</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-10-12 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-empty">無特定及格線標準</div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1409,9 +1658,11 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-10-12 ｜ 承諾 DoD 及格標準</div>
-            <div>無特定及格線說明</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-10-12 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-empty">無特定及格線標準</div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1435,9 +1686,11 @@
             </div>
           </div>
 
-          <div class="card-dod-box" style="margin-bottom: 8px;">
-            <div class="dod-label">原定死線: 2026-10-13 ｜ 承諾 DoD 及格標準</div>
-            <div>無特定及格線說明</div>
+          <div class="dod-container" style="margin-bottom: 6px;">
+            <div class="dod-header-row">
+              <span class="dod-title">原定死線: 2026-10-13 ｜ 承諾 DoD 及格標準</span>
+            </div>
+            <div class="dod-empty">無特定及格線標準</div>
           </div>
 
           <div class="post-mortem-box box-shipped">
@@ -1462,7 +1715,6 @@
   </div>
 
   <script>
-    // Theme Switcher Logic
     function initTheme() {
       const savedTheme = localStorage.getItem('planos_theme');
       const btn = document.getElementById('themeToggle');
@@ -1487,7 +1739,6 @@
       }
     }
 
-    // Verdict Filter Function
     function filterVerdicts(cat, btn) {
       document.querySelectorAll('.filter-pills-bar .pill-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -1500,7 +1751,6 @@
       });
     }
 
-    // Live Clock Function in GMT+8 (Asia/Taipei)
     function updateClock() {
       try {
         const now = new Date();
