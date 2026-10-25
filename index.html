@@ -446,11 +446,11 @@
     <!-- Metrics Bar -->
     <div class="metrics-bar">
       <div class="m-card">
-        <div class="m-num" id="metricExecuting" style="color: var(--c-executing);">2 項</div>
+        <div class="m-num" id="metricExecuting" style="color: var(--c-executing);">1 項</div>
         <div class="m-lbl">攻堅施工中</div>
       </div>
       <div class="m-card">
-        <div class="m-num" id="metricPlanned" style="color: var(--c-planned);">1 項</div>
+        <div class="m-num" id="metricPlanned" style="color: var(--c-planned);">2 項</div>
         <div class="m-lbl">已定檔排程</div>
       </div>
       <div class="m-card">
@@ -467,8 +467,8 @@
     <div class="toolbar">
       <div class="filter-group">
         <button class="f-btn active" onclick="filterCards('all', this)">全部 (8)</button>
-        <button class="f-btn" onclick="filterCards('Executing', this)">攻堅中 (2)</button>
-        <button class="f-btn" onclick="filterCards('Planned', this)">已定檔 (1)</button>
+        <button class="f-btn" onclick="filterCards('Executing', this)">攻堅中 (1)</button>
+        <button class="f-btn" onclick="filterCards('Planned', this)">已定檔 (2)</button>
         <button class="f-btn" onclick="filterCards('Review', this)">驗收中 (1)</button>
         <button class="f-btn" onclick="filterCards('delayed', this)">已延期 (<span id="delayedTabCount">0</span>)</button>
         <button class="f-btn" onclick="filterCards('Planning', this)">探索中 (1)</button>
@@ -490,11 +490,11 @@
     <div class="cards-list" id="cardsContainer">
       <div class="flat-card stage-Executing" 
            data-stage="Executing" 
-           data-target="2026-10-26T21:00:00+08:00" 
-           data-ts="1793019600" 
+           data-target="2026-10-25T21:00:00+08:00" 
+           data-ts="1792933200" 
            data-delay="0">
         <div class="c-top">
-          <div class="c-title">應用力學 Ch12 p.45~p.78 精華筆記與錯題解析 PDF 上線</div>
+          <div class="c-title">應用力學 Ch12 核心精華筆記與題解手稿上線</div>
           <div>
             <span class="stage-badge badge-Executing">Executing</span>
           </div>
@@ -503,15 +503,15 @@
         <!-- Abstract Progress Rail -->
         <div class="rail-wrap">
           <div class="progress-rail">
-            <div class="progress-fill fill-Executing" style="width: 50%;"></div>
+            <div class="progress-fill fill-Executing" style="width: 67%;"></div>
           </div>
-          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>p.45-60 核心觀念推導整理</span><span class="m-chip done"><span class="icon">✓</span>p.61-78 精選歷屆大題詳解</span><span class="m-chip "><span class="icon">○</span>繪製向量受力圖與盲點標註</span><span class="m-chip "><span class="icon">○</span>輸出排版 PDF 並上傳公開</span></div>
+          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>Ch12 觀念重點與核心公式推導</span><span class="m-chip done"><span class="icon">✓</span>精選歷屆考題與盲點題解整理</span><span class="m-chip "><span class="icon">○</span>向量排版 PDF 匯出與公開上傳</span></div>
         </div>
 
         <div class="c-meta">
           <div class="c-meta-item">
             <span class="c-meta-lbl">📅 目標定檔:</span>
-            <span class="c-meta-val">2026-10-26 21:00</span>
+            <span class="c-meta-val">2026-10-25 21:00</span>
           </div>
           <div class="c-meta-item">
             <span class="c-meta-lbl">⏳ 時間狀態:</span>
@@ -521,7 +521,43 @@
 
         <div class="c-content">
           <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>完整整理力學必考觀念、盲點解析與題解手稿，輸出向量排版 PDF。</span>
+          <span>整理應用力學 Ch12 核心必考觀念、歷屆題解與盲點標註，於今晚 21:00 前完成 PDF 排版並公開上線。</span>
+        </div>
+      </div>
+      <div class="flat-card stage-Planned" 
+           data-stage="Planned" 
+           data-target="2026-10-28T21:00:00+08:00" 
+           data-ts="1793192400" 
+           data-delay="0">
+        <div class="c-top">
+          <div class="c-title">應用力學 Ch13 核心精華筆記與題解手稿上線</div>
+          <div>
+            <span class="stage-badge badge-Planned">Planned</span>
+          </div>
+        </div>
+
+        <!-- Abstract Progress Rail -->
+        <div class="rail-wrap">
+          <div class="progress-rail">
+            <div class="progress-fill fill-Planned" style="width: 25%;"></div>
+          </div>
+          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>鎖定 Ch13 核心章節範圍</span><span class="m-chip "><span class="icon">○</span>觀念推導手稿撰寫</span><span class="m-chip "><span class="icon">○</span>歷屆經典大題詳解</span><span class="m-chip "><span class="icon">○</span>向量 PDF 輸出發布</span></div>
+        </div>
+
+        <div class="c-meta">
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">📅 目標定檔:</span>
+            <span class="c-meta-val">2026-10-28 21:00</span>
+          </div>
+          <div class="c-meta-item">
+            <span class="c-meta-lbl">⏳ 時間狀態:</span>
+            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
+          </div>
+        </div>
+
+        <div class="c-content">
+          <span class="c-content-lbl">📝 承諾交付:</span>
+          <span>延續 Ch12 筆記規格，於本週三晚間 21:00 前產出 Ch13 向量精華筆記檔。</span>
         </div>
       </div>
       <div class="flat-card stage-Review" 
@@ -530,7 +566,7 @@
            data-ts="1793073600" 
            data-delay="0">
         <div class="c-top">
-          <div class="c-title">🎙️ Podcast 第一集：新世代個人作業系統的興起</div>
+          <div class="c-title">🎙️ Podcast 第一集試播集音訊上架</div>
           <div>
             <span class="stage-badge badge-Review">Review</span>
           </div>
@@ -539,9 +575,9 @@
         <!-- Abstract Progress Rail -->
         <div class="rail-wrap">
           <div class="progress-rail">
-            <div class="progress-fill fill-Review" style="width: 67%;"></div>
+            <div class="progress-fill fill-Review" style="width: 50%;"></div>
           </div>
-          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>主題切角與大綱擬定</span><span class="m-chip done"><span class="icon">✓</span>深度訪綱設計與對焦</span><span class="m-chip done"><span class="icon">✓</span>45 分鐘音訊錄製完成</span><span class="m-chip done"><span class="icon">✓</span>降噪與粗剪</span><span class="m-chip "><span class="icon">○</span>母帶母帶混音與最後試聽</span><span class="m-chip "><span class="icon">○</span>封面圖輸出與串流平台上架</span></div>
+          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>45 分鐘音訊錄製完成</span><span class="m-chip done"><span class="icon">✓</span>粗剪與降噪處理</span><span class="m-chip "><span class="icon">○</span>母帶最後試聽校對</span><span class="m-chip "><span class="icon">○</span>封面圖匯出與串流平台上傳</span></div>
         </div>
 
         <div class="c-meta">
@@ -557,7 +593,7 @@
 
         <div class="c-content">
           <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>探討個人知識庫與自動化代理的結合，完成音訊錄製剪輯與多平台上架。</span>
+          <span>首集試播音訊最後打磨，預計於 10/27 中午 12:00 正式推播至串流平台。</span>
         </div>
       </div>
       <div class="flat-card stage-Planned" 
@@ -575,9 +611,9 @@
         <!-- Abstract Progress Rail -->
         <div class="rail-wrap">
           <div class="progress-rail">
-            <div class="progress-fill fill-Planned" style="width: 25%;"></div>
+            <div class="progress-fill fill-Planned" style="width: 33%;"></div>
           </div>
-          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>需求確認與輸入資料格式規格化</span><span class="m-chip "><span class="icon">○</span>評分核心演算法撰寫</span><span class="m-chip "><span class="icon">○</span>邊界案例壓力測試</span><span class="m-chip "><span class="icon">○</span>提供同學試用與操作文件</span></div>
+          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>格式規格化定義</span><span class="m-chip "><span class="icon">○</span>評分演算法核心代碼</span><span class="m-chip "><span class="icon">○</span>邊界案例壓力測試</span></div>
         </div>
 
         <div class="c-meta">
@@ -593,7 +629,7 @@
 
         <div class="c-content">
           <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>開發自動化腳本，針對作業格式進行規則檢查與評分統計。</span>
+          <span>開發自動化作業檢查腳本，提供精確規則評分。</span>
         </div>
       </div>
       <div class="flat-card stage-Planning" 
@@ -613,7 +649,7 @@
           <div class="progress-rail">
             <div class="progress-fill fill-Planning" style="width: 0%;"></div>
           </div>
-          <div class="milestones-chips"><span class="m-chip "><span class="icon">○</span>評估端到端加密協定可行性</span><span class="m-chip "><span class="icon">○</span>測試本地區域網廣播延遲</span></div>
+          <div class="milestones-chips"><span class="m-chip "><span class="icon">○</span>區域網加密協定評估</span><span class="m-chip "><span class="icon">○</span>本地廣播延遲測試</span></div>
         </div>
 
         <div class="c-meta">
@@ -629,43 +665,7 @@
 
         <div class="c-content">
           <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>探索基於區域網的高速加密剪貼簿同步架構，評估開發成本與實用性。</span>
-        </div>
-      </div>
-      <div class="flat-card stage-Executing" 
-           data-stage="Executing" 
-           data-target="2026-11-15T00:00:00+08:00" 
-           data-ts="1794672000" 
-           data-delay="0">
-        <div class="c-top">
-          <div class="c-title">🛠️ 個人作業系統 PlanOS v2.5 正式版發布</div>
-          <div>
-            <span class="stage-badge badge-Executing">Executing</span>
-          </div>
-        </div>
-
-        <!-- Abstract Progress Rail -->
-        <div class="rail-wrap">
-          <div class="progress-rail">
-            <div class="progress-fill fill-Executing" style="width: 50%;"></div>
-          </div>
-          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>重構看板架構為 5 態模型</span><span class="m-chip done"><span class="icon">✓</span>實裝 JavaScript 即時跳動時鐘</span><span class="m-chip "><span class="icon">○</span>完善 SOP 法規與使用手冊</span><span class="m-chip "><span class="icon">○</span>封裝發布正式開源安裝包</span></div>
-        </div>
-
-        <div class="c-meta">
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">📅 目標定檔:</span>
-            <span class="c-meta-val">2026-11-15 00:00</span>
-          </div>
-          <div class="c-meta-item">
-            <span class="c-meta-lbl">⏳ 時間狀態:</span>
-            <span class="c-meta-val live-time-val" data-role="countdown">計算中...</span>
-          </div>
-        </div>
-
-        <div class="c-content">
-          <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>完成公開承諾看板上線、雙軌版本機制整合，並提供完整開源安裝包。</span>
+          <span>探索基於區域網的高速加密剪貼簿同步架構，評估實用性與開發工期。</span>
         </div>
       </div>
       <div class="flat-card stage-Published" 
@@ -685,7 +685,7 @@
           <div class="progress-rail">
             <div class="progress-fill fill-Published" style="width: 100%;"></div>
           </div>
-          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>法案草案起草與辯論</span><span class="m-chip done"><span class="icon">✓</span>修正退回意見與倒敘答辯</span><span class="m-chip done"><span class="icon">✓</span>元首正式簽核入法</span></div>
+          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>法案草案起草與辯論</span><span class="m-chip done"><span class="icon">✓</span>元首正式簽核入法</span></div>
         </div>
 
         <div class="c-meta">
@@ -721,7 +721,7 @@
           <div class="progress-rail">
             <div class="progress-fill fill-Published" style="width: 100%;"></div>
           </div>
-          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>演算法原型驗證</span><span class="m-chip done"><span class="icon">✓</span>日程衝突檢測邏輯實裝</span><span class="m-chip done"><span class="icon">✓</span>整合進營運長每日主控台</span></div>
+          <div class="milestones-chips"><span class="m-chip done"><span class="icon">✓</span>演算法原型驗證</span><span class="m-chip done"><span class="icon">✓</span>整合進營運長每日主控台</span></div>
         </div>
 
         <div class="c-meta">
@@ -773,7 +773,7 @@
 
         <div class="c-content">
           <span class="c-content-lbl">📝 承諾交付:</span>
-          <span>經評估現有 RSS 與開源工具已可完全替代，邊際效益過低，戰略止損取消研發。</span>
+          <span>經評估現有開源工具已可完全替代，邊際效益過低，戰略止損取消研發。</span>
         </div>
       </div>
     </div>
